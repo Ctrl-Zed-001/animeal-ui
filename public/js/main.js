@@ -1,50 +1,49 @@
 $(document).ready(function () {
 
     /* Browser fullscreen experience on double click */
-    if (self == top) {
-        $('body').on('dblclick', function (e) {
+    // if (self == top) {
+    //     $('body').on('dblclick', function (e) {
 
-            if (!document.fullscreenElement && // alternative standard method
-                !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement) { // current working methods
-                if (document.documentElement.requestFullscreen) {
-                    document.documentElement.requestFullscreen();
-                } else if (document.documentElement.msRequestFullscreen) {
-                    document.documentElement.msRequestFullscreen();
-                } else if (document.documentElement.mozRequestFullScreen) {
-                    document.documentElement.mozRequestFullScreen();
-                } else if (document.documentElement.webkitRequestFullscreen) {
-                    document.documentElement.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
-                }
-            } else {
-                if (document.exitFullscreen) {
-                    document.exitFullscreen();
-                } else if (document.msExitFullscreen) {
-                    document.msExitFullscreen();
-                } else if (document.mozCancelFullScreen) {
-                    document.mozCancelFullScreen();
-                } else if (document.webkitExitFullscreen) {
-                    document.webkitExitFullscreen();
-                }
-            }
+    //         if (!document.fullscreenElement && // alternative standard method
+    //             !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement) { // current working methods
+    //             if (document.documentElement.requestFullscreen) {
+    //                 document.documentElement.requestFullscreen();
+    //             } else if (document.documentElement.msRequestFullscreen) {
+    //                 document.documentElement.msRequestFullscreen();
+    //             } else if (document.documentElement.mozRequestFullScreen) {
+    //                 document.documentElement.mozRequestFullScreen();
+    //             } else if (document.documentElement.webkitRequestFullscreen) {
+    //                 document.documentElement.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+    //             }
+    //         } else {
+    //             if (document.exitFullscreen) {
+    //                 document.exitFullscreen();
+    //             } else if (document.msExitFullscreen) {
+    //                 document.msExitFullscreen();
+    //             } else if (document.mozCancelFullScreen) {
+    //                 document.mozCancelFullScreen();
+    //             } else if (document.webkitExitFullscreen) {
+    //                 document.webkitExitFullscreen();
+    //             }
+    //         }
 
-        });
-    } else {
+    //     });
+    // } else {
 
-    }
+    // }
 
 
     /* float label checking input is not empty */
-    $('.float-label .form-control').on('blur', function () {
-        if ($(this).val() || $(this).val().length != 0) {
-            $(this).closest('.float-label').addClass('active');
-        } else {
-            $(this).closest('.float-label').removeClass('active');
-        }
-    })
+    // $('.float-label .form-control').on('blur', function () {
+    //     if ($(this).val() || $(this).val().length != 0) {
+    //         $(this).closest('.float-label').addClass('active');
+    //     } else {
+    //         $(this).closest('.float-label').removeClass('active');
+    //     }
+    // })
 
     /* menu open close wrapper screen click close menu */
     $('.menu-btn').on('click', function (e) {
-        console.log("clicked")
         e.stopPropagation();
         if ($('body').hasClass('sidemenu-open') == true) {
             $('body, html').removeClass('sidemenu-open');
@@ -134,7 +133,7 @@ $(document).ready(function () {
         }
     }(jQuery))
 
-    $.dragScroll();
+    // $.dragScroll();
     /* End of drag and scroll like mobile remove while creating mobile app */
 
 
@@ -188,24 +187,24 @@ $(document).ready(function () {
 });
 
 
-$(window).on('load', function () {
-    $('.loader-screen').fadeOut('slow');
+// $(window).on('load', function () {
+//     $('.loader-screen').fadeOut('slow');
 
-    /* header active on scroll more than 50 px*/
-    if ($(this).scrollTop() >= 30) {
-        $('.header').addClass('active')
-    } else {
-        $('.header').removeClass('active')
-    }
+//     /* header active on scroll more than 50 px*/
+//     if ($(this).scrollTop() >= 30) {
+//         $('.header').addClass('active')
+//     } else {
+//         $('.header').removeClass('active')
+//     }
 
-    $(window).on('scroll', function () {
-        /* header active on scroll more than 50 px*/
-        if ($(this).scrollTop() >= 30) {
-            $('.header').addClass('active')
-        } else {
-            $('.header').removeClass('active')
-        }
-    });
+//     $(window).on('scroll', function () {
+//         /* header active on scroll more than 50 px*/
+//         if ($(this).scrollTop() >= 30) {
+//             $('.header').addClass('active')
+//         } else {
+//             $('.header').removeClass('active')
+//         }
+//     });
 
 
-});
+// });

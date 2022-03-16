@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import React from 'react'
 import { MdStore, MdAccountCircle, MdFavorite, MdLocalMall, MdPets } from "react-icons/md";
 
@@ -18,9 +19,11 @@ const BottomNavigation = () => {
                         </a>
                     </div>
                     <div className="p-4">
-                        <a href="cart.html" className="btn btn-default shadow centerbutton bg-theme">
-                            <img src="img/icons/cart.png" alt="" />
-                        </a>
+                        <Link href="/cart">
+                            <div className="btn btn-default shadow centerbutton bg-theme cursor-pointer">
+                                <img src="/img/icons/cart.png" alt="" />
+                            </div>
+                        </Link>
                     </div>
                     <div className="p-4">
                         <a href="favorite-products.html" className="btn btn-link-default">

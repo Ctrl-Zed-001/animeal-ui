@@ -7,11 +7,11 @@ import Header from "../Components/Header/Header";
 function MyApp({ Component, pageProps }) {
   return (
     <div className='theme'>
-      <script src='js/jquery-3.3.1.min.js' />
-      <script src="js/main.js" />
+      <script src='/js/jquery-3.3.1.min.js' />
+      <script src="/js/main.js" />
 
       <Sidebar />
-      <div className="wrapper">
+      <div className="wrapper pt-28 md:pt-20">
         <Header />
         <Component {...pageProps} />
         <BottomNavigation />

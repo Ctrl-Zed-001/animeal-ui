@@ -1,7 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800&display=swap');
+/* *{
+  border: 1px solid red;
+} */
 html {
   height: 100%;
 }
@@ -20,12 +23,19 @@ body {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  background-color: #faa01990;
+  background-color: #ffbe5d;
 }
 .container{
-  padding-left: 2.5rem;
-  padding-right: 2.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
+
+@media (min-width: 1024px) { 
+  .container{
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+  }
+ }
 
 .wrapper {
   height: auto;
@@ -42,12 +52,12 @@ body {
 }
 .theme .wrapper {
   background-color: #E3EAF1;
-  background-image: -moz-radial-gradient(center, ellipse cover, rgba(250, 250, 250, 1) 0%, #E3EAF1 100%);
+  /* background-image: -moz-radial-gradient(center, ellipse cover, rgba(250, 250, 250, 1) 0%, #E3EAF1 100%);
   background-image: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%, rgba(250, 250, 250, 1)), color-stop(100%, #E3EAF1));
   background-image: -webkit-radial-gradient(center, ellipse cover, rgba(250, 250, 250, 1) 0%, #E3EAF1 100%);
   background-image: -o-radial-gradient(center, ellipse cover, rgba(250, 250, 250, 1) 0%, #E3EAF1 100%);
   background-image: -ms-radial-gradient(center, ellipse cover, rgba(250, 250, 250, 1) 0%, #E3EAF1 100%);
-  background-image: radial-gradient(ellipse at center, rgba(250, 250, 250, 1) 0%, #E3EAF1 100%);
+  background-image: radial-gradient(ellipse at center, rgba(250, 250, 250, 1) 0%, #E3EAF1 100%); */
   background-attachment: inherit;
   background-position: center top;
   background-size: 100% 100%;
@@ -157,7 +167,7 @@ body.sidemenu-open .sidebar {
   width: 100%;
 }
 .bg-theme{
-  background-color: #FAA219;
+  background: linear-gradient(21.93deg, #F58E10 -11.7%, #FCB62D 82.12%);
   color: white;
 }
 .text-theme{
@@ -195,7 +205,7 @@ body.sidemenu-open .sidebar {
 }
 
 .bottom-navigation .centerbutton {
-  padding: 1.1rem 1.11rem;
+  padding: 1.2rem 1.11rem;
   border-radius: 50px;
   margin: 0px;
   margin-top: -2.5rem;
@@ -205,4 +215,7 @@ body.sidemenu-open .sidebar {
   font-weight: 500;
   font-size: 16px;
   line-height: 24px;
+}
+.floating-bg, .subcategory-box{
+  background-color: #F0F3F7;
 }
