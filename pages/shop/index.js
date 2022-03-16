@@ -34,16 +34,7 @@ const Shop = () => {
                     </div>
 
                     <div className="product-list-container grid grid-cols-2 md:grid-cols-4 gap-8 mt-6">
-                        <ProductBox />
-                        <ProductBox />
-                        <ProductBox />
-                        <ProductBox />
-                        <ProductBox />
-                        <ProductBox />
-                        <ProductBox />
-                        <ProductBox />
-                        <ProductBox />
-                        <ProductBox />
+
                     </div>
                 </div>
             </div>
