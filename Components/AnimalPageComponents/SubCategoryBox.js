@@ -1,12 +1,13 @@
 import Link from 'next/link'
 import React from 'react'
 
-const SubCategoryBox = () => {
+const SubCategoryBox = (props) => {
+
     return (
         <Link href='/shop'>
-            <div className='subcategory-box flex items-center justify-between p-3 rounded-lg cursor-pointer'>
-                <img src="https://www.bigbasket.com/media/uploads/p/xxl/40181185_1-whiskas-dry-cat-food-adult-1-year-mackerel-flavour.jpg" alt="" className='h-20' />
-                <h1 className='text-xl'>Dry Food</h1>
+            <div className='subcategory-box flex items-center p-3 rounded-lg cursor-pointer'>
+                <img src={props.category.category_icon == null ? '/img/category-placeholder.png' : props.category.category_icon} alt="" className='h-20' />
+                <h1 className='text-sm font-medium ml-2'>{props.category.category_name}</h1>
             </div>
         </Link>
     )

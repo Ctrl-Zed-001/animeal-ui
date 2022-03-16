@@ -10,12 +10,7 @@ import config from '../../config.json'
 import 'swiper/css';
 import 'swiper/css/autoplay';
 
-const index = () => {
-
-    const [categories, setCategories] = useState()
-    const [categoryWiseProducts, setCategoryWiseproducts] = useState()
-
-
+const index = (props) => {
 
     return (
         <div className='main-animal-page mt-4'>
@@ -42,8 +37,8 @@ const index = () => {
                     autoplay={{ delay: 2000 }}
                 >
                     {
-                        categories && categories.map((category, index) => {
-                            return <SwiperSlide key={index}><CategoryBox animal={router.query.slug} category={category} /></SwiperSlide>
+                        props.categorylevels && props.categorylevels.map((category, index) => {
+                            return <SwiperSlide key={index}><CategoryBox animal={props.slug} category={category} /></SwiperSlide>
                         })
 
                     }
@@ -53,9 +48,9 @@ const index = () => {
 
             {/* CATEGORY */}
             {
-                categoryWiseProducts && categoryWiseProducts.map((products, index) => {
+                props.categorylevels && props.categoryWiseProducts && props.categoryWiseProducts.map((products, index) => {
                     return products.length > 0 ?
-                        <ProductRow key={index} title={categories[index].category_name} products={products} /> :
+                        <ProductRow key={index} title={props.categorylevels[index].category_name} products={products} /> :
                         <></>
                 })
 
@@ -67,12 +62,15 @@ const index = () => {
 export async function getServerSideProps({ query }) {
 
     let res = await axios.get(`${config.api_uri}/category/${query.slug}`)
-    console.log("🚀 ~ file: index.js ~ line 81 ~ getServerSideProps ~ res", res.data)
+    let categoryWiseProducts = res.data.categoryWiseProduct
+    let categoryLevels = res.data.categorylevels
 
 
     return {
         props: {
-
+            categoryWiseProducts: categoryWiseProducts,
+            categorylevels: categoryLevels,
+            slug: query.slug
         }
     }
 }

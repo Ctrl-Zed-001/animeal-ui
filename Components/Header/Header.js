@@ -1,10 +1,23 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { MdSearch } from "react-icons/md";
 import Link from 'next/link';
+import { useRouter } from 'next/router'
 
 const Header = () => {
 
+    const router = useRouter()
     const [isOpen, setIsOpen] = useState(false)
+    const [showSearch, setShowSearch] = useState(true)
+
+    useEffect(() => {
+        if (router) {
+            if (router.pathname == '/checkout' || router.pathname == '/cart') {
+                setShowSearch(false)
+            } else {
+                setShowSearch(true)
+            }
+        }
+    }, [])
 
     const autoSuggest = (e) => {
         if (e.target.value === '') {
@@ -28,29 +41,32 @@ const Header = () => {
                 </div>
 
 
-                <div className="flex w-full mt-4 lg:mt-0 lg:w-3/6 relative">
-                    <div className="relative w-full mr-1">
-                        <MdSearch className='absolute top-3 left-2 text-2xl text-gray-400' />
-                        <input onChange={autoSuggest} type="text" className="p-3 w-full rounded-lg pl-10" placeholder="Search store" />
-                    </div>
-                    <button className='bg-theme p-3 text-xl rounded-lg'>
-                        <img src="/img/icons/search.png" alt="" className='' />
-                    </button>
+                {
+                    showSearch ?
+                        <div className="flex w-full mt-4 lg:mt-0 lg:w-3/6 relative">
+                            <div className="relative w-full mr-1">
+                                <MdSearch className='absolute top-3 left-2 text-2xl text-gray-400' />
+                                <input onChange={autoSuggest} type="text" className="p-3 w-full rounded-lg pl-10" placeholder="Search store" />
+                            </div>
+                            <button className='bg-theme p-3 text-xl rounded-lg'>
+                                <img src="/img/icons/search.png" alt="" className='' />
+                            </button>
 
-                    {
-                        isOpen ?
-                            <div className="autocomplete absolute top-14 bg-white p-3 rounded w-11/12">
-                                <ul>
-                                    <li>sdas</li>
-                                    <li>sdas</li>
-                                    <li>sdas</li>
-                                </ul>
-                            </div> :
-                            <></>
-                    }
+                            {
+                                isOpen ?
+                                    <div className="autocomplete absolute top-14 bg-white p-3 rounded w-11/12">
+                                        <ul>
+                                            <li>sdas</li>
+                                            <li>sdas</li>
+                                            <li>sdas</li>
+                                        </ul>
+                                    </div> :
+                                    <></>
+                            }
+                        </div> :
+                        <></>
+                }
 
-
-                </div>
 
 
                 <div className="lg:flex justify-between hidden">

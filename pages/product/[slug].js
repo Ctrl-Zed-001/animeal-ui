@@ -35,7 +35,7 @@ const Product = (props) => {
                     >
                         {
                             props.product.productimages.map((image, index) => {
-                                return <SwiperSlide className=''><img src={`${config.image_uri}/${image.product_id}/${image.product_image}`} alt="" className='' /></SwiperSlide>
+                                return <SwiperSlide className=''><img src={`${config.image_uri}/${image.product_id}/${image.product_image}`} alt="" className='rounded-lg' /></SwiperSlide>
                             })
                         }
                     </Swiper>
@@ -80,17 +80,22 @@ const Product = (props) => {
                                 </div>
                             </div> */}
 
-                            <div className="variations">
-                                <p className="mb-3 text-sm">Variations</p>
-                                <div className="flex">
-                                    {
-                                        props.product.similarproduct.map((prod, index) => {
-                                            return <Link key={index} href={`/product/${prod.website_slug_name}`}><div className="size cursor-pointer bg-slate-100 p-2 text-xs rounded mr-4">{prod.product_weight}</div></Link>
-                                        })
-                                    }
+                            {
+                                props.product.similarproduct ?
+                                    <div className="variations">
+                                        <p className="mb-3 text-sm">Variations</p>
+                                        <div className="flex">
+                                            {
+                                                props.product.similarproduct.map((prod, index) => {
+                                                    return <Link key={index} href={`/product/${prod.website_slug_name}`}><div className="size cursor-pointer bg-slate-100 p-2 text-xs rounded mr-4">{prod.product_weight}</div></Link>
+                                                })
+                                            }
 
-                                </div>
-                            </div>
+                                        </div>
+                                    </div> :
+                                    <></>
+                            }
+
 
 
                         </div>

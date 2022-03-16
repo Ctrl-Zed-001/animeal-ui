@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import SubCategoryBox from '../../../Components/AnimalPageComponents/SubCategoryBox'
 import ProductRow from '../../../Components/HomeComponents/ProductRow'
 
@@ -7,23 +7,10 @@ import { Autoplay } from 'swiper';
 import 'swiper/css';
 import 'swiper/css/autoplay';
 import axios from 'axios'
-import { api_uri } from '../../../config.json'
-import { useRouter } from 'next/router';
+import config from '../../../config.json'
 
-const index = () => {
 
-    const router = useRouter()
-    console.log("🚀 ~ file: index.js ~ line 16 ~ index ~ router", router)
-
-    useEffect(() => {
-        if (router) {
-            axios.get(`${api_uri}/category/${router.query.slug}/${router.query.category}`)
-                .then(res => {
-                    console.log("🚀 ~ file: index.js ~ line 20 ~ useEffect ~ res", res.data)
-                })
-                .catch(err => console.log(err))
-        }
-    }, [])
+const index = (props) => {
 
     return (
         <div className='subcategory-page my-10'>
@@ -47,21 +34,36 @@ const index = () => {
                     }}
                     autoplay={{ delay: 2000 }}
                 >
-                    <SwiperSlide><SubCategoryBox /></SwiperSlide>
-                    <SwiperSlide><SubCategoryBox /></SwiperSlide>
-                    <SwiperSlide><SubCategoryBox /></SwiperSlide>
-                    <SwiperSlide><SubCategoryBox /></SwiperSlide>
-                    <SwiperSlide><SubCategoryBox /></SwiperSlide>
-                    <SwiperSlide><SubCategoryBox /></SwiperSlide>
-                    <SwiperSlide><SubCategoryBox /></SwiperSlide>
-                    <SwiperSlide><SubCategoryBox /></SwiperSlide>
+                    {
+                        props.categorylevels && props.categorylevels.map((category, index) => {
+                            return <SwiperSlide key={index}><SubCategoryBox category={category} /></SwiperSlide>
+                        })
+                    }
                 </Swiper>
             </div>
 
-            <ProductRow title='Top Cat Dry Food' />
+            <ProductRow title={`Top ${props.animal} ${props.category}`} />
 
         </div>
     )
+}
+
+export async function getServerSideProps({ query }) {
+
+    let res = await axios.get(`${config.api_uri}/category/${query.slug}/${query.category}`)
+
+    let categorylevels = res.data.categorylevels3;
+    let categoryWiseProducts = res.data.category3WiseProduct
+
+
+    return {
+        props: {
+            categorylevels: categorylevels,
+            categoryWiseProducts: categoryWiseProducts,
+            animal: query.slug,
+            category: query.category
+        }
+    }
 }
 
 export default index
