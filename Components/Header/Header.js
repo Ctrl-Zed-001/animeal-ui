@@ -17,7 +17,7 @@ const Header = () => {
                 setShowSearch(true)
             }
         }
-    }, [])
+    }, [router])
 
     const autoSuggest = (e) => {
         if (e.target.value === '') {

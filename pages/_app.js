@@ -11,7 +11,7 @@ function MyApp({ Component, pageProps }) {
       <script src="/js/main.js" />
 
       <Sidebar />
-      <div className="wrapper pt-28 md:pt-0">
+      <div className="wrapper pt-28 md:pt-20">
         <Header />
         <Component {...pageProps} />
         <BottomNavigation />
