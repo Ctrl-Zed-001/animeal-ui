@@ -1,4 +1,5 @@
 {
     "api_uri": "https://staging.animeal.in/api",
-    "image_uri": "https://staging.animeal.in/uploads"
+    "image_uri": "https://staging.animeal.in/uploads",
+    "category_uri": "https://staging.animeal.in/uploads/category-icon"
 }
