@@ -32,7 +32,7 @@ const Header = () => {
         <div className="header py-4 fixed top-0 bg-slate-200 w-full z-50">
             <div className="container md:flex justify-between items-center">
 
-                <div className="flex lg-block gap-10">
+                <div className={`flex lg-block gap-10 ${showSearch ? '' : 'flex-1'}`}>
                     <button className="btn btn-link text-dark menu-btn"><img src="/img/icons/menu.png" alt="" /></button>
 
                     <Link href='/'>

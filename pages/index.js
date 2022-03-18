@@ -8,14 +8,27 @@ import config from '../config.json'
 
 
 
-export default function Home() {
+export default function Home(props) {
 
   const [animals, setAnimals] = useState()
+  const [topProducts, setTopProducts] = useState()
+  const [customerFav, setCustomerFav] = useState()
+  const [expertPick, setExpertPick] = useState()
 
   useEffect(() => {
-    axios.get(`${config.api_uri}/getcategories`)
+    let endpoints = [
+      `${config.api_uri}/getcategories`,
+      `${config.api_uri}/topratedproducts/get/data`,
+      `${config.api_uri}/customerfavorite/get/data`,
+      `${config.api_uri}/pickedbyexperts/get/data`
+    ];
+
+    axios.all(endpoints.map((endpoint) => axios.get(endpoint)))
       .then(res => {
-        setAnimals(res.data.category_level1)
+        setAnimals(res[0].data.category_level1);
+        setTopProducts(res[1].data.topRatedProducts)
+        setCustomerFav(res[2].data.customerFavoriteProducts)
+        setExpertPick(res[3].data.pickedByExpertsProducts)
       })
       .catch(err => console.log(err))
   }, []);
@@ -31,13 +44,13 @@ export default function Home() {
       <ShopByPet animals={animals} />
 
       {/* TOP PRODUCTS */}
-      <ProductRow title="Top Products" />
+      <ProductRow title="Top Products" products={topProducts} />
 
       {/* EXPERT PICK */}
-      <ProductRow title="Picked By Our Experts" />
+      <ProductRow title="Picked By Our Experts" products={customerFav} />
 
       {/* CUSTOMER FAVORITES */}
-      <ProductRow title="Customer Favorites" />
+      <ProductRow title="Customer Favorites" products={expertPick} />
 
       {/* CTA */}
 

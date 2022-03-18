@@ -50,7 +50,9 @@ const index = (props) => {
 
 export async function getServerSideProps({ query }) {
 
-    let res = await axios.get(`${config.api_uri}/category/${query.slug}/${query.category}`)
+    let res = await axios.get(`${config.api_uri}/category/level2products/${query.slug}/${query.category}`)
+    console.log("🚀 ~ file: index.js ~ line 54 ~ getServerSideProps ~ res", res.data)
+
 
     let categorylevels = res.data.categorylevels3;
     let categoryWiseProducts = res.data.category3WiseProduct

@@ -1,9 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { BiRupee } from 'react-icons/bi';
 import CartItem from '../../Components/CartPageComponents/CartItem';
 import Link from 'next/link'
+import PrescriptionModal from '../../Components/CartPageComponents/PrescriptionModal';
 
 const Cart = () => {
+    const [showPrescriptionModal, setShowPrescriptionModal] = useState(false)
     return (
         <div className='cart-page container mt-0 mb-4'>
             {/* TOP YELLOW BOX   */}
@@ -26,12 +28,17 @@ const Cart = () => {
             <CartItem />
             <CartItem />
 
+            <p className="text-gray-500 text-sm">Some of your itmes require prescription. Please upload theme to continue further. <span className='text-yellow-600 font-bold underline cursor-pointer' onClick={() => { setShowPrescriptionModal(true) }}>Upload Prescription</span></p>
+
             {/* CHECKOUT BUTTON */}
             <Link href='/checkout'>
                 <button className="w-full text-center bg-theme p-2 rounded-lg py-4 mt-8 shadow font-semibold">
                     Continue To Checkout
                 </button>
             </Link>
+
+            {/* PRESCRIPTION MODAL */}
+            <PrescriptionModal visible={showPrescriptionModal} close={() => setShowPrescriptionModal(false)} />
         </div>
     )
 }

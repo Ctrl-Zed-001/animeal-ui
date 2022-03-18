@@ -68,7 +68,7 @@ export async function getServerSideProps({ query }) {
 
     return {
         props: {
-            categoryWiseProducts: categoryWiseProducts,
+            // categoryWiseProducts: categoryWiseProducts,
             categorylevels: categoryLevels,
             slug: query.slug
         }
