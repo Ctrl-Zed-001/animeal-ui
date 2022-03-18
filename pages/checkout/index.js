@@ -1,15 +1,15 @@
 import React, { useState } from 'react'
 import PaymentItem from '../../Components/CheckoutComponents/PaymentItem';
 import { BiRupee } from 'react-icons/bi';
-import { Radio } from '@nextui-org/react';
+import { Radio, Input } from '@nextui-org/react';
 import AddressModal from '../../Components/CheckoutComponents/AddressModal';
-
+import { IoMdPricetag } from 'react-icons/io'
+import { HiShieldCheck, HiChevronRight } from 'react-icons/hi'
 
 
 const Checkout = () => {
 
     const [showAddressModal, setShowAddressModal] = useState(false)
-    const [showPromoModal, setShowPromoModal] = useState(false)
 
     return (
         <div className='checkout-page container mb-5'>
@@ -24,11 +24,20 @@ const Checkout = () => {
                 <p className='text-xs text-slate-500 my-1'><psan className="font-semibold">mobile : </psan>+91 8454015530</p>
             </div>
 
+            {/* PROMOCODE BOX */}
+            <div className="promocode-box bg-white p-3 rounded-lg  mt-4">
+                <h1 className='font-semibold mb-4'>Coupon Code</h1>
+                <div className='flex justify-between gap-2 items-center'>
+                    <IoMdPricetag className='text-theme h-8 w-10' />
+                    <Input clearable underlined className='w-11/12' />
+                    <HiChevronRight className='bg-theme rounded-full h-8 w-10' />
+                </div>
+            </div>
+
             {/* PAYMENT DETAILS */}
             <div className="payment-details bg-white p-3 rounded-lg mt-4">
                 <div className="flex justify-between items-start mb-4">
                     <h1 className='font-semibold'>Payment Details</h1>
-                    <p className="text-xs text-blue-400">Add Coupon</p>
                 </div>
 
                 <PaymentItem title='Total Price' price='500' />
@@ -49,8 +58,12 @@ const Checkout = () => {
             <Radio.Group value="A">
                 <div className='online-payment bg-white p-3 rounded-lg mt-4'>
                     <div className="flex items-center">
-                        <Radio value="online" size={'xs'} color={'warning'} css={{ 'margin': '0 !important' }}></Radio>
+                        <Radio checked={true} value="online" size={'xs'} color={'warning'} css={{ 'margin': '0 !important' }}></Radio>
                         <h1 className='font-semibold'>Payment Details</h1>
+                    </div>
+                    <div className="flex items-center text-green-600 my-2">
+                        <HiShieldCheck />
+                        <p className='text-xs'>100% payment protection and easy refunds.</p>
                     </div>
                     <div className="flex justify-evenly items-center mt-3 ml-5">
                         <img src="/img/icons/visa.png" alt="" className='h-6' />

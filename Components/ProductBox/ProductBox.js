@@ -5,7 +5,6 @@ import Rating from './Rating'
 import config from '../../config.json'
 
 const ProductBox = (props) => {
-    console.log("🚀 ~ file: ProductBox.js ~ line 7 ~ ProductBox ~ props", props)
 
     return (
         <Link href={`/product/${props.product[0].product_slugname}`}>
@@ -15,7 +14,7 @@ const ProductBox = (props) => {
                 <div className="product-info p-4 relative bg-white pt-14 -mt-12 -z-10">
 
                     <div className="discount-badge absolute top-10 right-0 bg-theme text-xs px-2 py-1 rounded-l-lg">
-                        {props.product.offer}% off
+                        {props.product[0].product_offer}% off
                     </div>
 
                     <h2 className="animal text-slate-700 text-xs">{props.product[0].product_for_animal}</h2>

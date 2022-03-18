@@ -3,11 +3,13 @@ import { MdSearch } from "react-icons/md";
 import Link from 'next/link';
 import { useRouter } from 'next/router'
 
-const Header = () => {
+const Header = (props) => {
 
     const router = useRouter()
-    const [isOpen, setIsOpen] = useState(false)
+
     const [showSearch, setShowSearch] = useState(true)
+    const [suggestions, setSuggestions] = useState([])
+    const [suggestionHeading, setSuggestionHeading] = useState('Top Suggestions')
 
     useEffect(() => {
         if (router) {
@@ -19,14 +21,53 @@ const Header = () => {
         }
     }, [router])
 
+    useEffect(() => {
+        setSuggestions(dummy)
+    }, [])
+
     const autoSuggest = (e) => {
+        // CALL AUTOSUGGEST API
+
+
         if (e.target.value === '') {
-            setIsOpen(false)
+            // SET AUTOSUGGEST STATE WITH THE TOP SUGGESTIONS
+            setSuggestions(dummy)
+            // SET SUGGESTION HEADING AS TOP SUGGESTIONS
+            setSuggestionHeading("Top Suggestions")
+
         } else {
-            setIsOpen(true)
+            // FILTER RESULTS BASED ON USER INPUT
+            let filteredList = dummy.filter((data) => data.keyword.toLowerCase().includes(e.target.value.toLowerCase()))
+            console.log("🚀 ~ file: Header.js ~ line 38 ~ autoSuggest ~ filteredList", filteredList)
+
+            // SET AUTOSUGGEST STATE WITH THE FILTERED LIST
+            setSuggestions(filteredList)
+
+            // SET SUGGESTION HEADING AS TOP RESULTS..
+            setSuggestionHeading("Top Results")
+
         }
-        console.log(e.target.value)
+
     }
+
+    const dummy = [
+        {
+            id: 1,
+            keyword: 'dog food',
+        },
+        {
+            id: 1,
+            keyword: 'cat food',
+        },
+        {
+            id: 1,
+            keyword: 'dog treats',
+        },
+        {
+            id: 1,
+            keyword: 'cat toys',
+        }
+    ]
 
     return (
         <div className="header py-4 fixed top-0 bg-slate-200 w-full z-50">
@@ -46,19 +87,24 @@ const Header = () => {
                         <div className="flex w-full mt-4 lg:mt-0 lg:w-3/6 relative">
                             <div className="relative w-full mr-1">
                                 <MdSearch className='absolute top-3 left-2 text-2xl text-gray-400' />
-                                <input onChange={autoSuggest} type="text" className="p-3 w-full rounded-lg pl-10" placeholder="Search store" />
+                                <input onChange={autoSuggest} type="text" className="p-3 w-full rounded-lg pl-10" placeholder="Search store" onClick={() => props.setIsOpen(!props.isOpen)} />
                             </div>
                             <button className='bg-theme p-3 text-xl rounded-lg'>
                                 <img src="/img/icons/search.png" alt="" className='' />
                             </button>
 
                             {
-                                isOpen ?
-                                    <div className="autocomplete absolute top-14 bg-white p-3 rounded w-11/12">
+                                props.isOpen ?
+                                    <div className="autocomplete absolute top-14 bg-white rounded-lg w-11/12">
+                                        <h1 className='p-2 text-theme text-xs'>{suggestionHeading}</h1>
                                         <ul>
-                                            <li>sdas</li>
-                                            <li>sdas</li>
-                                            <li>sdas</li>
+                                            {
+                                                suggestions.map((suggestion, index) => {
+                                                    return <li className='hover:bg-slate-100 p-3 rounded cursor-pointer' key={index}>{suggestion.keyword}</li>
+                                                })
+                                            }
+
+
                                         </ul>
                                     </div> :
                                     <></>
