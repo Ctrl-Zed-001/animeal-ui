@@ -22,8 +22,9 @@ const index = (props) => {
         let allFetchedProducts = []
         for (const category of props.categorylevels) {
             let fetchedProducts = await axios.post(`${config.api_uri}/category/level3products/categoryonetwothreewise`, {
-                category1: props.slug,
-                category2: category.category_url
+                category1: props.animal,
+                category2: props.category,
+                category3: category.category_name
             })
             allFetchedProducts.push({
                 category: category.category_name,
@@ -66,9 +67,8 @@ const index = (props) => {
             {/* CATEGORY */}
             {
                 categoryWiseProducts && categoryWiseProducts.map((products, index) => {
-                    console.log("🚀 ~ file: index.js ~ line 69 ~ categoryWiseProducts&&categoryWiseProducts.map ~ products", products)
-                    if (products.products.categoryLevel2WiseProduct && products.products.categoryLevel2WiseProduct.length !== null) {
-                        return <ProductRow title={products.category} products={products.products.categoryLevel2WiseProduct} />
+                    if (products.products.categoryLevel3WiseProduct && products.products.categoryLevel3WiseProduct.length !== null) {
+                        return <ProductRow key={index} title={products.category} products={products.products.categoryLevel3WiseProduct} />
                     }
                 })
 
