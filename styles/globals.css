@@ -219,3 +219,9 @@ body.sidemenu-open .sidebar {
 .floating-bg, .subcategory-box{
   background-color: #F0F3F7;
 }
+.product-box-name{
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

@@ -1,17 +1,37 @@
 import React, { useEffect, useState } from 'react'
 import AnimalBanner from '../../Components/AnimalPageComponents/AnimalBanner'
 import CategoryBox from '../../Components/AnimalPageComponents/CategoryBox'
-import ProductRow from '../../Components/HomeComponents/ProductRow'
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay } from 'swiper';
 import axios from 'axios'
 import config from '../../config.json'
+import ProductRow from '../../Components/HomeComponents/ProductRow'
 
 import 'swiper/css';
 import 'swiper/css/autoplay';
 
 const index = (props) => {
 
+    const [categoryWiseProducts, setCategoryWiseProducts] = useState()
+
+    useEffect(() => {
+        getProductsByCategory()
+    }, [props])
+
+    const getProductsByCategory = async () => {
+        let allFetchedProducts = []
+        for (const category of props.categorylevels) {
+            let fetchedProducts = await axios.post(`${config.api_uri}/category/level2products/categoryonetwowise`, {
+                category1: props.slug,
+                category2: category.category_url
+            })
+            allFetchedProducts.push({
+                category: category.category_name,
+                products: fetchedProducts.data
+            })
+        }
+        setCategoryWiseProducts(allFetchedProducts)
+    }
     return (
         <div className='main-animal-page mt-4'>
             {/* Banner */}
@@ -48,10 +68,10 @@ const index = (props) => {
 
             {/* CATEGORY */}
             {
-                props.categorylevels && props.categoryWiseProducts && props.categoryWiseProducts.map((products, index) => {
-                    return products.length > 0 ?
-                        <ProductRow key={index} title={props.categorylevels[index].category_name} products={products} /> :
-                        <></>
+                categoryWiseProducts && categoryWiseProducts.map((products, index) => {
+                    if (products.products.categoryLevel2WiseProduct && products.products.categoryLevel2WiseProduct.length !== null) {
+                        return <ProductRow title={products.category} products={products.products.categoryLevel2WiseProduct} />
+                    }
                 })
 
             }
@@ -62,7 +82,7 @@ const index = (props) => {
 export async function getServerSideProps({ query }) {
 
     let res = await axios.get(`${config.api_uri}/category/${query.slug}`)
-    let categoryWiseProducts = res.data.categoryWiseProduct
+    let productres = []
     let categoryLevels = res.data.categorylevels
 
 

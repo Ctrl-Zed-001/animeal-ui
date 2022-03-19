@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import SubCategoryBox from '../../../Components/AnimalPageComponents/SubCategoryBox'
 import ProductRow from '../../../Components/HomeComponents/ProductRow'
 
@@ -11,6 +11,27 @@ import config from '../../../config.json'
 
 
 const index = (props) => {
+
+    const [categoryWiseProducts, setCategoryWiseProducts] = useState()
+
+    useEffect(() => {
+        getProductsByCategory()
+    }, [props])
+
+    const getProductsByCategory = async () => {
+        let allFetchedProducts = []
+        for (const category of props.categorylevels) {
+            let fetchedProducts = await axios.post(`${config.api_uri}/category/level3products/categoryonetwothreewise`, {
+                category1: props.slug,
+                category2: category.category_url
+            })
+            allFetchedProducts.push({
+                category: category.category_name,
+                products: fetchedProducts.data
+            })
+        }
+        setCategoryWiseProducts(allFetchedProducts)
+    }
 
     return (
         <div className='subcategory-page my-10'>
@@ -35,14 +56,23 @@ const index = (props) => {
                     autoplay={{ delay: 2000 }}
                 >
                     {
-                        props.categorylevels && props.categorylevels.map((category, index) => {
-                            return <SwiperSlide key={index}><SubCategoryBox category={category} /></SwiperSlide>
+                        props.categorylevels && props.categorylevels.map((subcategory, index) => {
+                            return <SwiperSlide key={index}><SubCategoryBox subcategory={subcategory} animal={props.animal} category={props.category} /></SwiperSlide>
                         })
                     }
                 </Swiper>
             </div>
 
-            <ProductRow title={`Top ${props.animal} ${props.category}`} />
+            {/* CATEGORY */}
+            {
+                categoryWiseProducts && categoryWiseProducts.map((products, index) => {
+                    console.log("🚀 ~ file: index.js ~ line 69 ~ categoryWiseProducts&&categoryWiseProducts.map ~ products", products)
+                    if (products.products.categoryLevel2WiseProduct && products.products.categoryLevel2WiseProduct.length !== null) {
+                        return <ProductRow title={products.category} products={products.products.categoryLevel2WiseProduct} />
+                    }
+                })
+
+            }
 
         </div>
     )
@@ -50,18 +80,15 @@ const index = (props) => {
 
 export async function getServerSideProps({ query }) {
 
-    let res = await axios.get(`${config.api_uri}/category/level2products/${query.slug}/${query.category}`)
-    console.log("🚀 ~ file: index.js ~ line 54 ~ getServerSideProps ~ res", res.data)
-
+    let res = await axios.get(`${config.api_uri}/category/${query.slug}/${query.category}`)
 
     let categorylevels = res.data.categorylevels3;
-    let categoryWiseProducts = res.data.category3WiseProduct
+
 
 
     return {
         props: {
             categorylevels: categorylevels,
-            categoryWiseProducts: categoryWiseProducts,
             animal: query.slug,
             category: query.category
         }

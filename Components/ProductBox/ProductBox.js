@@ -8,7 +8,7 @@ const ProductBox = (props) => {
 
     return (
         <Link href={`/product/${props.product[0].product_slugname}`}>
-            <div className="productbox rounded-lg border-2 pt-4 border-white shadow cursor-pointer">
+            <div className="productbox rounded-lg border-2 border-white shadow cursor-pointer">
                 <img src={props.product[0].product_featured_image ? `${config.image_uri}/${props.product[0].product_id}/${props.product[0].product_featured_image}` : "/img/product-placeholder.png"} alt="" className='rounded-lg lg:h-48 mx-auto transform z-10' />
 
                 <div className="product-info p-4 relative bg-white pt-14 -mt-12 -z-10">
@@ -18,7 +18,7 @@ const ProductBox = (props) => {
                     </div>
 
                     <h2 className="animal text-slate-700 text-xs">{props.product[0].product_for_animal}</h2>
-                    <h1 className='text-sm font-medium'>{props.product[0].product_name}</h1>
+                    <h1 className='text-sm font-medium product-box-name'>{props.product[0].product_name}</h1>
                     <h1 className="text-xs text-slate-700">{props.product[0].product_size}</h1>
                     <Rating />
                     <div className="flex ">

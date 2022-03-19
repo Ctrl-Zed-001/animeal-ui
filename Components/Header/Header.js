@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { MdSearch } from "react-icons/md";
 import Link from 'next/link';
 import { useRouter } from 'next/router'
+import axios from 'axios';
+import config from '../../config.json'
 
 const Header = (props) => {
 
@@ -22,23 +24,27 @@ const Header = (props) => {
     }, [router])
 
     useEffect(() => {
-        setSuggestions(dummy)
+        // CALL AUTOSUGGEST API
+        axios.post(`${config.api_uri}/dyanamicsearch/get/data`, { query: '' })
+            .then(res => setSuggestions(res.data.searchValues))
+            .catch(err => console.log(err))
     }, [])
 
-    const autoSuggest = (e) => {
+    const autoSuggest = async (e) => {
         // CALL AUTOSUGGEST API
+        let suggestionData = await axios.post(`${config.api_uri}/dyanamicsearch/get/data`, { query: '' })
 
 
         if (e.target.value === '') {
             // SET AUTOSUGGEST STATE WITH THE TOP SUGGESTIONS
-            setSuggestions(dummy)
+            setSuggestions(suggestionData.data.searchValues)
             // SET SUGGESTION HEADING AS TOP SUGGESTIONS
             setSuggestionHeading("Top Suggestions")
 
         } else {
             // FILTER RESULTS BASED ON USER INPUT
-            let filteredList = dummy.filter((data) => data.keyword.toLowerCase().includes(e.target.value.toLowerCase()))
-            console.log("🚀 ~ file: Header.js ~ line 38 ~ autoSuggest ~ filteredList", filteredList)
+            let filteredList = suggestionData.data.searchValues.filter((data) => data.metakeywords.toLowerCase().includes(e.target.value.toLowerCase()))
+
 
             // SET AUTOSUGGEST STATE WITH THE FILTERED LIST
             setSuggestions(filteredList)
@@ -50,24 +56,7 @@ const Header = (props) => {
 
     }
 
-    const dummy = [
-        {
-            id: 1,
-            keyword: 'dog food',
-        },
-        {
-            id: 1,
-            keyword: 'cat food',
-        },
-        {
-            id: 1,
-            keyword: 'dog treats',
-        },
-        {
-            id: 1,
-            keyword: 'cat toys',
-        }
-    ]
+
 
     return (
         <div className="header py-4 fixed top-0 bg-slate-200 w-full z-50">
@@ -100,7 +89,7 @@ const Header = (props) => {
                                         <ul>
                                             {
                                                 suggestions.map((suggestion, index) => {
-                                                    return <li className='hover:bg-slate-100 p-3 rounded cursor-pointer' key={index}>{suggestion.keyword}</li>
+                                                    return <li className='hover:bg-slate-100 p-3 rounded cursor-pointer' key={index}>{suggestion.metakeywords}</li>
                                                 })
                                             }
 

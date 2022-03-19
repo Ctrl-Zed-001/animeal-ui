@@ -1,11 +1,24 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Filters from '../../Components/ShopPageComponents/Filters'
 import ProductBox from '../../Components/ProductBox/ProductBox'
 import { MdExpandMore } from "react-icons/md";
+import { useRouter } from 'next/router'
+import axios from 'axios';
+import config from '../../config.json'
 
 const Shop = () => {
 
+    const router = useRouter()
     const [sortBy, setSortBy] = useState('Popularity')
+    const [products, setProducts] = useState([])
+
+    useEffect(() => {
+        // if (router) {
+        //     axios.post(`${config.api_uri}/category/level3products/categoryonetwowise`, {
+        //         parameters: []
+        //     })
+        // }
+    }, [router])
 
     return (
         <div className='shop-page my-10'>
