@@ -51,7 +51,7 @@ const Product = (props) => {
                         }
                     </Swiper>
                 </div>
-                <div id="zoomresult" className="img-zoom-result"></div>
+
 
 
                 {/* DATA */}
