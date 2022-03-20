@@ -225,3 +225,22 @@ body.sidemenu-open .sidebar {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+.single-product-slider{
+  height: 43rem;
+}
+.swiper-pagination .swiper-pagination-bullet{
+  height: 4rem;
+    width: 4rem;
+    border-radius: 0;
+}
+@media (max-width: 640px) {
+  .single-product-slider{
+    height: 25rem;
+  }
+  .swiper-pagination .swiper-pagination-bullet{
+    height: 3rem;
+      width: 3rem;
+      border-radius: 0;
+  }
+}
+

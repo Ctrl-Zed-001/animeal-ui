@@ -24,16 +24,16 @@ const BannerSection = () => {
 
             {/* MAIN BANNER */}
             <div className="main-banner col-span-5">
-                <img src="https://wpbingosite.com/wordpress/petio/wp-content/webp-express/webp-images/uploads/2021/03/banner-21.jpg.webp" alt="" className='h-44 mb-2 rounded-lg w-full object-cover' />
-                <img src="https://wpbingosite.com/wordpress/petio/wp-content/webp-express/webp-images/uploads/2021/03/banner-22.jpg.webp" alt="" className='h-44 mt-2 rounded-lg w-full object-cover' />
+                <img src="https://cdn.dribbble.com/users/5590116/screenshots/15427322/dog-food.jpg" alt="" className='h-52 mb-3 rounded-lg w-full object-cover shadow' />
+                <img src="https://i.pinimg.com/originals/21/0a/8d/210a8da7ee8b250440a2de22d855ce6d.jpg" alt="" className='h-52 mt-3 rounded-lg w-full object-cover shadow' />
             </div>
 
             <div className="flex col-span-5 gap-1 lg:gap-4 lg:mt-0 mt-2">
                 {/* RIGHT BANNER 1 */}
-                <img src="https://i.pinimg.com/originals/21/0a/8d/210a8da7ee8b250440a2de22d855ce6d.jpg" alt="" className='h-90 object-cover rounded-lg w-3/6 lg:w-3/6' />
+                <img src="https://image.shutterstock.com/shutterstock/photos/1436774582/display_1500/stock-vector-pet-shop-poster-or-banner-design-template-vector-cartoon-illustration-of-cats-dogs-aquarium-fish-1436774582.jpg" alt="" className='h-90 object-cover rounded-lg w-3/6 lg:w-3/6 shadow' />
 
                 {/* RIGHT BANNER 2 */}
-                <img src="https://i.pinimg.com/originals/21/0a/8d/210a8da7ee8b250440a2de22d855ce6d.jpg" alt="" className='h-90 object-cover rounded-lg w-3/6 lg:w-3/6' />
+                <img src="https://d1csarkz8obe9u.cloudfront.net/posterpreviews/pet-shop-store-flyer-ad-template-design-765af2c561fd5ada1e11fd4cffa96d6c_screen.jpg?ts=1637009118" alt="" className='h-90 object-cover rounded-lg w-3/6 lg:w-3/6 shadow' />
             </div>
         </div>
     )
