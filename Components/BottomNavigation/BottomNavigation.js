@@ -2,7 +2,7 @@ import Link from 'next/link';
 import React from 'react'
 import { MdStore, MdAccountCircle, MdFavorite, MdLocalMall, MdPets } from "react-icons/md";
 
-const BottomNavigation = () => {
+const BottomNavigation = (props) => {
     return (
         <div className="bottom-navigation">
 
@@ -31,9 +31,9 @@ const BottomNavigation = () => {
                         </a>
                     </div>
                     <div className="p-4">
-                        <a href="profile.html" className="btn btn-link-default">
+                        <div onClick={() => props.setShowAuthModal(true)} className="btn btn-link-default">
                             <MdAccountCircle className='footer-icons' />
-                        </a>
+                        </div>
                     </div>
                 </div>
             </div>

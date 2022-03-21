@@ -6,11 +6,12 @@ import { useState } from 'react'
 
 
 function MyApp({ Component, pageProps }) {
-  const [isOpen, setIsOpen] = useState(false)
+  const [isAutoSuggestOpen, setIsAutoSuggestOpen] = useState(false)
+  const [showAuthModal, setShowAuthModal] = useState(false)
 
   const handleWrapperClick = () => {
-    if (isOpen) {
-      setIsOpen(false)
+    if (isAutoSuggestOpen) {
+      setIsAutoSuggestOpen(false)
     }
   }
 
@@ -21,9 +22,9 @@ function MyApp({ Component, pageProps }) {
 
       <Sidebar />
       <div className="wrapper pt-28 md:pt-20" onClick={handleWrapperClick}>
-        <Header isOpen={isOpen} setIsOpen={setIsOpen} />
+        <Header isAutoSuggestOpen={isAutoSuggestOpen} setIsAutoSuggestOpen={setIsAutoSuggestOpen} showAuthModal={showAuthModal} setShowAuthModal={setShowAuthModal} />
         <Component {...pageProps} />
-        <BottomNavigation />
+        <BottomNavigation showAuthModal={showAuthModal} setShowAuthModal={setShowAuthModal} />
       </div>
     </div>
   )

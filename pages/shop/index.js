@@ -5,20 +5,29 @@ import { MdExpandMore } from "react-icons/md";
 import { useRouter } from 'next/router'
 import axios from 'axios';
 import config from '../../config.json'
+import { Pagination } from '@nextui-org/react';
 
 const Shop = () => {
 
     const router = useRouter()
     const [sortBy, setSortBy] = useState('Popularity')
-    const [products, setProducts] = useState([])
+    const [srpData, setSrpData] = useState()
+    const [page, setPage] = useState(1)
 
     useEffect(() => {
-        // if (router) {
-        //     axios.post(`${config.api_uri}/category/level3products/categoryonetwowise`, {
-        //         parameters: []
-        //     })
-        // }
+        if (router) {
+            axios.post(`${config.api_uri}/dyanamicsearchproducts/get/data`, {
+                query: 'pedigree'
+            })
+                .then(res => setSrpData(res.data.productBySearch))
+                .catch(err => console.log(err))
+        }
     }, [router])
+    console.log(srpData)
+
+    const paginate = (pageNumber) => {
+
+    }
 
     return (
         <div className='shop-page my-10'>
@@ -26,28 +35,44 @@ const Shop = () => {
 
             <div className="container flex justify-between gap-10">
                 {/* Filter */}
-                <div className="hidden md-block fliter-container w-1/5">
+                <div className="hidden md:block fliter-container w-1/5">
                     <Filters />
                 </div>
 
                 {/* PRODUCT LIST CONTAINER */}
                 <div className="right-section flex-1">
 
-                    <div className="sorting hidden md:flex justify-end relative">
-                        <i className='absolute -top-2 right-32 text-gray-600 text-xs'>sort by</i>
+                    <div className="sorting hidden md:flex justify-between items-center relative">
+                        <p className='text-xs'>showing 10 out of 400 products</p>
+                        <div>
+                            <i className='absolute -top-2 right-28 text-gray-500 text-xs'>sort by</i>
 
-                        <select name="sorting" id="sorting" className='text-sm text-left rounded-lg px-2 py-3 bg-slate-100 text-gray-600 mx-2 flex justify-between items-center shadow w-1/5'>
-                            <option value="popularity">Popularity</option>
-                            <option value="price-lowest">price : high to low</option>
-                            <option value="price-highest">price : low to high</option>
-                            <option value="rating">rating : high to low</option>
-                            <option value="relevance">relevance</option>
-                        </select>
+                            <select name="sorting" id="sorting" className='text-sm text-left rounded-lg px-2 py-3 bg-slate-100 text-gray-600 mx-2 flex justify-between items-center shadow'>
+                                <option value="popularity">Popularity</option>
+                                <option value="price-lowest">price : high to low</option>
+                                <option value="price-highest">price : low to high</option>
+                                <option value="rating">rating : high to low</option>
+                                <option value="relevance">relevance</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div className="product-list-container grid grid-cols-2 md:grid-cols-4 gap-8 mt-6 m">
+                        {
+                            srpData && srpData.data && srpData.data.map((product, index) => {
+                                return <ProductBox product={product} key={index} />
+                            })
+                        }
+
 
                     </div>
 
-                    <div className="product-list-container grid grid-cols-2 md:grid-cols-4 gap-8 mt-6">
-
+                    <div className="w-full mt-10 text-center">
+                        {
+                            srpData && srpData.total > 10 ?
+                                <Pagination total={srpData.total / srpData.per_page} initialPage={1} page={page} color='warning' shadow onChange={(page) => paginate(page)} /> :
+                                <></>
+                        }
                     </div>
                 </div>
             </div>

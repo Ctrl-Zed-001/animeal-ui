@@ -4,6 +4,8 @@ import Link from 'next/link';
 import { useRouter } from 'next/router'
 import axios from 'axios';
 import config from '../../config.json'
+import AuthPopup from './AuthPopup';
+
 
 const Header = (props) => {
 
@@ -12,6 +14,7 @@ const Header = (props) => {
     const [showSearch, setShowSearch] = useState(true)
     const [suggestions, setSuggestions] = useState([])
     const [suggestionHeading, setSuggestionHeading] = useState('Top Suggestions')
+
 
     useEffect(() => {
         if (router) {
@@ -32,28 +35,18 @@ const Header = (props) => {
 
     const autoSuggest = async (e) => {
         // CALL AUTOSUGGEST API
-        let suggestionData = await axios.post(`${config.api_uri}/dyanamicsearch/get/data`, { query: '' })
-
+        let suggestionData = await axios.post(`${config.api_uri}/dyanamicsearch/get/data`, { query: e.target.value.toLowerCase() })
 
         if (e.target.value === '') {
-            // SET AUTOSUGGEST STATE WITH THE TOP SUGGESTIONS
-            setSuggestions(suggestionData.data.searchValues)
             // SET SUGGESTION HEADING AS TOP SUGGESTIONS
             setSuggestionHeading("Top Suggestions")
 
         } else {
-            // FILTER RESULTS BASED ON USER INPUT
-            let filteredList = suggestionData.data.searchValues.filter((data) => data.metakeywords.toLowerCase().includes(e.target.value.toLowerCase()))
-
-
-            // SET AUTOSUGGEST STATE WITH THE FILTERED LIST
-            setSuggestions(filteredList)
-
             // SET SUGGESTION HEADING AS TOP RESULTS..
             setSuggestionHeading("Top Results")
-
         }
 
+        setSuggestions(suggestionData.data.searchValues)
     }
 
 
@@ -76,14 +69,14 @@ const Header = (props) => {
                         <div className="flex w-full mt-4 lg:mt-0 lg:w-3/6 relative">
                             <div className="relative w-full mr-1">
                                 <MdSearch className='absolute top-3 left-2 text-2xl text-gray-400' />
-                                <input onChange={autoSuggest} type="text" className="p-3 w-full rounded-lg pl-10" placeholder="Search store" onClick={() => props.setIsOpen(!props.isOpen)} />
+                                <input onChange={autoSuggest} type="text" className="p-3 w-full rounded-lg pl-10" placeholder="Search store" onClick={() => props.setIsAutoSuggestOpen(!props.isAutoSuggestOpen)} />
                             </div>
                             <button className='bg-theme p-3 text-xl rounded-lg'>
                                 <img src="/img/icons/search.png" alt="" className='' />
                             </button>
 
                             {
-                                props.isOpen ?
+                                props.isAutoSuggestOpen ?
                                     <div className="autocomplete absolute top-14 bg-white rounded-lg w-11/12">
                                         <h1 className='p-2 text-theme text-xs'>{suggestionHeading}</h1>
                                         <ul>
@@ -108,13 +101,14 @@ const Header = (props) => {
                     {/* <span href="" className='text-sm rounded-lg p-3 px-3 bg-white text-gray-600 mx-2'>
                         24/7 help
                     </span> */}
-                    <span href="profile.html" className='text-sm rounded-lg p-3 px-3 bg-white flex justify-between items-center text-gray-600 mx-2'>
+                    <span onClick={() => props.setShowAuthModal(true)} href="profile.html" className='text-sm rounded-lg p-3 px-3 bg-white flex justify-between items-center text-gray-600 mx-2 cursor-pointer'>
                         <img src="/img/icons/profile-header.png" alt="" className='h-4 mr-2' />
                         Signup / Login
                     </span>
                 </div>
 
             </div>
+            <AuthPopup showAuthModal={props.showAuthModal} close={() => props.setShowAuthModal(false)} />
         </div>
     )
 }

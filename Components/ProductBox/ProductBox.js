@@ -20,7 +20,7 @@ const ProductBox = (props) => {
                     <h2 className="animal text-slate-700 text-xs">{props.product[0].product_for_animal}</h2>
                     <h1 className='text-sm font-medium product-box-name'>{props.product[0].product_name}</h1>
                     <h1 className="text-xs text-slate-700">{props.product[0].product_size}</h1>
-                    <Rating />
+                    <Rating value={0} />
                     <div className="flex ">
                         <div className="strike-price relative">
                             <h1 className='text-sm mt-1 flex items-center text-gray-500 mr-2'><BiRupee /> {props.product[0].product_mrp}</h1>

@@ -23,7 +23,7 @@ body {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  background-color: #ffbe5d;
+  background: linear-gradient(21.93deg, #F58E10 -11.7%, #FCB62D 82.12%);
 }
 .container{
   padding-left: 1rem;
@@ -243,4 +243,6 @@ body.sidemenu-open .sidebar {
       border-radius: 0;
   }
 }
-
+.nextui-c-bLiKyn-iNZaNK-closeButton-true{
+  padding-top: 0;
+}

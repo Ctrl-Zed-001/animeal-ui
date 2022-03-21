@@ -58,10 +58,10 @@ const Product = (props) => {
                 <div className="product-data flex-1">
                     {/* <Breadcrumb className="hidden md:block" /> */}
                     <h3 className="text-theme font-semibold">{props.product.products.animal}</h3>
-                    <h1 className="text-3xl font-semibold mb-2 text-slate-900">
+                    <h1 className="text-3xl font-semibold text-slate-900">
                         {props.product.products.website_pro_name}
-                        <span className='text-sm text-slate-600 font-medium ml-3'>by : whiskers</span>
                     </h1>
+                    <p className='text-sm text-slate-600 font-medium my-2'>by : whiskers</p>
                     <div className="flex">
                         <Rating />
                         <p className='text-sm text-slate-600 ml-3 font-medium'>{props.product.ratinglist.length} customer reviews</p>
