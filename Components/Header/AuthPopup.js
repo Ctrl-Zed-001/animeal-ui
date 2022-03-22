@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Modal, Input, Checkbox, Text, Row } from '@nextui-org/react';
 import config from '../../config.json'
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
+import { AuthContext } from '../../Context/AuthContext'
 
 // Import Swiper styles
 import "swiper/css";
@@ -14,6 +15,8 @@ import axios from 'axios';
 
 
 const AuthPopup = (props) => {
+
+    const { setIsLoggedIn, getUserDetails } = useContext(AuthContext)
 
 
     const signup = (name, email, password) => {
@@ -35,8 +38,16 @@ const AuthPopup = (props) => {
                 password: password
             }
         )
-            .then(res => console.log(res.data))
-            .catch(error => console.log(error.response.data))
+            .then(res => {
+                localStorage.setItem('token', res.data.access_token)
+                setIsLoggedIn(true)
+                getUserDetails(res.data.access_token)
+                props.close()
+            })
+            .catch(error => {
+                setIsLoggedIn(false)
+                console.log(error.response.data)
+            })
     }
 
     return (
@@ -47,13 +58,12 @@ const AuthPopup = (props) => {
             blur
             onClose={props.close}
             className='bg-theme'
-            width='55%'
-
+            width={props.isMobile ? 'fullscreen' : '50%'}
         >
             <Modal.Body className='p-0 overflow-hidden'>
-                <div className="md:flex items-center">
-                    <img src="/img/authbanner.png" alt="" className='h-96' />
-                    <div className="form-section p-6 rounded-l-xl bg-slate-200 h-full w-8/12">
+                <div className="md:flex justify-end items-center">
+                    <img src="/img/authbanner.png" alt="" className='h-80 mx-auto' />
+                    <div className="form-section p-6 rounded-l-xl bg-slate-200 h-full md:w-8/12">
                         <Swiper className="mySwiper">
                             <SwiperSlide className=''><LoginForm login={login} /></SwiperSlide>
                             <SwiperSlide><SignupForm signup={signup} /></SwiperSlide>

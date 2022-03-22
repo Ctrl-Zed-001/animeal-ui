@@ -48,7 +48,7 @@ body {
   margin-left: 0;
   z-index: 1;
   min-height: 100vh;
-  padding-bottom: 80px;
+  padding-bottom: 55px;
 }
 .theme .wrapper {
   background-color: #E3EAF1;
@@ -245,4 +245,10 @@ body.sidemenu-open .sidebar {
 }
 .nextui-c-bLiKyn-iNZaNK-closeButton-true{
   padding-top: 0;
+}
+.footer .bg{
+  background-image: url('/img/footer-bg.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: top;
 }

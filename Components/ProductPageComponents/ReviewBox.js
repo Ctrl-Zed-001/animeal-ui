@@ -4,7 +4,7 @@ import Rating from '../ProductBox/Rating'
 const ReviewBox = () => {
     return (
         <div className='review-box bg-slate-100 p-3 rounded my-4'>
-            <h1 className="text-sm font-bold flex items-center gap-4">Really sorry I switched <Rating /></h1>
+            <h1 className="text-sm font-semibold flex items-center gap-4">Really sorry I switched <Rating /></h1>
             <p className="text-justify text-xs mt-1 leading-5 text-slate-800">
                 By Manish Mhaskar on Mar 10 2022
             </p>

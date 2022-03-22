@@ -17,17 +17,21 @@ const Shop = () => {
     useEffect(() => {
         if (router) {
             axios.post(`${config.api_uri}/dyanamicsearchproducts/get/data`, {
-                query: 'pedigree'
+                query: router.query.slug
             })
                 .then(res => setSrpData(res.data.productBySearch))
                 .catch(err => console.log(err))
         }
     }, [router])
-    console.log(srpData)
 
     const paginate = (pageNumber) => {
-
+        axios.post(`${config.api_uri}/dyanamicsearchproducts/get/data?page=${pageNumber}`, {
+            query: router.query.slug
+        })
+            .then(res => setSrpData(res.data.productBySearch))
+            .catch(err => console.log(err))
     }
+    console.log(srpData)
 
     return (
         <div className='shop-page my-10'>
@@ -69,7 +73,7 @@ const Shop = () => {
 
                     <div className="w-full mt-10 text-center">
                         {
-                            srpData && srpData.total > 10 ?
+                            srpData && srpData.total > 24 ?
                                 <Pagination total={srpData.total / srpData.per_page} initialPage={1} page={page} color='warning' shadow onChange={(page) => paginate(page)} /> :
                                 <></>
                         }

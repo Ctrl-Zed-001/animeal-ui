@@ -24,7 +24,7 @@ const BannerSection = () => {
 
             {/* MAIN BANNER */}
             <div className="main-banner col-span-5">
-                <img src="https://cdn.dribbble.com/users/5590116/screenshots/15427322/dog-food.jpg" alt="" className='h-52 mb-3 rounded-lg w-full object-cover shadow' />
+                <img src="/img/banner2.png" alt="" className='h-52 mb-3 rounded-lg w-full object-cover shadow' />
                 <img src="https://i.pinimg.com/originals/21/0a/8d/210a8da7ee8b250440a2de22d855ce6d.jpg" alt="" className='h-52 mt-3 rounded-lg w-full object-cover shadow' />
             </div>
 

@@ -28,7 +28,7 @@ const Cart = () => {
             <CartItem />
             <CartItem />
 
-            <p className="text-gray-500 text-sm">Some of your itmes require prescription. Please upload theme to continue further. <span className='text-yellow-600 font-bold underline cursor-pointer' onClick={() => { setShowPrescriptionModal(true) }}>Upload Prescription</span></p>
+            <p className="text-gray-500 text-sm">Some of your itmes require prescription. Please upload theme to continue further. <span className='text-yellow-600 font-semibold underline cursor-pointer' onClick={() => { setShowPrescriptionModal(true) }}>Upload Prescription</span></p>
 
             {/* CHECKOUT BUTTON */}
             <Link href='/checkout'>

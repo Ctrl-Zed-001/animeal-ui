@@ -1,17 +1,20 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { MdSearch } from "react-icons/md";
 import Link from 'next/link';
 import { useRouter } from 'next/router'
 import axios from 'axios';
 import config from '../../config.json'
 import AuthPopup from './AuthPopup';
+import { AuthContext } from '../../Context/AuthContext'
 
 
 const Header = (props) => {
 
     const router = useRouter()
+    const { isLoggedIn, isMobile } = useContext(AuthContext)
 
     const [showSearch, setShowSearch] = useState(true)
+    const [searchValue, setSearchValue] = useState('')
     const [suggestions, setSuggestions] = useState([])
     const [suggestionHeading, setSuggestionHeading] = useState('Top Suggestions')
 
@@ -33,7 +36,10 @@ const Header = (props) => {
             .catch(err => console.log(err))
     }, [])
 
+
     const autoSuggest = async (e) => {
+        // SET SEARCH VALUE STATE
+        setSearchValue(e.target.value)
         // CALL AUTOSUGGEST API
         let suggestionData = await axios.post(`${config.api_uri}/dyanamicsearch/get/data`, { query: e.target.value.toLowerCase() })
 
@@ -71,9 +77,11 @@ const Header = (props) => {
                                 <MdSearch className='absolute top-3 left-2 text-2xl text-gray-400' />
                                 <input onChange={autoSuggest} type="text" className="p-3 w-full rounded-lg pl-10" placeholder="Search store" onClick={() => props.setIsAutoSuggestOpen(!props.isAutoSuggestOpen)} />
                             </div>
-                            <button className='bg-theme p-3 text-xl rounded-lg'>
-                                <img src="/img/icons/search.png" alt="" className='' />
-                            </button>
+                            <Link href={`/shop?slug=${searchValue}`}>
+                                <button className='bg-theme p-3 text-xl rounded-lg'>
+                                    <img src="/img/icons/search.png" alt="" className='' />
+                                </button>
+                            </Link>
 
                             {
                                 props.isAutoSuggestOpen ?
@@ -97,18 +105,22 @@ const Header = (props) => {
 
 
 
-                <div className="lg:flex justify-between hidden">
-                    {/* <span href="" className='text-sm rounded-lg p-3 px-3 bg-white text-gray-600 mx-2'>
+                {
+                    isLoggedIn ?
+                        <p>profile</p>
+                        :
+                        <div className="lg:flex justify-between hidden">
+                            {/* <span href="" className='text-sm rounded-lg p-3 px-3 bg-white text-gray-600 mx-2'>
                         24/7 help
                     </span> */}
-                    <span onClick={() => props.setShowAuthModal(true)} href="profile.html" className='text-sm rounded-lg p-3 px-3 bg-white flex justify-between items-center text-gray-600 mx-2 cursor-pointer'>
-                        <img src="/img/icons/profile-header.png" alt="" className='h-4 mr-2' />
-                        Signup / Login
-                    </span>
-                </div>
+                            <span onClick={() => props.setShowAuthModal(true)} href="profile.html" className='text-sm rounded-lg p-3 px-3 bg-white flex justify-between items-center text-gray-600 mx-2 cursor-pointer'>
+                                <img src="/img/icons/profile-header.png" alt="" className='h-4 mr-2' />
+                                Signup / Login
+                            </span>
+                        </div>}
 
             </div>
-            <AuthPopup showAuthModal={props.showAuthModal} close={() => props.setShowAuthModal(false)} />
+            <AuthPopup isMobile={isMobile} showAuthModal={props.showAuthModal} close={() => props.setShowAuthModal(false)} />
         </div>
     )
 }
