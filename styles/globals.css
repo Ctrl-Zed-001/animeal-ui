@@ -170,6 +170,10 @@ body.sidemenu-open .sidebar {
   background: linear-gradient(21.93deg, #F58E10 -11.7%, #FCB62D 82.12%);
   color: white;
 }
+.bg-theme-light{
+  background: linear-gradient(21.93deg, #f58e107e -11.7%, #fcb72d80 82.12%);
+  color: white;
+}
 .text-theme{
   color: #FAA219;
 }

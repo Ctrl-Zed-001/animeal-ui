@@ -21,6 +21,7 @@ import "swiper/css/pagination";
 
 
 const Product = (props) => {
+    console.log("🚀 ~ file: [slug].js ~ line 24 ~ Product ~ props", props)
 
     const [count, setCount] = useState(1)
 
@@ -63,7 +64,7 @@ const Product = (props) => {
                     </h1>
                     <p className='text-sm text-slate-600 font-medium my-2'>by : whiskers</p>
                     <div className="flex">
-                        <Rating />
+                        <Rating value={0} />
                         <p className='text-sm text-slate-600 ml-3 font-medium'>{props.product.ratinglist.length} customer reviews</p>
                     </div>
 

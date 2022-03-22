@@ -39,9 +39,9 @@ const AuthPopup = (props) => {
             }
         )
             .then(res => {
-                localStorage.setItem('token', res.data.access_token)
+                localStorage.setItem('token', `Bearer ${res.data.access_token}`)
                 setIsLoggedIn(true)
-                getUserDetails(res.data.access_token)
+                getUserDetails(`Bearer ${res.data.access_token}`)
                 props.close()
             })
             .catch(error => {

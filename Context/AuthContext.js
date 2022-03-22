@@ -24,7 +24,7 @@ const AuthContextProvider = (props) => {
                 {},
                 {
                     headers: {
-                        "Authorization": "Bearer " + token
+                        "Authorization": token
                     }
                 }
             )
@@ -46,7 +46,7 @@ const AuthContextProvider = (props) => {
                 {},
                 {
                     headers: {
-                        "Authorization": "Bearer " + token
+                        "Authorization": token
                     }
                 }
             )
