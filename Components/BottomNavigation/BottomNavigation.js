@@ -1,8 +1,12 @@
 import Link from 'next/link';
-import React from 'react'
-import { MdStore, MdAccountCircle, MdFavorite, MdLocalMall, MdPets } from "react-icons/md";
+import React, { useContext } from 'react'
+import { MdStore, MdAccountCircle, MdFavorite, MdPets } from "react-icons/md";
+import { AuthContext } from '../../Context/AuthContext'
 
 const BottomNavigation = (props) => {
+
+    const { setShowAuthModal, isLoggedIn } = useContext(AuthContext)
+
     return (
         <div className="bottom-navigation">
 
@@ -31,9 +35,17 @@ const BottomNavigation = (props) => {
                         </a>
                     </div>
                     <div className="p-4">
-                        <div onClick={() => props.setShowAuthModal(true)} className="btn btn-link-default">
-                            <MdAccountCircle className='footer-icons' />
-                        </div>
+                        {
+                            isLoggedIn ?
+                                <Link href='/profile'>
+                                    <div className="btn btn-link-default">
+                                        <MdAccountCircle className='footer-icons' />
+                                    </div>
+                                </Link> :
+                                <div onClick={() => setShowAuthModal(true)} className="btn btn-link-default">
+                                    <MdAccountCircle className='footer-icons' />
+                                </div>
+                        }
                     </div>
                 </div>
             </div>

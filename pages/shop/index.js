@@ -16,22 +16,51 @@ const Shop = () => {
 
     useEffect(() => {
         if (router) {
-            axios.post(`${config.api_uri}/dyanamicsearchproducts/get/data`, {
-                query: router.query.slug
-            })
-                .then(res => setSrpData(res.data.productBySearch))
-                .catch(err => console.log(err))
+            if (router.query.slug) {
+                console.log("in if")
+                axios.post(`${config.api_uri}/dyanamicsearchproducts/get/data`, {
+                    query: router.query.slug
+                })
+                    .then(res => setSrpData(res.data.productBySearch))
+                    .catch(err => console.log(err))
+            } else {
+                axios.post(`${config.api_uri}/alllevelwiseproducts/post/data`, {
+                    category1: router.query.animal,
+                    category2: router.query.category,
+                    category3: router.query.subcategory
+                })
+                    .then(res => {
+                        console.log(res.data)
+                        setSrpData(res.data.categoryAllLevelsWiseProduct)
+                    })
+                    .catch(err => console.log(err))
+            }
+
         }
     }, [router])
 
     const paginate = (pageNumber) => {
-        axios.post(`${config.api_uri}/dyanamicsearchproducts/get/data?page=${pageNumber}`, {
-            query: router.query.slug
-        })
-            .then(res => setSrpData(res.data.productBySearch))
-            .catch(err => console.log(err))
+        if (router.query.slug) {
+            axios.post(`${config.api_uri}/dyanamicsearchproducts/get/data?page=${pageNumber}`, {
+                query: router.query.slug
+            })
+                .then(res => setSrpData(res.data.productBySearch))
+                .catch(err => console.log(err))
+        } else {
+            axios.post(`${config.api_uri}/alllevelwiseproducts/post/data?page=${pageNumber}`, {
+                category1: router.query.animal,
+                category2: router.query.category,
+                category3: router.query.subcategory
+            })
+                .then(res => {
+                    console.log(res.data)
+                    setSrpData(res.data.categoryAllLevelsWiseProduct)
+                })
+                .catch(err => console.log(err))
+        }
+
     }
-    console.log(srpData)
+
 
     return (
         <div className='shop-page my-10'>
@@ -47,7 +76,7 @@ const Shop = () => {
                 <div className="right-section flex-1">
 
                     <div className="sorting hidden md:flex justify-between items-center relative">
-                        <p className='text-xs'>showing 10 out of 400 products</p>
+                        <p className='text-sm font-medium'>showing {srpData && srpData.to} out of {srpData && srpData.total} products</p>
                         <div>
                             <i className='absolute -top-2 right-28 text-gray-500 text-xs'>sort by</i>
 

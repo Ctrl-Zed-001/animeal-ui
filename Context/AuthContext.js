@@ -9,6 +9,7 @@ const AuthContextProvider = (props) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false)
     const [userDetails, setUserDetails] = useState()
     const [isMobile, setIsMobile] = useState(false)
+    const [showAuthModal, setShowAuthModal] = useState(false)
 
     useEffect(() => {
         if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
@@ -62,7 +63,7 @@ const AuthContextProvider = (props) => {
     }
 
     return (
-        <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn, userDetails, setUserDetails, isMobile, getUserDetails }}>
+        <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn, userDetails, setUserDetails, isMobile, getUserDetails, showAuthModal, setShowAuthModal }}>
             {props.children}
         </AuthContext.Provider>
     )

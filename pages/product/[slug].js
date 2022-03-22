@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import Rating from '../../Components/ProductBox/Rating';
 import Breadcrumb from '../../Components/ProductPageComponents/Breadcrumb';
 import { BiRupee } from 'react-icons/bi';
@@ -8,9 +8,11 @@ import { Input } from '@nextui-org/react';
 import ProductRow from '../../Components/HomeComponents/ProductRow'
 import Reviews from '../../Components/ProductPageComponents/Reviews';
 import Link from 'next/link';
+import { AuthContext } from '../../Context/AuthContext'
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination } from "swiper";
+
 
 import axios from 'axios';
 import config from '../../config.json'
@@ -24,13 +26,35 @@ const Product = (props) => {
     console.log("🚀 ~ file: [slug].js ~ line 24 ~ Product ~ props", props)
 
     const [count, setCount] = useState(1)
+    const { setShowAuthModal, isLoggedIn } = useContext(AuthContext)
 
     const pagination = {
+        dynamicBullets: true,
         clickable: true,
         renderBullet: function (index, className) {
-            return `<img class="${className}" src="${config.image_uri}/${props.product.productimages[index].product_id}/${props.product.productimages[index].product_image}"/>`;
+            return `<img class="${className} mx-12" src="${config.image_uri}/${props.product.productimages[index].product_id}/${props.product.productimages[index].product_image}"/>`;
         },
-    };
+    }
+
+    const cartClicked = () => {
+        if (isLoggedIn) {
+            let token = localStorage.getItem('token')
+            axios.post(`${config.api_uri}/user/addtocart/post/data`,
+                {
+                    product_id: props.product.products.product_id,
+                    quantity: 1
+                },
+                {
+                    headers: {
+                        Authorization: token
+                    }
+                })
+                .then(res => console.log(res.data))
+                .catch(err => console.log(err))
+        } else {
+            setShowAuthModal(true)
+        }
+    }
 
     return (
 
@@ -44,10 +68,11 @@ const Product = (props) => {
                         className='mx-auto h-full img-zoom-container'
                         pagination={pagination}
                         modules={[Pagination]}
+                        initialSlide={props.product.productimages.findIndex(el => el.main_id === 1)}
                     >
                         {
                             props.product.productimages.map((image, index) => {
-                                return <SwiperSlide key={index} className=''><img src={`${config.image_uri}/${image.product_id}/${image.product_image}`} alt="" className='rounded-lg' /></SwiperSlide>
+                                return <SwiperSlide key={index} className=''><img src={`${config.image_uri}/${image.product_id}/${image.product_image}`} alt="" className='rounded-lg mx-auto bg-white' /></SwiperSlide>
                             })
                         }
                     </Swiper>
@@ -58,14 +83,14 @@ const Product = (props) => {
                 {/* DATA */}
                 <div className="product-data flex-1">
                     {/* <Breadcrumb className="hidden md:block" /> */}
-                    <h3 className="text-theme font-semibold">{props.product.products.animal}</h3>
-                    <h1 className="text-3xl font-semibold text-slate-900">
+                    <h3 className="text-xs md:text-base text-theme font-semibold">{props.product.products.animal}</h3>
+                    <h1 className="text-base md:text-3xl font-semibold text-slate-900">
                         {props.product.products.website_pro_name}
                     </h1>
                     <p className='text-sm text-slate-600 font-medium my-2'>by : whiskers</p>
                     <div className="flex">
                         <Rating value={0} />
-                        <p className='text-sm text-slate-600 ml-3 font-medium'>{props.product.ratinglist.length} customer reviews</p>
+                        <p className='text-xs md:text-sm text-slate-600 ml-3 font-medium'>{props.product.ratinglist.length} customer reviews</p>
                     </div>
 
                     <div className="flex mt-4 items-center">
@@ -76,10 +101,17 @@ const Product = (props) => {
                     <p className='text-sm text-slate-600 mt-3 font-medium'>Free 1-3 day shipping on this item.</p>
 
                     <div className="bg-white rounded-lg p-3 mt-3">
-                        <p className='text-red-500 text-sm font-medium mb-4'>Only {props.product.availableStock} left in stock</p>
+                        {
+                            props.product.availableStock == 0 ?
+                                <p className='text-red-500 text-sm font-semibold mb-4'>Out Of Stock</p> :
+                                <p className='text-red-500 text-sm font-semibold mb-4'>Only {props.product.availableStock} left in stock</p>
+                        }
+
                         <div className="md:flex items-center xl:w-full 2xl:w-5/6 justify-between">
-                            <p className="text-sm font-semibold">Deliver to : </p>
-                            <Input clearable placeholder='check for delivery' type={'number'} />
+                            <div className='flex items-center gap-3'>
+                                <p className="text-sm font-semibold">Deliver to : </p>
+                                <Input clearable placeholder='check for delivery' type={'number'} />
+                            </div>
                             <p className="text-sm font-semibold text-green-600 mt-3 md:mt-0 ml-2 md:ml-0 ">Delivery available for 410 206</p>
                         </div>
 
@@ -114,12 +146,17 @@ const Product = (props) => {
 
                         </div>
 
-                        <div className="flex">
-                            <button className='bg-theme flex items-center mt-6 py-2 px-2 md:px-4 rounded shadow text-sm md:text-base flex-1 md:flex-none'>
-                                <RiShoppingCartLine className='md:text-sm mr-2' />
-                                Add To Cart
-                            </button>
-                            <button className='bg-slate-100 flex items-center mt-6 py-2 px-2 md:px-4 rounded shadow ml-4 text-slate-600 text-sm md:text-base flex-1 md:flex-none'>
+                        <div className="flex gap-4">
+                            {
+                                props.product.availableStock == 0 ?
+                                    <></> :
+                                    <button onClick={cartClicked} className='bg-theme flex items-center mt-6 py-2 px-2 md:px-4 rounded shadow text-sm md:text-base flex-1 md:flex-none'>
+                                        <RiShoppingCartLine className='md:text-sm mr-2' />
+                                        Add To Cart
+                                    </button>
+                            }
+
+                            <button className='bg-slate-100 flex items-center mt-6 py-2 px-2 md:px-4 rounded shadow text-slate-600 text-sm md:text-base flex-1 md:flex-none'>
                                 <RiHeart3Line className='text-sm mr-2' />
                                 Add To Wishlist
                             </button>

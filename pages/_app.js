@@ -9,7 +9,6 @@ import AuthContextProvider from '../Context/AuthContext'
 
 function MyApp({ Component, pageProps }) {
   const [isAutoSuggestOpen, setIsAutoSuggestOpen] = useState(false)
-  const [showAuthModal, setShowAuthModal] = useState(false)
 
   const handleWrapperClick = () => {
     if (isAutoSuggestOpen) {
@@ -25,9 +24,9 @@ function MyApp({ Component, pageProps }) {
 
         <Sidebar />
         <div className="wrapper pt-28 md:pt-20" onClick={handleWrapperClick}>
-          <Header isAutoSuggestOpen={isAutoSuggestOpen} setIsAutoSuggestOpen={setIsAutoSuggestOpen} showAuthModal={showAuthModal} setShowAuthModal={setShowAuthModal} />
+          <Header isAutoSuggestOpen={isAutoSuggestOpen} setIsAutoSuggestOpen={setIsAutoSuggestOpen} />
           <Component {...pageProps} />
-          <BottomNavigation showAuthModal={showAuthModal} setShowAuthModal={setShowAuthModal} />
+          <BottomNavigation />
         </div>
       </div>
     </AuthContextProvider>

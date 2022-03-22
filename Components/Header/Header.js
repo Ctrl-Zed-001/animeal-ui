@@ -11,7 +11,7 @@ import { AuthContext } from '../../Context/AuthContext'
 const Header = (props) => {
 
     const router = useRouter()
-    const { isLoggedIn, isMobile } = useContext(AuthContext)
+    const { isLoggedIn, isMobile, setShowAuthModal } = useContext(AuthContext)
 
     const [showSearch, setShowSearch] = useState(true)
     const [searchValue, setSearchValue] = useState('')
@@ -107,20 +107,20 @@ const Header = (props) => {
 
                 {
                     isLoggedIn ?
-                        <p>profile</p>
+                        <p className='hidden md:block'>profile</p>
                         :
                         <div className="lg:flex justify-between hidden">
                             {/* <span href="" className='text-sm rounded-lg p-3 px-3 bg-white text-gray-600 mx-2'>
                         24/7 help
                     </span> */}
-                            <span onClick={() => props.setShowAuthModal(true)} href="profile.html" className='text-sm rounded-lg p-3 px-3 bg-white flex justify-between items-center text-gray-600 mx-2 cursor-pointer'>
+                            <span onClick={() => setShowAuthModal(true)} href="profile.html" className='text-sm rounded-lg p-3 px-3 bg-white flex justify-between items-center text-gray-600 mx-2 cursor-pointer'>
                                 <img src="/img/icons/profile-header.png" alt="" className='h-4 mr-2' />
                                 Signup / Login
                             </span>
                         </div>}
 
             </div>
-            <AuthPopup isMobile={isMobile} showAuthModal={props.showAuthModal} close={() => props.setShowAuthModal(false)} />
+            <AuthPopup isMobile={isMobile} />
         </div>
     )
 }

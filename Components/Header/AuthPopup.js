@@ -16,15 +16,15 @@ import axios from 'axios';
 
 const AuthPopup = (props) => {
 
-    const { setIsLoggedIn, getUserDetails } = useContext(AuthContext)
+    const { setIsLoggedIn, getUserDetails, showAuthModal, setShowAuthModal } = useContext(AuthContext)
 
 
     const signup = (name, email, password) => {
         axios.post(`${config.api_uri}/user/registration/post/data`,
             {
-                name: name,
-                email, email,
-                password: password
+                name,
+                email,
+                password
             }
         )
             .then(res => console.log(res.data))
@@ -34,19 +34,19 @@ const AuthPopup = (props) => {
     const login = (email, password) => {
         axios.post(`${config.api_uri}/user/login/post/data`,
             {
-                email, email,
-                password: password
+                email,
+                password
             }
         )
             .then(res => {
                 localStorage.setItem('token', `Bearer ${res.data.access_token}`)
                 setIsLoggedIn(true)
                 getUserDetails(`Bearer ${res.data.access_token}`)
-                props.close()
+                setShowAuthModal(false)
             })
             .catch(error => {
                 setIsLoggedIn(false)
-                console.log(error.response.data)
+                console.log(error)
             })
     }
 
@@ -54,9 +54,9 @@ const AuthPopup = (props) => {
         <Modal
             closeButton
             aria-labelledby="modal-title"
-            open={props.showAuthModal}
+            open={showAuthModal}
             blur
-            onClose={props.close}
+            onClose={() => setShowAuthModal(false)}
             className='bg-theme'
             width={props.isMobile ? 'fullscreen' : '50%'}
         >
