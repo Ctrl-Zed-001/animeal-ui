@@ -1,6 +1,5 @@
 import React from 'react'
 import { BiRupee } from 'react-icons/bi'
-import Link from 'next/link'
 import Rating from './Rating'
 import config from '../../config.json'
 

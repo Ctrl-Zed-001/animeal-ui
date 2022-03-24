@@ -16,7 +16,7 @@ import axios from 'axios';
 
 const AuthPopup = (props) => {
 
-    const { setIsLoggedIn, getUserDetails, showAuthModal, setShowAuthModal } = useContext(AuthContext)
+    const { setIsLoggedIn, getUserDetails, showAuthModal, setShowAuthModal, setToken } = useContext(AuthContext)
 
 
     const signup = (name, email, password) => {
@@ -41,6 +41,7 @@ const AuthPopup = (props) => {
             .then(res => {
                 localStorage.setItem('token', `Bearer ${res.data.access_token}`)
                 setIsLoggedIn(true)
+                setToken(`Bearer ${res.data.access_token}`)
                 getUserDetails(`Bearer ${res.data.access_token}`)
                 setShowAuthModal(false)
             })

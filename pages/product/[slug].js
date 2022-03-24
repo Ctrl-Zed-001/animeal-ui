@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import Rating from '../../Components/ProductBox/Rating';
 import Breadcrumb from '../../Components/ProductPageComponents/Breadcrumb';
 import { BiRupee } from 'react-icons/bi';
-import { RiShoppingCartLine, RiHeart3Line } from 'react-icons/ri';
+import { RiShoppingCartLine, RiHeart3Line, RiHeart3Fill } from 'react-icons/ri';
 import { HiMinusSm, HiPlusSm } from 'react-icons/hi';
 import { Input } from '@nextui-org/react';
 import ProductRow from '../../Components/HomeComponents/ProductRow'
@@ -23,30 +23,29 @@ import "swiper/css/pagination";
 
 
 const Product = (props) => {
-    console.log("🚀 ~ file: [slug].js ~ line 24 ~ Product ~ props", props)
 
-    const [count, setCount] = useState(1)
+    const [inWishlist, setInWishlist] = useState(false)
     const [inCart, setInCart] = useState(false)
-    const { setShowAuthModal, isLoggedIn } = useContext(AuthContext)
-    const [token, setToken] = useState('')
+    const { setShowAuthModal, isLoggedIn, token } = useContext(AuthContext)
+
 
     useEffect(() => {
-        let token = localStorage.getItem('token')
-        setToken(token)
-        axios.post(
-            `${config.api_uri}/user/addtocartvalidation/post/data`,
-            {
-                product_id: props.product.products.product_id
-            },
-            {
-                headers: {
-                    Authorization: token
+        if (token) {
+            axios.post(
+                `${config.api_uri}/user/addtocartvalidation/post/data`,
+                {
+                    product_id: props.product.products.product_id
+                },
+                {
+                    headers: {
+                        Authorization: token
+                    }
                 }
-            }
-        )
-            .then(res => setInCart(res.data.validateAddToCart))
-            .catch(err => console.log(err))
-    }, [])
+            )
+                .then(res => setInCart(res.data.validateAddToCart))
+                .catch(err => console.log(err))
+        }
+    }, [token])
 
     const pagination = {
         dynamicBullets: true,
@@ -70,6 +69,30 @@ const Product = (props) => {
                 })
                 .then(res => {
                     setInCart(true)
+                })
+                .catch(err => console.log(err))
+        } else {
+            setShowAuthModal(true)
+        }
+    }
+
+    const wishlistClicked = (type) => {
+        if (isLoggedIn) {
+            axios.post(`${config.api_uri}/user/${type}/post/data`,
+                {
+                    product_id: props.product.products.product_id,
+                },
+                {
+                    headers: {
+                        Authorization: token
+                    }
+                })
+                .then(res => {
+                    if (type === 'addtowishlist') {
+                        setInWishlist(true)
+                    } else {
+                        setInWishlist(false)
+                    }
                 })
                 .catch(err => console.log(err))
         } else {
@@ -185,10 +208,17 @@ const Product = (props) => {
                                         </button>
                             }
 
-                            <button className='bg-slate-100 flex items-center mt-6 py-2 px-2 md:px-4 rounded shadow text-slate-600 text-sm md:text-base flex-1 md:flex-none'>
-                                <RiHeart3Line className='text-sm mr-2' />
-                                Add To Wishlist
-                            </button>
+                            {
+                                inWishlist ?
+                                    <button onClick={() => wishlistClicked('destroywishlistproduct')} className='bg-slate-100 flex items-center mt-6 py-2 px-2 md:px-4 rounded shadow text-slate-600 text-sm md:text-base flex-1 md:flex-none'>
+                                        <RiHeart3Fill className='text-sm mr-2 text-red-400' />
+                                        Wishlisted
+                                    </button> :
+                                    <button onClick={() => wishlistClicked('addtowishlist')} className='bg-slate-100 flex items-center mt-6 py-2 px-2 md:px-4 rounded shadow text-slate-600 text-sm md:text-base flex-1 md:flex-none'>
+                                        <RiHeart3Line className='text-sm mr-2' />
+                                        Add To Wishlist
+                                    </button>
+                            }
                         </div>
 
                     </div>

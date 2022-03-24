@@ -10,6 +10,7 @@ const AuthContextProvider = (props) => {
     const [userDetails, setUserDetails] = useState()
     const [isMobile, setIsMobile] = useState(false)
     const [showAuthModal, setShowAuthModal] = useState(false)
+    const [token, setToken] = useState('')
 
     useEffect(() => {
         if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
@@ -20,6 +21,7 @@ const AuthContextProvider = (props) => {
 
         let token = localStorage.getItem('token')
         if (token) {
+            setToken(token)
             axios.post(
                 `${config.api_uri}/user/getauthenticateuser/post/data`,
                 {},
@@ -41,29 +43,27 @@ const AuthContextProvider = (props) => {
     }, [])
 
     const getUserDetails = (token) => {
-        if (token) {
-            axios.post(
-                `${config.api_uri}/user/getauthenticateuser/post/data`,
-                {},
-                {
-                    headers: {
-                        "Authorization": token
-                    }
+        axios.post(
+            `${config.api_uri}/user/getauthenticateuser/post/data`,
+            {},
+            {
+                headers: {
+                    "Authorization": token
                 }
-            )
-                .then(res => {
-                    setUserDetails(res.data.user)
-                    setIsLoggedIn(true)
-                })
-                .catch(err => {
-                    setIsLoggedIn(false)
-                    setUserDetails()
-                })
-        }
+            }
+        )
+            .then(res => {
+                setUserDetails(res.data.user)
+                setIsLoggedIn(true)
+            })
+            .catch(err => {
+                setIsLoggedIn(false)
+                setUserDetails()
+            })
     }
 
     return (
-        <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn, userDetails, setUserDetails, isMobile, getUserDetails, showAuthModal, setShowAuthModal }}>
+        <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn, userDetails, setUserDetails, isMobile, getUserDetails, showAuthModal, setShowAuthModal, token, setToken }}>
             {props.children}
         </AuthContext.Provider>
     )

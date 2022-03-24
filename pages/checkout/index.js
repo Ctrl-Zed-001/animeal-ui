@@ -21,7 +21,7 @@ const Checkout = () => {
                     <span className="text-slate-400 text-xs" onClick={() => setShowAddressModal(true)}>change</span>
                 </div>
                 <p className='text-xs text-slate-500 my-2 w-8/12'>301, Adil Tower M.G.Road, Old Panvel 410 206</p>
-                <p className='text-xs text-slate-500 my-1'><psan className="font-semibold">mobile : </psan>+91 8454015530</p>
+                <p className='text-xs text-slate-500 my-1'><span className="font-semibold">mobile : </span>+91 8454015530</p>
             </div>
 
             {/* PROMOCODE BOX */}

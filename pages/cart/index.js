@@ -10,17 +10,16 @@ import { FaTrash } from 'react-icons/fa'
 import CartSummary from '../../Components/CartPageComponents/CartSummary';
 
 const Cart = () => {
-    const [showPrescriptionModal, setShowPrescriptionModal] = useState(false)
 
+    const { token } = useContext(AuthContext)
+
+    const [showPrescriptionModal, setShowPrescriptionModal] = useState(false)
     const [cartItems, setCartItems] = useState([])
     const [cartTotal, setCartTotal] = useState(0)
     const [qty, setQty] = useState(0)
-    const [token, setToken] = useState('')
 
     useEffect(() => {
-        let token = localStorage.getItem('token')
         if (token) {
-            setToken(token)
             axios.post(
                 `${config.api_uri}/user/getcart/post/data`,
                 {},
@@ -49,49 +48,30 @@ const Cart = () => {
     }
 
     const updateCartQuantity = (action, id, quantity) => {
-        if (action === 'add') {
-            axios.post(
-                `${config.api_uri}/user/updatecartplus/post/data`,
-                {
-                    "product_id": id,
-                    "quantity": quantity
-                },
-                {
-                    headers: {
-                        Authorization: token
-                    }
+        axios.post(
+            `${config.api_uri}/user/${action}/post/data`,
+            {
+                "product_id": id,
+                "quantity": quantity
+            },
+            {
+                headers: {
+                    Authorization: token
                 }
-            )
-                .then(res => {
-                    let oldList = [...cartItems];
-                    let oldItemIndex = cartItems.findIndex(item => item[0].product_id == id)
+            }
+        )
+            .then(res => {
+                let oldList = [...cartItems];
+                let oldItemIndex = cartItems.findIndex(item => item[0].product_id == id)
+                if (action === 'updatecartplus') {
                     oldList[oldItemIndex][0] = { ...oldList[oldItemIndex][0], quantity: parseInt(oldList[oldItemIndex][0].quantity) + 1, product_total: res.data.cartUpdatePlus.product_total }
-                    setCartItems([...oldList])
-                    setTotalAndQuantity([...oldList])
-                })
-                .catch(err => console.log(err))
-        } else {
-            axios.post(
-                `${config.api_uri}/user/updatecartminus/post/data`,
-                {
-                    "product_id": id,
-                    "quantity": quantity
-                },
-                {
-                    headers: {
-                        Authorization: token
-                    }
+                } else {
+                    oldList[oldItemIndex][0] = { ...oldList[oldItemIndex][0], quantity: parseInt(oldList[oldItemIndex][0].quantity) - 1, product_total: res.data.cartUpdatePlus.product_total }
                 }
-            )
-                .then(res => {
-                    let oldList = [...cartItems];
-                    let oldItemIndex = cartItems.findIndex(item => item[0].product_id == id)
-                    oldList[oldItemIndex][0] = { ...oldList[oldItemIndex][0], quantity: parseInt(oldList[oldItemIndex][0].quantity) - 1, product_total: res.data.cartUpdateMinus.product_total }
-                    setCartItems([...oldList])
-                    setTotalAndQuantity([...oldList])
-                })
-                .catch(err => console.log(err))
-        }
+                setCartItems([...oldList])
+                setTotalAndQuantity([...oldList])
+            })
+            .catch(err => console.log(err))
     }
 
     const removeCartItem = (id, type) => {
