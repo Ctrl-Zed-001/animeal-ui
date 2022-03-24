@@ -13,14 +13,18 @@ const BottomNavigation = (props) => {
             <div className="mx-auto">
                 <div className="flex justify-center items-center text-gray-400 text-2xl">
                     <div className="p-4">
-                        <a href="index.html" className="btn btn-link-default active">
-                            <MdStore className='footer-icons' />
-                        </a>
+                        <Link href="/">
+                            <div className="btn btn-link-default cursor-pointer">
+                                <MdStore className='footer-icons' />
+                            </div>
+                        </Link>
                     </div>
                     <div className="p-4">
-                        <a href="statistics.html" className="btn btn-link-default">
-                            <MdPets className='footer-icons' />
-                        </a>
+                        <Link href="/">
+                            <div className="btn btn-link-default cursor-pointer">
+                                <MdPets className='footer-icons' />
+                            </div>
+                        </Link>
                     </div>
                     <div className="p-4">
                         <Link href="/cart">
@@ -30,19 +34,27 @@ const BottomNavigation = (props) => {
                         </Link>
                     </div>
                     <div className="p-4">
-                        <a href="favorite-products.html" className="btn btn-link-default">
-                            <MdFavorite className='footer-icons' />
-                        </a>
+                        {
+                            isLoggedIn ?
+                                <Link href="/wishlist">
+                                    <div className="btn btn-link-default cursor-pointer">
+                                        <MdFavorite className='footer-icons' />
+                                    </div>
+                                </Link> :
+                                <div onClick={() => setShowAuthModal(true)} className="btn btn-link-default cursor-pointer">
+                                    <MdFavorite className='footer-icons' />
+                                </div>
+                        }
                     </div>
                     <div className="p-4">
                         {
                             isLoggedIn ?
                                 <Link href='/profile'>
-                                    <div className="btn btn-link-default">
+                                    <div className="btn btn-link-default cursor-pointer">
                                         <MdAccountCircle className='footer-icons' />
                                     </div>
                                 </Link> :
-                                <div onClick={() => setShowAuthModal(true)} className="btn btn-link-default">
+                                <div onClick={() => setShowAuthModal(true)} className="btn btn-link-default cursor-pointer">
                                     <MdAccountCircle className='footer-icons' />
                                 </div>
                         }

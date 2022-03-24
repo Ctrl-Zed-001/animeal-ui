@@ -13,22 +13,116 @@ const Cart = () => {
     const [showPrescriptionModal, setShowPrescriptionModal] = useState(false)
 
     const [cartItems, setCartItems] = useState([])
+    const [cartTotal, setCartTotal] = useState(0)
+    const [qty, setQty] = useState(0)
+    const [token, setToken] = useState('')
 
     useEffect(() => {
         let token = localStorage.getItem('token')
+        if (token) {
+            setToken(token)
+            axios.post(
+                `${config.api_uri}/user/getcart/post/data`,
+                {},
+                {
+                    headers: {
+                        Authorization: token
+                    }
+                })
+                .then(res => {
+                    setCartItems(res.data.cartDetails)
+                    setTotalAndQuantity(res.data.cartDetails)
+                })
+                .catch(err => console.log(err))
+        }
+    }, [])
+
+    const setTotalAndQuantity = (data) => {
+        let total = 0;
+        let quantity = 0
+        data.forEach(item => {
+            total = parseInt(total) + parseInt(item[0].product_total)
+            quantity = parseInt(quantity) + parseInt(item[0].quantity)
+        })
+        setCartTotal(total)
+        setQty(quantity)
+    }
+
+    const updateCartQuantity = (action, id, quantity) => {
+        if (action === 'add') {
+            axios.post(
+                `${config.api_uri}/user/updatecartplus/post/data`,
+                {
+                    "product_id": id,
+                    "quantity": quantity
+                },
+                {
+                    headers: {
+                        Authorization: token
+                    }
+                }
+            )
+                .then(res => {
+                    let oldList = [...cartItems];
+                    let oldItemIndex = cartItems.findIndex(item => item[0].product_id == id)
+                    oldList[oldItemIndex][0] = { ...oldList[oldItemIndex][0], quantity: parseInt(oldList[oldItemIndex][0].quantity) + 1, product_total: res.data.cartUpdatePlus.product_total }
+                    setCartItems([...oldList])
+                    setTotalAndQuantity([...oldList])
+                })
+                .catch(err => console.log(err))
+        } else {
+            axios.post(
+                `${config.api_uri}/user/updatecartminus/post/data`,
+                {
+                    "product_id": id,
+                    "quantity": quantity
+                },
+                {
+                    headers: {
+                        Authorization: token
+                    }
+                }
+            )
+                .then(res => {
+                    let oldList = [...cartItems];
+                    let oldItemIndex = cartItems.findIndex(item => item[0].product_id == id)
+                    oldList[oldItemIndex][0] = { ...oldList[oldItemIndex][0], quantity: parseInt(oldList[oldItemIndex][0].quantity) - 1, product_total: res.data.cartUpdateMinus.product_total }
+                    setCartItems([...oldList])
+                    setTotalAndQuantity([...oldList])
+                })
+                .catch(err => console.log(err))
+        }
+    }
+
+    const removeCartItem = (id, type) => {
         axios.post(
-            `${config.api_uri}/user/getcart/post/data`,
-            {},
+            `${config.api_uri}/user/removecartitem/post/data`,
+            {
+                "product_id": id
+            },
             {
                 headers: {
-                    "Authorization": token
+                    Authorization: token
+                }
+            }
+        )
+            .then(res => {
+                if (type === 'all') {
+                    setCartItems([])
+                } else {
+                    let oldList = [...cartItems];
+                    let newList = oldList.filter(item => item[0].product_id !== id)
+                    setCartItems([...newList])
                 }
             })
-            .then(res => {
-                setCartItems(res.data.cartDetails)
-            })
             .catch(err => console.log(err))
-    }, [])
+    }
+
+    const removeAllItems = () => {
+        cartItems.forEach(item => {
+            removeCartItem(item[0].product_id, 'all')
+        })
+    }
 
     return (
         <div className='cart-page container mt-0 mb-4'>
@@ -48,18 +142,18 @@ const Cart = () => {
                                 </div>
                                 <div className="hidden md:block col text-center">
                                     <h1>Total</h1>
-                                    <p className='flex items-center justify-center  mt-3 text-lg font-semibold'><BiRupee /> 500</p>
+                                    <p className='flex items-center justify-center  mt-3 text-lg font-semibold'><BiRupee /> {cartTotal}</p>
                                 </div>
                                 <div className="col-span-2 md:col-span-1 col text-right md:text-center">
                                     <h1>Clear All</h1>
-                                    <FaTrash className='text-lg mt-2 float-right md:mx-auto md:float-none' />
+                                    <FaTrash onClick={removeAllItems} className='text-lg mt-2 float-right md:mx-auto md:float-none cursor-pointer' />
                                 </div>
                             </div>
 
                             {/* CART ITEMS */}
                             {
                                 cartItems?.map((item, index) => {
-                                    return <CartItem key={index} item={item} />
+                                    return <CartItem updateCartQuantity={updateCartQuantity} key={index} item={item[0]} removeCartItem={removeCartItem} />
                                 })
 
                             }
@@ -69,7 +163,7 @@ const Cart = () => {
 
                         </div>
 
-                        <CartSummary />
+                        <CartSummary cartTotal={cartTotal} qty={qty} />
                     </div> :
                     <div>
                         <img src='/img/empty-cart.png' className='w-5/12 mx-auto' />

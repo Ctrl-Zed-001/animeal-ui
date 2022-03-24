@@ -11,37 +11,37 @@ const BannerSection = () => {
 
                 <Link href='/shop?slug=dog'>
                     <div className="popular-category-item flex items-center mt-6 gap-2 font-medium cursor-pointer">
-                        <img src="https://www.pngall.com/wp-content/uploads/4/Dry-Dog-Food-PNG-Free-Download.png" alt="" className='h-6' />
+                        <img src="/img/icons/dog.png" alt="" className='h-6' />
                         Dog Food
                     </div>
                 </Link>
                 <Link href='/shop?slug=cat'>
                     <div className="popular-category-item flex items-center mt-6 gap-2  font-medium cursor-pointer">
-                        <img src="https://www.pngall.com/wp-content/uploads/4/Dry-Dog-Food-PNG-Free-Download.png" alt="" className='h-6' />
+                        <img src="/img/icons/cat.png" alt="" className='h-6' />
                         Cat Food
                     </div>
                 </Link>
                 <Link href='/shop?slug=medicine'>
                     <div className="popular-category-item flex items-center mt-6 gap-2  font-medium cursor-pointer">
-                        <img src="https://www.pngall.com/wp-content/uploads/4/Dry-Dog-Food-PNG-Free-Download.png" alt="" className='h-6' />
+                        <img src="/img/icons/medicines.png" alt="" className='h-6' />
                         Pharmacy
                     </div>
                 </Link>
                 <Link href='/shop?slug=supplements'>
                     <div className="popular-category-item flex items-center mt-6 gap-2  font-medium cursor-pointer">
-                        <img src="https://www.pngall.com/wp-content/uploads/4/Dry-Dog-Food-PNG-Free-Download.png" alt="" className='h-6' />
+                        <img src="/img/icons/supplements.png" alt="" className='h-6' />
                         Supplements
                     </div>
                 </Link>
                 <Link href='/shop?slug=treats'>
                     <div className="popular-category-item flex items-center mt-6 gap-2  font-medium cursor-pointer">
-                        <img src="https://www.pngall.com/wp-content/uploads/4/Dry-Dog-Food-PNG-Free-Download.png" alt="" className='h-6' />
+                        <img src="/img/icons/treats.png" alt="" className='h-6' />
                         Treats
                     </div>
                 </Link>
                 <Link href='/shop?slug=toys'>
                     <div className="popular-category-item flex items-center mt-6 gap-2  font-medium cursor-pointer">
-                        <img src="https://www.pngall.com/wp-content/uploads/4/Dry-Dog-Food-PNG-Free-Download.png" alt="" className='h-6' />
+                        <img src="/img/icons/toys.png" alt="" className='h-6' />
                         Toys
                     </div>
                 </Link>

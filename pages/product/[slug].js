@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import Rating from '../../Components/ProductBox/Rating';
 import Breadcrumb from '../../Components/ProductPageComponents/Breadcrumb';
 import { BiRupee } from 'react-icons/bi';
@@ -26,7 +26,27 @@ const Product = (props) => {
     console.log("🚀 ~ file: [slug].js ~ line 24 ~ Product ~ props", props)
 
     const [count, setCount] = useState(1)
+    const [inCart, setInCart] = useState(false)
     const { setShowAuthModal, isLoggedIn } = useContext(AuthContext)
+    const [token, setToken] = useState('')
+
+    useEffect(() => {
+        let token = localStorage.getItem('token')
+        setToken(token)
+        axios.post(
+            `${config.api_uri}/user/addtocartvalidation/post/data`,
+            {
+                product_id: props.product.products.product_id
+            },
+            {
+                headers: {
+                    Authorization: token
+                }
+            }
+        )
+            .then(res => setInCart(res.data.validateAddToCart))
+            .catch(err => console.log(err))
+    }, [])
 
     const pagination = {
         dynamicBullets: true,
@@ -38,7 +58,6 @@ const Product = (props) => {
 
     const cartClicked = () => {
         if (isLoggedIn) {
-            let token = localStorage.getItem('token')
             axios.post(`${config.api_uri}/user/addtocart/post/data`,
                 {
                     product_id: props.product.products.product_id,
@@ -49,7 +68,9 @@ const Product = (props) => {
                         Authorization: token
                     }
                 })
-                .then(res => console.log(res.data))
+                .then(res => {
+                    setInCart(true)
+                })
                 .catch(err => console.log(err))
         } else {
             setShowAuthModal(true)
@@ -150,10 +171,18 @@ const Product = (props) => {
                             {
                                 props.product.availableStock == 0 ?
                                     <></> :
-                                    <button onClick={cartClicked} className='bg-theme flex items-center mt-6 py-2 px-2 md:px-4 rounded shadow text-sm md:text-base flex-1 md:flex-none'>
-                                        <RiShoppingCartLine className='md:text-sm mr-2' />
-                                        Add To Cart
-                                    </button>
+                                    inCart ?
+                                        <Link href='/cart'>
+                                            <button className='bg-theme flex items-center mt-6 py-2 px-2 md:px-4 rounded shadow text-sm md:text-base flex-1 md:flex-none'>
+                                                <RiShoppingCartLine className='md:text-sm mr-2' />
+                                                Go To Cart
+                                            </button>
+                                        </Link>
+                                        :
+                                        <button onClick={cartClicked} className='bg-theme flex items-center mt-6 py-2 px-2 md:px-4 rounded shadow text-sm md:text-base flex-1 md:flex-none'>
+                                            <RiShoppingCartLine className='md:text-sm mr-2' />
+                                            Add To Cart
+                                        </button>
                             }
 
                             <button className='bg-slate-100 flex items-center mt-6 py-2 px-2 md:px-4 rounded shadow text-slate-600 text-sm md:text-base flex-1 md:flex-none'>
