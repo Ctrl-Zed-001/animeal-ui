@@ -56,14 +56,13 @@ const AuthPopup = (props) => {
             closeButton
             aria-labelledby="modal-title"
             open={showAuthModal}
-            blur
             onClose={() => setShowAuthModal(false)}
             className='bg-theme'
             width={props.isMobile ? 'fullscreen' : '50%'}
         >
             <Modal.Body className='p-0 overflow-hidden'>
                 <div className="md:flex justify-end items-center">
-                    <img src="/img/authbanner.png" alt="" className='h-80 mx-auto' />
+                    <img src="/img/authbanner.png" alt="" className='h-44 md:h-80 mx-auto' />
                     <div className="form-section p-6 rounded-l-xl bg-slate-200 h-full md:w-8/12">
                         <Swiper className="mySwiper">
                             <SwiperSlide className=''><LoginForm login={login} /></SwiperSlide>

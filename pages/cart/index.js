@@ -1,108 +1,17 @@
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useContext } from 'react'
 import { BiRupee } from 'react-icons/bi';
 import CartItem from '../../Components/CartPageComponents/CartItem';
-import Link from 'next/link'
 import PrescriptionModal from '../../Components/CartPageComponents/PrescriptionModal';
-import { AuthContext } from '../../Context/AuthContext'
-import axios from 'axios';
-import config from "../../config.json"
 import { FaTrash } from 'react-icons/fa'
 import CartSummary from '../../Components/CartPageComponents/CartSummary';
+import { CartContext } from '../../Context/CartContext';
 
 const Cart = () => {
 
-    const { token } = useContext(AuthContext)
+    const { cartItems, cartTotal, qty, removeAllItems, removeCartItem, updateCartQuantity } = useContext(CartContext)
+    console.log("🚀 ~ file: index.js ~ line 12 ~ Cart ~ cartItems", cartItems)
 
     const [showPrescriptionModal, setShowPrescriptionModal] = useState(false)
-    const [cartItems, setCartItems] = useState([])
-    const [cartTotal, setCartTotal] = useState(0)
-    const [qty, setQty] = useState(0)
-
-    useEffect(() => {
-        if (token) {
-            axios.post(
-                `${config.api_uri}/user/getcart/post/data`,
-                {},
-                {
-                    headers: {
-                        Authorization: token
-                    }
-                })
-                .then(res => {
-                    setCartItems(res.data.cartDetails)
-                    setTotalAndQuantity(res.data.cartDetails)
-                })
-                .catch(err => console.log(err))
-        }
-    }, [])
-
-    const setTotalAndQuantity = (data) => {
-        let total = 0;
-        let quantity = 0
-        data.forEach(item => {
-            total = parseInt(total) + parseInt(item[0].product_total)
-            quantity = parseInt(quantity) + parseInt(item[0].quantity)
-        })
-        setCartTotal(total)
-        setQty(quantity)
-    }
-
-    const updateCartQuantity = (action, id, quantity) => {
-        axios.post(
-            `${config.api_uri}/user/${action}/post/data`,
-            {
-                "product_id": id,
-                "quantity": quantity
-            },
-            {
-                headers: {
-                    Authorization: token
-                }
-            }
-        )
-            .then(res => {
-                let oldList = [...cartItems];
-                let oldItemIndex = cartItems.findIndex(item => item[0].product_id == id)
-                if (action === 'updatecartplus') {
-                    oldList[oldItemIndex][0] = { ...oldList[oldItemIndex][0], quantity: parseInt(oldList[oldItemIndex][0].quantity) + 1, product_total: res.data.cartUpdatePlus.product_total }
-                } else {
-                    oldList[oldItemIndex][0] = { ...oldList[oldItemIndex][0], quantity: parseInt(oldList[oldItemIndex][0].quantity) - 1, product_total: res.data.cartUpdatePlus.product_total }
-                }
-                setCartItems([...oldList])
-                setTotalAndQuantity([...oldList])
-            })
-            .catch(err => console.log(err))
-    }
-
-    const removeCartItem = (id, type) => {
-        axios.post(
-            `${config.api_uri}/user/removecartitem/post/data`,
-            {
-                "product_id": id
-            },
-            {
-                headers: {
-                    Authorization: token
-                }
-            }
-        )
-            .then(res => {
-                if (type === 'all') {
-                    setCartItems([])
-                } else {
-                    let oldList = [...cartItems];
-                    let newList = oldList.filter(item => item[0].product_id !== id)
-                    setCartItems([...newList])
-                }
-            })
-            .catch(err => console.log(err))
-    }
-
-    const removeAllItems = () => {
-        cartItems.forEach(item => {
-            removeCartItem(item[0].product_id, 'all')
-        })
-    }
 
     return (
         <div className='cart-page container mt-0 mb-4'>
@@ -133,6 +42,7 @@ const Cart = () => {
                             {/* CART ITEMS */}
                             {
                                 cartItems?.map((item, index) => {
+                                    console.log("🚀 ~ file: index.js ~ line 45 ~ cartItems?.map ~ item", item)
                                     return <CartItem updateCartQuantity={updateCartQuantity} key={index} item={item[0]} removeCartItem={removeCartItem} />
                                 })
 

@@ -9,7 +9,7 @@ import ProductRow from '../../Components/HomeComponents/ProductRow'
 import Reviews from '../../Components/ProductPageComponents/Reviews';
 import Link from 'next/link';
 import { AuthContext } from '../../Context/AuthContext'
-
+import { CartContext } from '../../Context/CartContext'
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination } from "swiper";
 
@@ -26,7 +26,9 @@ const Product = (props) => {
 
     const [inWishlist, setInWishlist] = useState(false)
     const [inCart, setInCart] = useState(false)
+
     const { setShowAuthModal, isLoggedIn, token } = useContext(AuthContext)
+    const { addToCart } = useContext(CartContext)
 
 
     useEffect(() => {
@@ -69,6 +71,10 @@ const Product = (props) => {
                 })
                 .then(res => {
                     setInCart(true)
+                    addToCart([{
+                        ...res.data.success,
+                        available_stock: parseInt(props.product.availableStock) - 1
+                    }])
                 })
                 .catch(err => console.log(err))
         } else {
