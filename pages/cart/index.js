@@ -18,24 +18,24 @@ const Cart = () => {
 
             {
                 cartItems && cartItems.length > 0 ?
-                    <div className="flex-row md:flex gap-8 justify-between">
+                    <div className="flex-row lg:flex gap-8 justify-between">
 
-                        <div className="cart-left-side md:w-9/12 mb-8">
+                        <div className="cart-left-side lg:w-9/12 mb-8">
                             {/* TOP YELLOW BOX   */}
                             <div className="grid grid-cols-6 gap-3 topbox bg-theme p-6 rounded-lg">
-                                <div className="col col-span-4 md:col-span-3">
+                                <div className="col col-span-4 lg:col-span-3">
                                     <h1>Products</h1>
                                 </div>
-                                <div className="hidden md:block col">
+                                <div className="hidden lg:block col">
                                     <h1>Quantity</h1>
                                 </div>
-                                <div className="hidden md:block col text-center">
+                                <div className="hidden lg:block col text-center">
                                     <h1>Total</h1>
                                     <p className='flex items-center justify-center  mt-3 text-lg font-semibold'><BiRupee /> {cartTotal}</p>
                                 </div>
-                                <div className="col-span-2 md:col-span-1 col text-right md:text-center">
+                                <div className="col-span-2 lg:col-span-1 col text-right lg:text-center">
                                     <h1>Clear All</h1>
-                                    <FaTrash onClick={removeAllItems} className='text-lg mt-2 float-right md:mx-auto md:float-none cursor-pointer' />
+                                    <FaTrash onClick={removeAllItems} className='text-lg mt-2 float-right lg:mx-auto lg:float-none cursor-pointer' />
                                 </div>
                             </div>
 

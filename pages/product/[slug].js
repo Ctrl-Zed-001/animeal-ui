@@ -110,9 +110,9 @@ const Product = (props) => {
 
         <div className='product-page my-10'>
 
-            <div className="md:flex container gap-20 mb-20">
+            <div className="lg:flex container gap-20 mb-20">
                 {/* PRODUCT IMAGE SLIDER */}
-                <div className='rounded-lg md:w-5/12 single-product-slider'>
+                <div className='rounded-lg lg:w-5/12 single-product-slider'>
                     <Swiper
                         slidesPerView={1}
                         className='mx-auto h-full img-zoom-container'
@@ -132,15 +132,15 @@ const Product = (props) => {
 
                 {/* DATA */}
                 <div className="product-data flex-1">
-                    {/* <Breadcrumb className="hidden md:block" /> */}
-                    <h3 className="text-xs md:text-base text-theme font-semibold">{props.product.products.animal}</h3>
-                    <h1 className="text-base md:text-3xl font-semibold text-slate-900">
+                    {/* <Breadcrumb className="hidden lg:block" /> */}
+                    <h3 className="text-xs lg:text-base text-theme font-semibold">{props.product.products.animal}</h3>
+                    <h1 className="text-base lg:text-3xl font-semibold text-slate-900">
                         {props.product.products.website_pro_name}
                     </h1>
                     <p className='text-sm text-slate-600 font-medium my-2'>by : whiskers</p>
                     <div className="flex">
                         <Rating value={0} />
-                        <p className='text-xs md:text-sm text-slate-600 ml-3 font-medium'>{props.product.ratinglist.length} customer reviews</p>
+                        <p className='text-xs lg:text-sm text-slate-600 ml-3 font-medium'>{props.product.ratinglist.length} customer reviews</p>
                     </div>
 
                     <div className="flex mt-4 items-center">
@@ -157,12 +157,12 @@ const Product = (props) => {
                                 <p className='text-red-500 text-sm font-semibold mb-4'>Only {props.product.availableStock} left in stock</p>
                         }
 
-                        <div className="md:flex items-center xl:w-full 2xl:w-5/6 justify-between">
+                        <div className="lg:flex items-center xl:w-full 2xl:w-5/6 justify-between">
                             <div className='flex items-center gap-3'>
                                 <p className="text-sm font-semibold">Deliver to : </p>
                                 <Input clearable placeholder='check for delivery' type={'number'} />
                             </div>
-                            <p className="text-sm font-semibold text-green-600 mt-3 md:mt-0 ml-2 md:ml-0 ">Delivery available for 410 206</p>
+                            <p className="text-sm font-semibold text-green-600 mt-3 lg:mt-0 ml-2 lg:ml-0 ">Delivery available for 410 206</p>
                         </div>
 
                         <div className="flex items-start w-full mt-4">
@@ -202,25 +202,25 @@ const Product = (props) => {
                                     <></> :
                                     inCart ?
                                         <Link href='/cart'>
-                                            <button className='bg-theme flex items-center mt-6 py-2 px-2 md:px-4 rounded shadow text-sm md:text-base flex-1 md:flex-none'>
-                                                <RiShoppingCartLine className='md:text-sm mr-2' />
+                                            <button className='bg-theme flex items-center mt-6 py-2 px-2 lg:px-4 rounded shadow text-sm lg:text-base flex-1 lg:flex-none'>
+                                                <RiShoppingCartLine className='lg:text-sm mr-2' />
                                                 Go To Cart
                                             </button>
                                         </Link>
                                         :
-                                        <button onClick={cartClicked} className='bg-theme flex items-center mt-6 py-2 px-2 md:px-4 rounded shadow text-sm md:text-base flex-1 md:flex-none'>
-                                            <RiShoppingCartLine className='md:text-sm mr-2' />
+                                        <button onClick={cartClicked} className='bg-theme flex items-center mt-6 py-2 px-2 lg:px-4 rounded shadow text-sm lg:text-base flex-1 lg:flex-none'>
+                                            <RiShoppingCartLine className='lg:text-sm mr-2' />
                                             Add To Cart
                                         </button>
                             }
 
                             {
                                 inWishlist ?
-                                    <button onClick={() => wishlistClicked('destroywishlistproduct')} className='bg-slate-100 flex items-center mt-6 py-2 px-2 md:px-4 rounded shadow text-slate-600 text-sm md:text-base flex-1 md:flex-none'>
+                                    <button onClick={() => wishlistClicked('destroywishlistproduct')} className='bg-slate-100 flex items-center mt-6 py-2 px-2 lg:px-4 rounded shadow text-slate-600 text-sm lg:text-base flex-1 lg:flex-none'>
                                         <RiHeart3Fill className='text-sm mr-2 text-red-400' />
                                         Wishlisted
                                     </button> :
-                                    <button onClick={() => wishlistClicked('addtowishlist')} className='bg-slate-100 flex items-center mt-6 py-2 px-2 md:px-4 rounded shadow text-slate-600 text-sm md:text-base flex-1 md:flex-none'>
+                                    <button onClick={() => wishlistClicked('addtowishlist')} className='bg-slate-100 flex items-center mt-6 py-2 px-2 lg:px-4 rounded shadow text-slate-600 text-sm lg:text-base flex-1 lg:flex-none'>
                                         <RiHeart3Line className='text-sm mr-2' />
                                         Add To Wishlist
                                     </button>

@@ -42,8 +42,6 @@ const AuthContextProvider = (props) => {
                     setIsLoggedIn(false)
                     setUserDetails()
                 })
-        } else {
-            router.replace('/')
         }
     }, [token])
 

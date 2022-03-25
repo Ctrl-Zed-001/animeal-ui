@@ -60,7 +60,7 @@ const Header = (props) => {
 
     return (
         <div className="header py-4 fixed top-0 bg-slate-200 w-full z-50">
-            <div className="container md:flex justify-between items-center">
+            <div className="container lg:flex justify-between items-center">
 
                 <div className={`flex lg-block gap-10 ${showSearch ? '' : 'flex-1'}`}>
                     <button className="btn btn-link text-dark menu-btn"><img src="/img/icons/menu.png" alt="" /></button>
@@ -108,7 +108,7 @@ const Header = (props) => {
 
                 {
                     isLoggedIn ?
-                        <span onClick={logout} className='text-sm rounded-lg p-3 px-3 bg-white flex justify-between items-center text-gray-600 mx-2 cursor-pointer'>
+                        <span onClick={logout} className='hidden lg:flex text-sm rounded-lg p-3 px-3 bg-white justify-between items-center text-gray-600 mx-2 cursor-pointer'>
                             <HiOutlineLogout className='text-lg  mr-1' />
                             Logout
                         </span>

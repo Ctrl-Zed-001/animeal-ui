@@ -138,24 +138,34 @@ const Checkout = () => {
         setAddress(savedAddresses[index])
     }
 
+    const selectAddress = (adr) => {
+        setAddress(adr)
+        setShowAddressModal(false)
+    }
+
     return (
-        <div className='block md:flex md:gap-12 checkout-page container my-5'>
+        <div className='block lg:flex lg:gap-12 checkout-page container my-5'>
 
             {/* MOBILE DELIVERY BOX */}
-            <div className="delivery-box bg-white p-3 rounded-lg md:hidden">
-                <div className="flex w-full justify-between items-start">
-                    <h1 className='font-semibold'>Delivery Address</h1>
-                    <span className="text-slate-400 text-xs" onClick={() => setShowAddressModal(true)}>change</span>
-                </div>
-                <p className='text-xs text-slate-500 my-2 w-8/12'>301, Adil Tower M.G.Road, Old Panvel 410 206</p>
-                <p className='text-xs text-slate-500 my-1'><span className="font-semibold">mobile : </span>+91 8454015530</p>
-            </div>
+            {
+                address ?
+                    <div className="delivery-box bg-white p-3 rounded-lg lg:hidden">
+                        <div className="flex w-full justify-between items-start">
+                            <h1 className='font-semibold'>Delivery Address</h1>
+                            <span className="text-slate-400 text-xs" onClick={() => setShowAddressModal(true)}>change</span>
+                        </div>
+                        <h1 className="mt-2 font-medium mb-1">{address.addname} ({address.addresstype})</h1>
+                        <p className='my-1 text-sm'>{address.addaddress1} {address.addaddress2} {address.addcity} {address.addstate} {address.addpincode}</p>
+                        <p className='font-medium text-sm'>{address.addnumber}</p>
+                    </div> :
+                    <></>
+            }
 
 
             {/* LEFT SECTION */}
             <div className="left-section w-9/12">
 
-                <div className="md:flex gap-3 hidden">
+                <div className="lg:flex gap-3 hidden">
                     {/* DESKTOP ADDRESS SLIDER */}
                     <Radio.Group value='' className='w-10/12'>
                         <Swiper
@@ -202,7 +212,7 @@ const Checkout = () => {
                 </div>
 
                 {/* EDIT ADDRESS FORM */}
-                <div className="address-form bg-slate-100 p-4 rounded-lg mt-4">
+                <div className="hidden lg:block address-form bg-slate-100 p-4 rounded-lg mt-4">
                     <h1 className="font-semibold text-lg">Delivery Address</h1>
                     <div className="flex justify-between gap-14 my-14 w-full">
                         <Input
@@ -280,10 +290,10 @@ const Checkout = () => {
             </div>
 
             {/* RIGHT SECTION */}
-            <div className="right-section w-3/12">
+            <div className="right-section lg:w-3/12">
 
                 {/* PROMOCODE BOX */}
-                <div className="promocode-box bg-white p-3 rounded-lg  mt-4 md:mt-0">
+                <div className="promocode-box bg-white p-3 rounded-lg  mt-4 lg:mt-0">
                     <h1 className='font-semibold mb-4'>Coupon Code</h1>
                     <div className='flex justify-between gap-2 items-center'>
                         <IoMdPricetag className='text-theme h-8 w-10' />
@@ -345,8 +355,8 @@ const Checkout = () => {
                 </button>
             </div >
 
-            {/* ADDRESS MODAL */}
-            < AddressModal visible={showAddressModal} close={() => setShowAddressModal(false)} />
+            {/* MOBILE ADDRESS MODAL */}
+            < AddressModal addresses={savedAddresses} selectAddress={selectAddress} visible={showAddressModal} close={() => setShowAddressModal(false)} />
 
             {/* NEW ADDRESS MODAL */}
             <NewAddressModal isOpen={newAddressModal} close={() => ToggleNewAddressModal(false)} save={addNewAddress} />
