@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { useState, useEffect } from 'react'
-import Footer from '../Components/Footer/Footer';
 import BannerSection from "../Components/HomeComponents/BannerSection";
 import Brands from "../Components/HomeComponents/Brands";
 import ProductRow from "../Components/HomeComponents/ProductRow";
@@ -57,9 +56,6 @@ export default function Home(props) {
 
       {/* BRANDS */}
       <Brands />
-
-      {/* FOOTER */}
-      <Footer />
 
     </div>
 

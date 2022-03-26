@@ -27,7 +27,7 @@ const SignupForm = (props) => {
             <div className="form-box mx-auto md:w-7/12">
                 <Input labelPlaceholder="Full Name" color='default' fullWidth size='lg' onChange={(e) => setName(e.target.value)} />
                 <Spacer y={1.6} />
-                <Input labelPlaceholder="Email" color='default' fullWidth size='lg' onChange={(e) => setEmail(e.target.value)} />
+                <Input type='email' labelPlaceholder="Email" color='default' fullWidth size='lg' onChange={(e) => setEmail(e.target.value)} />
                 <Spacer y={1.6} />
                 <Input.Password labelPlaceholder="Password" color='default' fullWidth size='lg' onChange={(e) => setPassword(e.target.value)} />
                 <Spacer y={1.6} />

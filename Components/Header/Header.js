@@ -56,6 +56,9 @@ const Header = (props) => {
         setSuggestions(suggestionData.data.searchValues)
     }
 
+    const search = (query) => {
+        router.replace(`/shop?slug=${query.metakeywords}`)
+    }
 
 
     return (
@@ -91,7 +94,7 @@ const Header = (props) => {
                                         <ul>
                                             {
                                                 suggestions.map((suggestion, index) => {
-                                                    return <li className='hover:bg-slate-100 p-3 rounded cursor-pointer' key={index}>{suggestion.metakeywords}</li>
+                                                    return <li onClick={() => search(suggestion)} className='hover:bg-slate-100 p-3 rounded cursor-pointer' key={index}>{suggestion.metakeywords}</li>
                                                 })
                                             }
 

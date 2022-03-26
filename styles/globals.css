@@ -223,6 +223,14 @@ body.sidemenu-open .sidebar {
 .floating-bg, .subcategory-box{
   background-color: #F0F3F7;
 }
+.whiteslide{
+  transition: 0.7s;
+}
+.productbox:hover .whiteslide{
+  height: 100%;
+  transition: 0.7s;
+}
+
 .product-box-name{
   width: 100%;
   white-space: nowrap;

@@ -4,6 +4,7 @@ import config from '../../config.json'
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
 import { AuthContext } from '../../Context/AuthContext'
+import toast, { Toaster } from 'react-hot-toast';
 
 // Import Swiper styles
 import "swiper/css";
@@ -16,7 +17,7 @@ import axios from 'axios';
 
 const AuthPopup = (props) => {
 
-    const { setIsLoggedIn, getUserDetails, showAuthModal, setShowAuthModal, setToken } = useContext(AuthContext)
+    const { setIsLoggedIn, getUserDetails, showAuthModal, setShowAuthModal, setToken, setUserDetails } = useContext(AuthContext)
 
 
     const signup = (name, email, password) => {
@@ -27,8 +28,16 @@ const AuthPopup = (props) => {
                 password
             }
         )
-            .then(res => console.log(res.data))
-            .catch(error => console.log(error.response.data))
+            .then(res => {
+                localStorage.setItem('token', `Bearer ${res.data.token}`)
+                setIsLoggedIn(true)
+                setToken(`Bearer ${res.data.token}`)
+                setUserDetails(res.data.user)
+                setShowAuthModal(false)
+            })
+            .catch(error => {
+                error.response.data.errors.map(err => toast.error(err))
+            })
     }
 
     const login = (email, password) => {
@@ -48,7 +57,9 @@ const AuthPopup = (props) => {
             .catch(error => {
                 setIsLoggedIn(false)
                 console.log(error)
+                toast.error("Invalid Credentials")
             })
+
     }
 
     return (
@@ -58,7 +69,7 @@ const AuthPopup = (props) => {
             open={showAuthModal}
             onClose={() => setShowAuthModal(false)}
             className='bg-theme'
-            width={props.isMobile ? 'fullscreen' : '50%'}
+            width={props.isMobile ? 'fullscreen' : '60%'}
         >
             <Modal.Body className='p-0 overflow-hidden'>
                 <div className="md:flex justify-end items-center">
@@ -71,6 +82,10 @@ const AuthPopup = (props) => {
                     </div>
                 </div>
             </Modal.Body>
+            <Toaster
+                position="top-center"
+                reverseOrder={true}
+            />
         </Modal>
     )
 }

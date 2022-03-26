@@ -12,6 +12,7 @@ const Shop = () => {
     const router = useRouter()
     const [sortBy, setSortBy] = useState('Popularity')
     const [srpData, setSrpData] = useState()
+    console.log("🚀 ~ file: index.js ~ line 15 ~ Shop ~ srpData", srpData)
     const [page, setPage] = useState(1)
 
     useEffect(() => {
@@ -68,9 +69,9 @@ const Shop = () => {
 
             <div className="container flex justify-between gap-10">
                 {/* Filter */}
-                <div className="hidden md:block fliter-container w-1/5">
+                {/* <div className="hidden md:block fliter-container w-1/5">
                     <Filters />
-                </div>
+                </div> */}
 
                 {/* PRODUCT LIST CONTAINER */}
                 <div className="right-section flex-1">
@@ -103,7 +104,7 @@ const Shop = () => {
                     <div className="w-full mt-10 text-center">
                         {
                             srpData && srpData.total > 24 ?
-                                <Pagination total={srpData.total / srpData.per_page} initialPage={1} page={page} color='warning' shadow onChange={(page) => paginate(page)} /> :
+                                <Pagination total={Math.ceil(srpData.total / srpData.per_page)} initialPage={1} page={page} color='warning' shadow onChange={(page) => paginate(page)} /> :
                                 <></>
                         }
                     </div>

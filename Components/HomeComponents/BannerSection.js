@@ -6,7 +6,7 @@ const BannerSection = () => {
         <div className="banner-section lg:grid lg:grid-cols-12 lg:gap-4 justify-between container">
 
             {/* POPULAR CATEGORIES */}
-            <div className="hidden lg:block popular-categories bg-white shadow rounded-lg p-3 h-fit text-sm col-span-2">
+            <div className="hidden lg:block popular-categories bg-white shadow rounded-lg p-3 h-full text-sm col-span-2">
                 <h1 className='font-semibold'>Popular Categories</h1>
 
                 <Link href='/shop?slug=dog'>
@@ -49,16 +49,28 @@ const BannerSection = () => {
 
             {/* MAIN BANNER */}
             <div className="main-banner col-span-5">
-                <img src="/img/banner2.png" alt="" className='h-52 mb-3 rounded-lg w-full object-cover shadow' />
-                <img src="https://i.pinimg.com/originals/21/0a/8d/210a8da7ee8b250440a2de22d855ce6d.jpg" alt="" className='h-52 mt-3 rounded-lg w-full object-cover shadow' />
+                <div className="relative">
+                    <img src="/img/banner-1.png" alt="" className='h-52 xl:h-60 mb-3 xl:mb-4 rounded-lg w-full object-cover shadow' />
+                    <h1 className="text-white text-3xl font-bold absolute top-10 left-5 w-7/12">Best Quanlity <br /> Pet Food</h1>
+                </div>
+                <div className="relative">
+                    <img src="/img/banner-2.png" alt="" className='h-52 xl:h-60 mt-3 xl:mt-4 rounded-lg w-full object-cover shadow' />
+                    <h1 className="text-white text-3xl font-bold absolute top-10 left-5 w-7/12">Veterinary Products</h1>
+                </div>
             </div>
 
             <div className="flex col-span-5 gap-1 lg:gap-4 lg:mt-0 mt-2">
                 {/* RIGHT BANNER 1 */}
-                <img src="https://image.shutterstock.com/shutterstock/photos/1436774582/display_1500/stock-vector-pet-shop-poster-or-banner-design-template-vector-cartoon-illustration-of-cats-dogs-aquarium-fish-1436774582.jpg" alt="" className='h-90 object-cover rounded-lg w-3/6 lg:w-3/6 shadow' />
+                <div className="relative h-90 lg:w-3/6 w-3/6 text-center">
+                    <img src="/img/3rd.png" alt="" className='h-full object-cover rounded-lg w-full shadow' />
+                    <h1 className="text-white text-xl font-bold absolute top-10 left-0 w-full px-2">Upload Prescription And Get Medicine</h1>
+                </div>
 
                 {/* RIGHT BANNER 2 */}
-                <img src="https://d1csarkz8obe9u.cloudfront.net/posterpreviews/pet-shop-store-flyer-ad-template-design-765af2c561fd5ada1e11fd4cffa96d6c_screen.jpg?ts=1637009118" alt="" className='h-90 object-cover rounded-lg w-3/6 lg:w-3/6 shadow' />
+                <div className="relative h-90 w-3/6 lg:w-3/6 text-center">
+                    <img src="/img/4th.png" alt="" className='h-full object-cover rounded-lg w-full shadow' />
+                    <h1 className="text-white text-xl font-bold absolute top-10 left-0 w-full px-2">Pathology <br /> Coming Soon</h1>
+                </div>
             </div>
         </div>
     )

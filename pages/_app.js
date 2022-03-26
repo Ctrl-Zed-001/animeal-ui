@@ -2,9 +2,8 @@ import '../styles/globals.css'
 import Sidebar from "../Components/Sidebar/Sidebar";
 import BottomNavigation from "../Components/BottomNavigation/BottomNavigation";
 import Header from "../Components/Header/Header";
-import { useState, useEffect, useContext } from 'react'
-import axios from 'axios';
-import config from '../config.json'
+import { useState } from 'react'
+import Footer from '../Components/Footer/Footer';
 import AuthContextProvider from '../Context/AuthContext'
 import CartContextProvider from '../Context/CartContext';
 
@@ -29,6 +28,7 @@ function MyApp({ Component, pageProps }) {
           <div className="wrapper pt-28 md:pt-20" onClick={handleWrapperClick}>
             <Header isAutoSuggestOpen={isAutoSuggestOpen} setIsAutoSuggestOpen={setIsAutoSuggestOpen} />
             <Component {...pageProps} />
+            <Footer />
             <BottomNavigation />
           </div>
         </div>

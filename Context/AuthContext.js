@@ -16,7 +16,7 @@ const AuthContextProvider = (props) => {
     const router = useRouter()
 
     useEffect(() => {
-        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+        if (window.screen.width <= 425) {
             setIsMobile(true)
         } else {
             setIsMobile(false)
