@@ -11,7 +11,7 @@ const CartSummary = (props) => {
             </div>
             <div className="flex w-full items-center justify-between my-6">
                 <h1 className="">Subtotal (4 items)</h1>
-                <h1 className='font-semibold flex items-center'><BiRupee /> {props.cartTotal} </h1>
+                <h1 className='font-semibold flex items-center'><BiRupee /> {props.subTotal} </h1>
             </div>
             <table className='w-full'>
                 <tbody>
@@ -25,10 +25,10 @@ const CartSummary = (props) => {
                     </tr>
                     <tr className='border-b text-green-500'>
                         <td className='py-3'>Discount</td>
-                        <td className='text-right py-3 flex items-center justify-end'>- <BiRupee /> 0</td>
+                        <td className='text-right py-3 flex items-center justify-end'>- <BiRupee /> {props.cartDiscount}</td>
                     </tr>
                     <tr className='border-b'>
-                        <td className='py-3'>Sub Total</td>
+                        <td className='py-3'>Total Amount</td>
                         <td className='text-right py-3 flex items-center justify-end'><BiRupee /> {props.cartTotal}</td>
                     </tr>
 

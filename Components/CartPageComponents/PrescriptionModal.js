@@ -31,7 +31,7 @@ const PrescriptionModal = (props) => {
                     <div className="right-sec">
                         <h1 className="text-xs font-semibold">Valid prescription guidelines</h1>
                         <p className="text-xs my-4">image should be sharp and must contain these 4 points.</p>
-                        <img src="/img/prescription-demo.png" alt="" />
+                        <img src="/img/prescription-demo.png" alt="" className='h-72' />
                     </div>
                 </div>
             </Modal.Body>

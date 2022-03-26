@@ -66,28 +66,28 @@ $(document).ready(function () {
     });
 
     /* filter click open filter */
-    if ($('body').hasClass('filtermenu-open') == true) {
-        $('.filter-btn').find('i').html('close');
-    }
-    $('.filter-btn').on('click', function () {
-        if ($('body').hasClass('filtermenu-open') == true) {
-            $('body').removeClass('filtermenu-open');
-            $(this).find('i').html('filter_list')
+    // if ($('body').hasClass('filtermenu-open') == true) {
+    //     $('.filter-btn').find('i').html('close');
+    // }
+    // $('.filter-btn').on('click', function () {
+    //     if ($('body').hasClass('filtermenu-open') == true) {
+    //         $('body').removeClass('filtermenu-open');
+    //         $(this).find('i').html('filter_list')
 
-        } else {
-            $('body').addClass('filtermenu-open');
-            $(this).find('i').html('close')
-        }
-    });
+    //     } else {
+    //         $('body').addClass('filtermenu-open');
+    //         $(this).find('i').html('close')
+    //     }
+    // });
 
 
     /* background image to cover */
-    $('.background').each(function () {
-        var imagewrap = $(this);
-        var imagecurrent = $(this).find('img').attr('src');
-        imagewrap.css('background-image', 'url("' + imagecurrent + '")');
-        $(this).find('img').remove();
-    });
+    // $('.background').each(function () {
+    //     var imagewrap = $(this);
+    //     var imagecurrent = $(this).find('img').attr('src');
+    //     imagewrap.css('background-image', 'url("' + imagecurrent + '")');
+    //     $(this).find('img').remove();
+    // });
 
 
     /* drag and scroll like mobile remove while creating mobile app */

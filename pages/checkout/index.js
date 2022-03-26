@@ -50,57 +50,6 @@ const Checkout = () => {
         }
     }, [token])
 
-    let rzp1;
-    useEffect(() => {
-        var options = {
-            "key": "rzp_test_cgVa13U4q2vidA", // Enter the Key ID generated from the Dashboard
-            "amount": cartTotal * 100, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
-            "currency": "INR",
-            "name": "Animeal",
-            "description": "Test Transaction",
-            "image": "/img/logo.png",
-            "handler": function (response) {
-                alert(response.razorpay_payment_id);
-                alert(response.razorpay_order_id);
-                alert(response.razorpay_signature)
-            },
-            "prefill": {
-                "name": "Gaurav Kumar",
-                "email": "gaurav.kumar@example.com",
-                "contact": "9999999999"
-            },
-            "notes": {
-                "address": "Razorpay Corporate Office"
-            },
-            "theme": {
-                "color": "#3399cc"
-            }
-        };
-        rzp1 = new window.Razorpay(options)
-        rzp1.on('payment.failed', function (response) {
-            alert('payment fail')
-            alert(response.error.code);
-            alert(response.error.description);
-            alert(response.error.source);
-            alert(response.error.step);
-            alert(response.error.reason);
-            alert(response.error.metadata.order_id);
-            alert(response.error.metadata.payment_id);
-        });
-        rzp1.on('payment.success', function (response) {
-            alert('payment pass')
-            alert(response.error.code);
-            alert(response.error.description);
-            alert(response.error.source);
-            alert(response.error.step);
-            alert(response.error.reason);
-            alert(response.error.metadata.order_id);
-            alert(response.error.metadata.payment_id);
-        });
-    })
-
-
-
     const addNewAddress = (newData) => {
         let body = {
             addname: newData.name,
@@ -141,6 +90,67 @@ const Checkout = () => {
     const selectAddress = (adr) => {
         setAddress(adr)
         setShowAddressModal(false)
+    }
+
+    const callRazorPay = () => {
+        axios.post(
+            `https://api.razorpay.com/v1/orders`,
+            {
+                "amount": 1000000,
+                "currency": "INR",
+                "receipt": "Receipt no. 1",
+                "notes": {
+                    "notes_key_1": "Tea, Earl Grey, Hot",
+                    "notes_key_2": "Tea, Earl Grey… decaf."
+                }
+            }
+        )
+            .then(res => console.log("RAZORPAY RESPONSE", res.data))
+            .catch(err => console.log(err))
+    }
+
+    const makePayment = (orderId) => {
+        let rzp1;
+        var options = {
+            "key": "rzp_test_cgVa13U4q2vidA", // Enter the Key ID generated from the Dashboard
+            "amount": cartTotal * 100, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+            "currency": "INR",
+            "name": "Animeal",
+            "description": "Test Transaction",
+            "order_id": orderId,
+            "image": "/img/logo.png",
+            "handler": function (response) {
+                alert(response.razorpay_payment_id);
+                alert(response.razorpay_order_id);
+                alert(response.razorpay_signature)
+            },
+            "prefill": {
+                "name": "Gaurav Kumar",
+                "email": "gaurav.kumar@example.com",
+                "contact": "9999999999"
+            },
+            "notes": {
+                "address": "Razorpay Corporate Office"
+            },
+            "theme": {
+                "color": "#3399cc"
+            }
+        };
+        rzp1 = new window.Razorpay(options)
+        rzp1.open()
+
+        rzp1.on('payment.failed', function (response) {
+            // alert('payment fail')
+            // alert(response.error.code);
+            // alert(response.error.description);
+            // alert(response.error.source);
+            // alert(response.error.step);
+            // alert(response.error.reason);
+            // alert(response.error.metadata.order_id);
+            // alert(response.error.metadata.payment_id);
+
+            // OPEN PAYMENT FAIL POPUP HERE
+        });
     }
 
     return (
@@ -350,7 +360,7 @@ const Checkout = () => {
                     </div>
                 </Radio.Group>
 
-                <button onClick={() => rzp1.open()} className="w-full text-center bg-theme p-2 rounded-lg py-4 mt-8 shadow font-semibold">
+                <button onClick={callRazorPay} className="w-full text-center bg-theme p-2 rounded-lg py-4 mt-8 shadow font-semibold">
                     Place Order
                 </button>
             </div >

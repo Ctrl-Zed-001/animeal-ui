@@ -5,8 +5,8 @@ import { BsChatDots } from 'react-icons/bs'
 const Footer = () => {
     return (
         <div className="footer mt-32 pb-10 lg:pb-24 relative px-4 lg:px-0">
-            {/* <img src="/img/footer-bg.png" alt="" className='hidden lg:block -z-10 lg:absolute lg:top-8 left-0' />
-            <img src="/img/footer-mobile-bg.png" alt="" className='lg:hidden -z-10 absolute -bottom-10 left-0' /> */}
+            <img src="/img/footer-bg.png" alt="" className='hidden lg:block -z-10 lg:absolute lg:top-20 left-0' />
+            <img src="/img/footer-mobile-bg.png" alt="" className='lg:hidden -z-10 absolute -bottom-10 left-0' />
             <div className="container p-10 bg-white rounded-3xl ">
                 <div className="top-row flex justify-between items-center lg:px-28">
                     <div className="flex items-center gap-8">
@@ -40,7 +40,7 @@ const Footer = () => {
                     </div>
 
                     <div className="payment-options-footer hidden lg:block">
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-start gap-2">
                             <img src="/img/icons/shield.png" alt="" />
                             <p className="font-semibold text-sm text-green-500">100% payment protection, easy return policy</p>
                         </div>
@@ -53,7 +53,7 @@ const Footer = () => {
                     </div>
                     <hr className='lg:hidden w-full bg-gray-500 my-8' />
                     <div className="social-media-section my-6 lg:my-0">
-                        <div className="flex gap-6 lg:gap-0 items-center justify-center">
+                        <div className="flex mb-2 gap-2 lg:gap-0 items-center lg:items-start justify-center">
                             <h1 className="font-semibold text-xs lg:text-sm">Show us some love on social media.</h1>
                             <img src="/img/icons/love.png" alt="" />
                         </div>
@@ -74,16 +74,16 @@ const Footer = () => {
                 </div>
                 <hr className='w-full bg-gray-500 my-8' />
                 <div className="lg:flex justify-between items-center lg:px-28">
-                    <div className="flex items-center gap-4">
-                        <img src="/img/logo.png" alt="" className='h-6' />
-                        <h1 className='font-semibold text-xs lg:text-base'> is brought to you by <span className="text-theme">GOODMAN VETCARE PVT. LTD.</span>  </h1>
+                    <div className="lg:flex items-center gap-4 px-10">
+                        <img src="/img/logo.png" alt="" className='h-6 mx-auto' />
+                        <h1 className='font-semibold text-xs lg:text-base text-center'> is brought to you by <span className="text-theme">GOODMAN VETCARE PVT. LTD.</span>  </h1>
                     </div>
                     <h1 className='font-semibold text-xs lg:text-base text-center'>© 2022 Copyright Animeal.in</h1>
                 </div>
             </div>
 
             <img src="/img/footer_dog.png" alt="" className='absolute bottom-1 lg:-bottom-4 -left-16 lg:-left-36 h-32 lg:h-80 ' />
-            <img src="/img/footer_cat.png" alt="" className='absolute -bottom-4 lg:-bottom-6 right-0 lg:right-0 h-32 lg:h-96' />
+            <img src="/img/footer_cat.png" alt="" className='absolute -bottom-4 lg:-bottom-6 right-0 lg:right-10 h-32 lg:h-72' />
         </div >
     )
 }

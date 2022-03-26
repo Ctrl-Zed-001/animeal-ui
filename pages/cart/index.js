@@ -8,8 +8,7 @@ import { CartContext } from '../../Context/CartContext';
 
 const Cart = () => {
 
-    const { cartItems, cartTotal, qty, removeAllItems, removeCartItem, updateCartQuantity } = useContext(CartContext)
-    console.log("🚀 ~ file: index.js ~ line 12 ~ Cart ~ cartItems", cartItems)
+    const { cartItems, cartTotal, qty, removeAllItems, removeCartItem, updateCartQuantity, cartDiscount, subTotal } = useContext(CartContext)
 
     const [showPrescriptionModal, setShowPrescriptionModal] = useState(false)
 
@@ -53,7 +52,7 @@ const Cart = () => {
 
                         </div>
 
-                        <CartSummary cartTotal={cartTotal} qty={qty} />
+                        <CartSummary cartTotal={cartTotal} qty={qty} cartDiscount={cartDiscount} subTotal={subTotal} />
                     </div> :
                     <div>
                         <img src='/img/empty-cart.png' className='w-5/12 mx-auto' />

@@ -117,9 +117,9 @@ const Header = (props) => {
                         </span>
                         :
                         <div className="lg:flex justify-between hidden">
-                            {/* <span href="" className='text-sm rounded-lg p-3 px-3 bg-white text-gray-600 mx-2'>
-                        24/7 help
-                    </span> */}
+                            <span href="" className='text-sm rounded-lg p-3 px-3 bg-white text-gray-600 mx-2'>
+                                24/7 help
+                            </span>
                             <span onClick={() => setShowAuthModal(true)} className='text-sm rounded-lg p-3 px-3 bg-white flex justify-between items-center text-gray-600 mx-2 cursor-pointer'>
                                 <img src="/img/icons/profile-header.png" alt="" className='h-4 mr-2' />
                                 Signup / Login

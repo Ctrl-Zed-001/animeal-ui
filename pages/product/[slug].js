@@ -26,7 +26,6 @@ const Product = (props) => {
 
     const [inWishlist, setInWishlist] = useState(false)
     const [inCart, setInCart] = useState(false)
-
     const { setShowAuthModal, isLoggedIn, token } = useContext(AuthContext)
     const { addToCart } = useContext(CartContext)
 
@@ -114,6 +113,7 @@ const Product = (props) => {
                 {/* PRODUCT IMAGE SLIDER */}
                 <div className='rounded-lg lg:w-5/12 single-product-slider'>
                     <Swiper
+                        loop={true}
                         slidesPerView={1}
                         className='mx-auto h-full img-zoom-container'
                         pagination={pagination}
@@ -122,7 +122,11 @@ const Product = (props) => {
                     >
                         {
                             props.product.productimages.map((image, index) => {
-                                return <SwiperSlide key={index} className=''><img src={`${config.image_uri}/${image.product_id}/${image.product_image}`} alt="" className='rounded-lg mx-auto bg-white' /></SwiperSlide>
+                                return (<SwiperSlide key={index} className=''>
+                                    <div id='img-container'>
+                                        <img src={`${config.image_uri}/${image.product_id}/${image.product_image}`} alt="" id="single-product-image" className='rounded-lg mx-auto bg-white' />
+                                    </div>
+                                </SwiperSlide>)
                             })
                         }
                     </Swiper>
@@ -160,7 +164,7 @@ const Product = (props) => {
                         <div className="lg:flex items-center xl:w-full 2xl:w-5/6 justify-between">
                             <div className='flex items-center gap-3'>
                                 <p className="text-sm font-semibold">Deliver to : </p>
-                                <Input clearable placeholder='check for delivery' type={'number'} />
+                                {/* <Input clearable placeholder='check for delivery' type={'number'} /> */}
                             </div>
                             <p className="text-sm font-semibold text-green-600 mt-3 lg:mt-0 ml-2 lg:ml-0 ">Delivery available for 410 206</p>
                         </div>

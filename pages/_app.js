@@ -20,10 +20,6 @@ function MyApp({ Component, pageProps }) {
     <AuthContextProvider>
       <CartContextProvider>
         <div className='theme'>
-          <script src='/js/jquery-3.3.1.min.js' />
-          <script src="/js/main.js" />
-          <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-
           <Sidebar />
           <div className="wrapper pt-28 md:pt-20" onClick={handleWrapperClick}>
             <Header isAutoSuggestOpen={isAutoSuggestOpen} setIsAutoSuggestOpen={setIsAutoSuggestOpen} />

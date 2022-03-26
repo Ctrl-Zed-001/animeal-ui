@@ -7,7 +7,7 @@ const ProductBox = (props) => {
 
     return (
         <a target="__blank" rel="noopener noreferrer" href={`/product/${props.product[0].product_slugname}`}>
-            <div className="productbox rounded-xl border-2 border-white shadow cursor-pointer relative">
+            <div className="productbox rounded-3xl border-2 border-white shadow cursor-pointer relative">
                 <img src={props.product[0].product_featured_image ? `${config.image_uri}/${props.product[0].product_id}/${props.product[0].product_featured_image}` : "/img/product-placeholder.png"} alt="" className='rounded-lg lg:h-48 mx-auto transform z-10' />
 
                 <div className="product-info rounded-b-xl p-4 relative pt-14 -mt-12 -z-10">
@@ -29,7 +29,7 @@ const ProductBox = (props) => {
                     </div>
                 </div>
 
-                <div className="whiteslide bg-white w-full h-2/4 ease-in duration-300 transition absolute bottom-0 left-0 -z-20 rounded-xl"></div>
+                <div className="whiteslide bg-white w-full h-3/5 ease-in duration-300 transition absolute bottom-0 left-0 -z-20 rounded-3xl"></div>
 
             </div>
         </a>

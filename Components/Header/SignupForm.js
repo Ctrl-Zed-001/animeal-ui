@@ -25,7 +25,7 @@ const SignupForm = (props) => {
             <h1 className='text-center my-4 text-gray-500 font-semibold'>- OR -</h1>
 
             <div className="form-box mx-auto md:w-7/12">
-                <Input labelPlaceholder="Full Name" color='default' fullWidth size='lg' onChange={(e) => setName(e.target.value)} />
+                <Input name='fullName' labelPlaceholder="Full Name" color='default' fullWidth size='lg' onChange={(e) => setName(e.target.value)} />
                 <Spacer y={1.6} />
                 <Input type='email' labelPlaceholder="Email" color='default' fullWidth size='lg' onChange={(e) => setEmail(e.target.value)} />
                 <Spacer y={1.6} />
