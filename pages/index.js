@@ -4,7 +4,7 @@ import BannerSection from "../Components/HomeComponents/BannerSection";
 import Brands from "../Components/HomeComponents/Brands";
 import ProductRow from "../Components/HomeComponents/ProductRow";
 import ShopByPet from "../Components/HomeComponents/ShopByPet";
-import config from '../config.json'
+
 
 
 
@@ -17,10 +17,10 @@ export default function Home(props) {
 
   useEffect(() => {
     let endpoints = [
-      `${config.api_uri}/getcategories`,
-      `${config.api_uri}/topratedproducts/get/data`,
-      `${config.api_uri}/customerfavorite/get/data`,
-      `${config.api_uri}/pickedbyexperts/get/data`
+      `${process.env.NEXT_PUBLIC_API_URI}/getcategories`,
+      `${process.env.NEXT_PUBLIC_API_URI}/topratedproducts/get/data`,
+      `${process.env.NEXT_PUBLIC_API_URI}/customerfavorite/get/data`,
+      `${process.env.NEXT_PUBLIC_API_URI}/pickedbyexperts/get/data`
     ];
 
     axios.all(endpoints.map((endpoint) => axios.get(endpoint)))

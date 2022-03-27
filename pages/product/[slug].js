@@ -11,29 +11,35 @@ import Link from 'next/link';
 import { AuthContext } from '../../Context/AuthContext'
 import { CartContext } from '../../Context/CartContext'
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Pagination } from "swiper";
+// import required modules
+import { FreeMode, Navigation, Thumbs } from "swiper";
 
 
 import axios from 'axios';
-import config from '../../config.json'
 
 
-import 'swiper/css';
-import "swiper/css/pagination";
+import "swiper/css";
+import "swiper/css/free-mode";
+import "swiper/css/navigation";
+import "swiper/css/thumbs";
 
 
 const Product = (props) => {
 
     const [inWishlist, setInWishlist] = useState(false)
     const [inCart, setInCart] = useState(false)
+    const [productImages, setProductImages] = useState([...props.product.productimages])
+
     const { setShowAuthModal, isLoggedIn, token } = useContext(AuthContext)
     const { addToCart } = useContext(CartContext)
+
+    const [thumbsSwiper, setThumbsSwiper] = useState(null);
 
 
     useEffect(() => {
         if (token) {
             axios.post(
-                `${config.api_uri}/user/addtocartvalidation/post/data`,
+                `${process.env.NEXT_PUBLIC_API_URI}/user/addtocartvalidation/post/data`,
                 {
                     product_id: props.product.products.product_id
                 },
@@ -48,17 +54,23 @@ const Product = (props) => {
         }
     }, [token])
 
-    const pagination = {
-        dynamicBullets: true,
-        clickable: true,
-        renderBullet: function (index, className) {
-            return `<img class="${className} mx-12" src="${config.image_uri}/${props.product.productimages[index].product_id}/${props.product.productimages[index].product_image}"/>`;
-        },
-    }
+    useEffect(() => {
+        let imagesArray = [...props.product.productimages]
+        let mainImage = imagesArray.filter(img => img.main_id === 1)
+        let mainImageIndex = imagesArray.indexOf(mainImage[0])
+        if (mainImageIndex === (imagesArray.length - 1)) {
+            let newArray = [...imagesArray].reverse()
+            setProductImages([...newArray])
+        }
+
+
+    }, [])
+
+
 
     const cartClicked = () => {
         if (isLoggedIn) {
-            axios.post(`${config.api_uri}/user/addtocart/post/data`,
+            axios.post(`${process.env.NEXT_PUBLIC_API_URI}/user/addtocart/post/data`,
                 {
                     product_id: props.product.products.product_id,
                     quantity: 1
@@ -83,7 +95,7 @@ const Product = (props) => {
 
     const wishlistClicked = (type) => {
         if (isLoggedIn) {
-            axios.post(`${config.api_uri}/user/${type}/post/data`,
+            axios.post(`${process.env.NEXT_PUBLIC_API_URI}/user/${type}/post/data`,
                 {
                     product_id: props.product.products.product_id,
                 },
@@ -112,20 +124,38 @@ const Product = (props) => {
             <div className="lg:flex container gap-20 mb-20">
                 {/* PRODUCT IMAGE SLIDER */}
                 <div className='rounded-lg lg:w-5/12 single-product-slider'>
+                    {/* MAIN SLIDER */}
                     <Swiper
-                        loop={true}
                         slidesPerView={1}
-                        className='mx-auto h-full img-zoom-container'
-                        pagination={pagination}
-                        modules={[Pagination]}
-                        initialSlide={props.product.productimages.findIndex(el => el.main_id === 1)}
+                        className='mx-auto h-full main-img-container drop-shadow'
+                        thumbs={{ swiper: thumbsSwiper }}
+                        modules={[FreeMode, Navigation, Thumbs]}
                     >
                         {
-                            props.product.productimages.map((image, index) => {
+                            productImages.map((image, index) => {
                                 return (<SwiperSlide key={index} className=''>
                                     <div id='img-container'>
-                                        <img src={`${config.image_uri}/${image.product_id}/${image.product_image}`} alt="" id="single-product-image" className='rounded-lg mx-auto bg-white' />
+                                        <img src={`${process.env.NEXT_PUBLIC_IMAGE_URI}/${image.product_id}/${image.product_image}`} alt="" id="single-product-image" className='rounded-lg mx-auto bg-white' />
                                     </div>
+                                </SwiperSlide>)
+                            })
+                        }
+                    </Swiper>
+
+                    {/* MINI SLIDER */}
+                    <Swiper
+                        slidesPerView={4}
+                        className='mx-auto mt-4 w-6/12 lg:w-9/12'
+                        onSwiper={setThumbsSwiper}
+                        freeMode={true}
+                        watchSlidesProgress={true}
+                        modules={[FreeMode, Navigation, Thumbs]}
+                        spaceBetween={10}
+                    >
+                        {
+                            productImages.map((image, index) => {
+                                return (<SwiperSlide key={index} className=''>
+                                    <img src={`${process.env.NEXT_PUBLIC_IMAGE_URI}/${image.product_id}/${image.product_image}`} alt="" className='rounded-lg mx-auto h-12 lg:h-20 border border-gray-200' />
                                 </SwiperSlide>)
                             })
                         }
@@ -135,7 +165,7 @@ const Product = (props) => {
 
 
                 {/* DATA */}
-                <div className="product-data flex-1">
+                <div className="product-data flex-1 mt-6 lg:mt-0">
                     {/* <Breadcrumb className="hidden lg:block" /> */}
                     <h3 className="text-xs lg:text-base text-theme font-semibold">{props.product.products.animal}</h3>
                     <h1 className="text-base lg:text-3xl font-semibold text-slate-900">
@@ -262,7 +292,7 @@ export async function getServerSideProps({ query }) {
 
     let slug = query.slug;
 
-    let res = await axios.get(`${config.api_uri}/singleproduct/${slug}`)
+    let res = await axios.get(`${process.env.NEXT_PUBLIC_API_URI}/singleproduct/${slug}`)
     let product = await res.data
 
     return {

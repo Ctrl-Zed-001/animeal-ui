@@ -1,19 +1,17 @@
 import axios from 'axios'
 import React, { useState, useEffect, useContext } from 'react'
 import WishlistBox from '../../Components/WishlistComponents/WishlistBox'
-import config from '../../config.json'
 import { AuthContext } from '../../Context/AuthContext'
 
 const Wishlist = () => {
 
     const { token } = useContext(AuthContext)
     const [wishlistProducts, setWishlistProducts] = useState([])
-    console.log("🚀 ~ file: index.js ~ line 11 ~ Wishlist ~ wishlistProducts", wishlistProducts)
 
     useEffect(() => {
         if (token) {
             axios.post(
-                `${config.api_uri}/user/wishlistproducts/post/data`,
+                `${process.env.NEXT_PUBLIC_API_URI}/user/wishlistproducts/post/data`,
                 {},
                 {
                     headers: {
@@ -29,7 +27,7 @@ const Wishlist = () => {
 
     const remove = (id) => {
         if (token) {
-            axios.post(`${config.api_uri}/user/destroywishlistproduct/post/data`,
+            axios.post(`${process.env.NEXT_PUBLIC_API_URI}/user/destroywishlistproduct/post/data`,
                 {
                     product_id: id,
                 },

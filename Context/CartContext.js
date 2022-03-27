@@ -1,6 +1,6 @@
 import React, { createContext, useEffect, useState, useContext } from 'react'
 import axios from 'axios'
-import config from '../config.json'
+
 import { useRouter } from 'next/router';
 import { AuthContext } from './AuthContext';
 
@@ -18,7 +18,7 @@ const CartContextProvider = (props) => {
     useEffect(() => {
         if (token) {
             axios.post(
-                `${config.api_uri}/user/getcart/post/data`,
+                `${process.env.NEXT_PUBLIC_API_URI}/user/getcart/post/data`,
                 {},
                 {
                     headers: {
@@ -52,7 +52,7 @@ const CartContextProvider = (props) => {
 
     const updateCartQuantity = (action, id, quantity) => {
         axios.post(
-            `${config.api_uri}/user/${action}/post/data`,
+            `${process.env.NEXT_PUBLIC_API_URI}/user/${action}/post/data`,
             {
                 "product_id": id,
                 "quantity": quantity
@@ -84,7 +84,7 @@ const CartContextProvider = (props) => {
 
     const removeCartItem = (id, type) => {
         axios.post(
-            `${config.api_uri}/user/removecartitem/post/data`,
+            `${process.env.NEXT_PUBLIC_API_URI}/user/removecartitem/post/data`,
             {
                 "product_id": id
             },

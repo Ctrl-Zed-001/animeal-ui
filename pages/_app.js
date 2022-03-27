@@ -6,8 +6,9 @@ import { useState } from 'react'
 import Footer from '../Components/Footer/Footer';
 import AuthContextProvider from '../Context/AuthContext'
 import CartContextProvider from '../Context/CartContext';
+import { SessionProvider } from "next-auth/react"
 
-function MyApp({ Component, pageProps }) {
+function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   const [isAutoSuggestOpen, setIsAutoSuggestOpen] = useState(false)
 
   const handleWrapperClick = () => {
@@ -17,19 +18,21 @@ function MyApp({ Component, pageProps }) {
   }
 
   return (
-    <AuthContextProvider>
-      <CartContextProvider>
-        <div className='theme'>
-          <Sidebar />
-          <div className="wrapper pt-28 md:pt-20" onClick={handleWrapperClick}>
-            <Header isAutoSuggestOpen={isAutoSuggestOpen} setIsAutoSuggestOpen={setIsAutoSuggestOpen} />
-            <Component {...pageProps} />
-            <Footer />
-            <BottomNavigation />
+    <SessionProvider session={session}>
+      <AuthContextProvider>
+        <CartContextProvider>
+          <div className='theme'>
+            <Sidebar />
+            <div className="wrapper pt-28 md:pt-20" onClick={handleWrapperClick}>
+              <Header isAutoSuggestOpen={isAutoSuggestOpen} setIsAutoSuggestOpen={setIsAutoSuggestOpen} />
+              <Component {...pageProps} />
+              <Footer />
+              <BottomNavigation />
+            </div>
           </div>
-        </div>
-      </CartContextProvider>
-    </AuthContextProvider>
+        </CartContextProvider>
+      </AuthContextProvider>
+    </SessionProvider>
   )
 }
 

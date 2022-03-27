@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { Modal, Input, Checkbox, Text, Row } from '@nextui-org/react';
-import config from '../../config.json'
+
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
 import { AuthContext } from '../../Context/AuthContext'
@@ -17,11 +17,11 @@ import axios from 'axios';
 
 const AuthPopup = (props) => {
 
-    const { setIsLoggedIn, getUserDetails, showAuthModal, setShowAuthModal, setToken, setUserDetails } = useContext(AuthContext)
+    const { setIsLoggedIn, getUserDetails, showAuthModal, setShowAuthModal, setToken, setUserDetails, loginSocial } = useContext(AuthContext)
 
 
     const signup = (name, email, password) => {
-        axios.post(`${config.api_uri}/user/registration/post/data`,
+        axios.post(`${process.env.NEXT_PUBLIC_API_URI}/user/registration/post/data`,
             {
                 name,
                 email,
@@ -41,7 +41,7 @@ const AuthPopup = (props) => {
     }
 
     const login = (email, password) => {
-        axios.post(`${config.api_uri}/user/login/post/data`,
+        axios.post(`${process.env.NEXT_PUBLIC_API_URI}/user/login/post/data`,
             {
                 email,
                 password
@@ -76,7 +76,7 @@ const AuthPopup = (props) => {
                     <img src="/img/authbanner.png" alt="" className='h-44 md:h-80 mx-auto' />
                     <div className="form-section p-6 rounded-l-xl bg-slate-200 h-full md:w-8/12">
                         <Swiper className="mySwiper">
-                            <SwiperSlide className=''><LoginForm login={login} /></SwiperSlide>
+                            <SwiperSlide className=''><LoginForm login={login} loginSocial={loginSocial} /></SwiperSlide>
                             <SwiperSlide><SignupForm signup={signup} /></SwiperSlide>
                         </Swiper>
                     </div>

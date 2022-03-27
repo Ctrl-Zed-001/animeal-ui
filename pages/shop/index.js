@@ -4,7 +4,6 @@ import ProductBox from '../../Components/ProductBox/ProductBox'
 import { MdExpandMore } from "react-icons/md";
 import { useRouter } from 'next/router'
 import axios from 'axios';
-import config from '../../config.json'
 import { Pagination } from '@nextui-org/react';
 
 const Shop = () => {
@@ -12,26 +11,23 @@ const Shop = () => {
     const router = useRouter()
     const [sortBy, setSortBy] = useState('Popularity')
     const [srpData, setSrpData] = useState()
-    console.log("🚀 ~ file: index.js ~ line 15 ~ Shop ~ srpData", srpData)
     const [page, setPage] = useState(1)
 
     useEffect(() => {
         if (router) {
             if (router.query.slug) {
-                console.log("in if")
-                axios.post(`${config.api_uri}/dyanamicsearchproducts/get/data`, {
+                axios.post(`${process.env.NEXT_PUBLIC_API_URI}/dyanamicsearchproducts/get/data`, {
                     query: router.query.slug
                 })
                     .then(res => setSrpData(res.data.productBySearch))
                     .catch(err => console.log(err))
             } else {
-                axios.post(`${config.api_uri}/alllevelwiseproducts/post/data`, {
+                axios.post(`${process.env.NEXT_PUBLIC_API_URI}/alllevelwiseproducts/post/data`, {
                     category1: router.query.animal,
                     category2: router.query.category,
                     category3: router.query.subcategory
                 })
                     .then(res => {
-                        console.log(res.data)
                         setSrpData(res.data.categoryAllLevelsWiseProduct)
                     })
                     .catch(err => console.log(err))
@@ -42,19 +38,18 @@ const Shop = () => {
 
     const paginate = (pageNumber) => {
         if (router.query.slug) {
-            axios.post(`${config.api_uri}/dyanamicsearchproducts/get/data?page=${pageNumber}`, {
+            axios.post(`${process.env.NEXT_PUBLIC_API_URI}/dyanamicsearchproducts/get/data?page=${pageNumber}`, {
                 query: router.query.slug
             })
                 .then(res => setSrpData(res.data.productBySearch))
                 .catch(err => console.log(err))
         } else {
-            axios.post(`${config.api_uri}/alllevelwiseproducts/post/data?page=${pageNumber}`, {
+            axios.post(`${process.env.NEXT_PUBLIC_API_URI}/alllevelwiseproducts/post/data?page=${pageNumber}`, {
                 category1: router.query.animal,
                 category2: router.query.category,
                 category3: router.query.subcategory
             })
                 .then(res => {
-                    console.log(res.data)
                     setSrpData(res.data.categoryAllLevelsWiseProduct)
                 })
                 .catch(err => console.log(err))

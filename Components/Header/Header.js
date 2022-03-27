@@ -3,10 +3,11 @@ import { MdSearch } from "react-icons/md";
 import Link from 'next/link';
 import { useRouter } from 'next/router'
 import axios from 'axios';
-import config from '../../config.json'
+
 import AuthPopup from './AuthPopup';
 import { AuthContext } from '../../Context/AuthContext'
 import { HiOutlineLogout } from 'react-icons/hi'
+import Capitalize from '../../Helpers/Capitalize'
 
 
 const Header = (props) => {
@@ -32,7 +33,7 @@ const Header = (props) => {
 
     useEffect(() => {
         // CALL AUTOSUGGEST API
-        axios.post(`${config.api_uri}/dyanamicsearch/get/data`, { query: '' })
+        axios.post(`${process.env.NEXT_PUBLIC_API_URI}/dyanamicsearch/get/data`, { query: '' })
             .then(res => setSuggestions(res.data.searchValues))
             .catch(err => console.log(err))
     }, [])
@@ -42,22 +43,25 @@ const Header = (props) => {
         // SET SEARCH VALUE STATE
         setSearchValue(e.target.value)
         // CALL AUTOSUGGEST API
-        let suggestionData = await axios.post(`${config.api_uri}/dyanamicsearch/get/data`, { query: e.target.value.toLowerCase() })
+        let suggestionData = await axios.post(`${process.env.NEXT_PUBLIC_API_URI}/dyanamicsearch/get/data`, { query: e.target.value.toLowerCase() })
 
         if (e.target.value === '') {
             // SET SUGGESTION HEADING AS TOP SUGGESTIONS
             setSuggestionHeading("Top Suggestions")
 
-        } else {
+        } else if (suggestionData.data.searchValues.length === 0) {
             // SET SUGGESTION HEADING AS TOP RESULTS..
+            setSuggestionHeading("No Results Found")
+        } else {
             setSuggestionHeading("Top Results")
         }
+
 
         setSuggestions(suggestionData.data.searchValues)
     }
 
     const search = (query) => {
-        router.replace(`/shop?slug=${query.metakeywords}`)
+        router.replace(`/shop?slug=${query}`)
     }
 
 
@@ -81,11 +85,9 @@ const Header = (props) => {
                                 <MdSearch className='absolute top-3 left-2 text-2xl text-gray-400' />
                                 <input onChange={autoSuggest} type="text" className="p-3 w-full rounded-lg pl-10" placeholder="Search store" onClick={() => props.setIsAutoSuggestOpen(!props.isAutoSuggestOpen)} />
                             </div>
-                            <Link href={`/shop?slug=${searchValue}`}>
-                                <button className='bg-theme p-3 text-xl rounded-lg'>
-                                    <img src="/img/icons/search.png" alt="" className='' />
-                                </button>
-                            </Link>
+                            <button onClick={() => search(searchValue)} className='bg-theme p-3 text-xl rounded-lg'>
+                                <img src="/img/icons/search.png" alt="" className='' />
+                            </button>
 
                             {
                                 props.isAutoSuggestOpen ?
@@ -94,7 +96,7 @@ const Header = (props) => {
                                         <ul>
                                             {
                                                 suggestions.map((suggestion, index) => {
-                                                    return <li onClick={() => search(suggestion)} className='hover:bg-slate-100 p-3 rounded cursor-pointer' key={index}>{suggestion.metakeywords}</li>
+                                                    return <li onClick={() => search(suggestion.keyword)} className='hover:bg-slate-100 p-3 rounded cursor-pointer' key={index}>{Capitalize(suggestion.keyword)}</li>
                                                 })
                                             }
 

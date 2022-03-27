@@ -238,7 +238,7 @@ body.sidemenu-open .sidebar {
   text-overflow: ellipsis;
 }
 .single-product-slider{
-  height: 36rem;
+  height: fit-content;
 }
 .swiper-pagination .swiper-pagination-bullet{
   height: 2rem;
@@ -248,9 +248,9 @@ body.sidemenu-open .sidebar {
 }
 @media (max-width: 640px) {
   .single-product-slider{
-    height: 20rem;
+    height: fit-content;
   }
-  .single-product-slider .swiper-slide img{
+  .single-product-slider .main-img-container .swiper-slide img{
     height: 16rem;
   }
   .swiper-pagination .swiper-pagination-bullet{

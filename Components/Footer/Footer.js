@@ -5,9 +5,9 @@ import { BsChatDots } from 'react-icons/bs'
 const Footer = () => {
     return (
         <div className="footer mt-32 pb-10 lg:pb-24 relative px-4 lg:px-0">
-            <img src="/img/footer-bg.png" alt="" className='hidden lg:block -z-10 lg:absolute lg:top-20 left-0' />
+            <img src="/img/footer-bg.png" alt="" className='hidden lg:block -z-10 lg:absolute lg:bottom-0 left-0' />
             <img src="/img/footer-mobile-bg.png" alt="" className='lg:hidden -z-10 absolute -bottom-10 left-0' />
-            <div className="container p-10 bg-white rounded-3xl ">
+            <div className="container py-6 bg-white rounded-3xl ">
                 <div className="top-row flex justify-between items-center lg:px-28">
                     <div className="flex items-center gap-8">
                         <img src="/img/logo.png" alt="" className='h-10 hidden lg:block' />

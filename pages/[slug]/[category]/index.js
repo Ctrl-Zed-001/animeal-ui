@@ -7,7 +7,6 @@ import { Autoplay } from 'swiper';
 import 'swiper/css';
 import 'swiper/css/autoplay';
 import axios from 'axios'
-import config from '../../../config.json'
 
 
 const index = (props) => {
@@ -21,7 +20,7 @@ const index = (props) => {
     const getProductsByCategory = async () => {
         let allFetchedProducts = []
         for (const category of props.categorylevels) {
-            let fetchedProducts = await axios.post(`${config.api_uri}/category/level3products/categoryonetwothreewise`, {
+            let fetchedProducts = await axios.post(`${process.env.NEXT_PUBLIC_API_URI}/category/level3products/categoryonetwothreewise`, {
                 category1: props.animal,
                 category2: props.category,
                 category3: category.category_name
@@ -80,7 +79,7 @@ const index = (props) => {
 
 export async function getServerSideProps({ query }) {
 
-    let res = await axios.get(`${config.api_uri}/category/${query.slug}/${query.category}`)
+    let res = await axios.get(`${process.env.NEXT_PUBLIC_API_URI}/category/${query.slug}/${query.category}`)
 
     let categorylevels = res.data.categorylevels3;
 

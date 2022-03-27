@@ -41,7 +41,6 @@ const Cart = () => {
                             {/* CART ITEMS */}
                             {
                                 cartItems?.map((item, index) => {
-                                    console.log("🚀 ~ file: index.js ~ line 45 ~ cartItems?.map ~ item", item)
                                     return <CartItem updateCartQuantity={updateCartQuantity} key={index} item={item[0]} removeCartItem={removeCartItem} />
                                 })
 
@@ -56,7 +55,7 @@ const Cart = () => {
                     </div> :
                     <div>
                         <img src='/img/empty-cart.png' className='w-5/12 mx-auto' />
-                        <p className="text-center font-semibold">kuchh to khareed be!!</p>
+                        <p className="text-center font-semibold">You have no items in your cart.</p>
                     </div>
             }
             {/* PRESCRIPTION MODAL */}

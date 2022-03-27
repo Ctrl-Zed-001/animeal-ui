@@ -14,7 +14,6 @@ import "swiper/css/pagination";
 import { AuthContext } from '../../Context/AuthContext'
 import { CartContext } from '../../Context/CartContext'
 import axios from 'axios';
-import config from '../../config.json'
 import NewAddressModal from '../../Components/CheckoutComponents/NewAddressModal';
 import OrderStatusPopup from '../../Components/CheckoutComponents/OrderStatusPopup';
 import { useRouter } from 'next/router'
@@ -43,7 +42,7 @@ const Checkout = () => {
     useEffect(() => {
         if (token) {
             axios.post(
-                `${config.api_uri}/user/getsavedaddresses/post/data`,
+                `${process.env.NEXT_PUBLIC_API_URI}/user/getsavedaddresses/post/data`,
                 {},
                 {
                     headers: {
@@ -75,7 +74,7 @@ const Checkout = () => {
             defaultaddress: 'No'
         }
         axios.post(
-            `${config.api_uri}/user/addnewdaddress/post/data`,
+            `${process.env.NEXT_PUBLIC_API_URI}/user/addnewdaddress/post/data`,
             body,
             {
                 headers: {
@@ -84,7 +83,6 @@ const Checkout = () => {
             }
         )
             .then(res => {
-                console.log(res.data)
                 setSavedAddresses([
                     body,
                     ...savedAddresses
@@ -104,7 +102,7 @@ const Checkout = () => {
 
     const callRazorPay = () => {
         axios.post(
-            `${config.api_uri}/user/razorpayordercreate/post/data`,
+            `${process.env.NEXT_PUBLIC_API_URI}/user/razorpayordercreate/post/data`,
             {
                 "amount": cartTotal * 100
             },
@@ -125,7 +123,7 @@ const Checkout = () => {
     const makePayment = (orderId) => {
         let rzp1;
         var options = {
-            "key": config.razorPayKey, // Enter the Key ID generated from the Dashboard
+            "key": process.env.NEXT_PUBLIC_RAZOR_PAY_KEY, // Enter the Key ID generated from the Dashboard
             "amount": cartTotal * 100, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
             "currency": "INR",
             "name": "Animeal",
@@ -137,7 +135,7 @@ const Checkout = () => {
                 let order_id = response.razorpay_order_id;
                 let signature = response.razorpay_signature;
                 axios.post(
-                    `${config.api_uri}/user/onlinePayment/post/data`,
+                    `${process.env.NEXT_PUBLIC_API_URI}/user/onlinePayment/post/data`,
                     {
                         name: address.addname,
                         drname: "zed",
@@ -158,7 +156,6 @@ const Checkout = () => {
                     }
                 )
                     .then(res => {
-                        console.log(res.data)
                         setOrderStatus(true)
                         setStatusModal(true)
                     })

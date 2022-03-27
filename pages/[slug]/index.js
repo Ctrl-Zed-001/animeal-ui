@@ -4,7 +4,6 @@ import CategoryBox from '../../Components/AnimalPageComponents/CategoryBox'
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay } from 'swiper';
 import axios from 'axios'
-import config from '../../config.json'
 import ProductRow from '../../Components/HomeComponents/ProductRow'
 
 import 'swiper/css';
@@ -21,7 +20,7 @@ const index = (props) => {
     const getProductsByCategory = async () => {
         let allFetchedProducts = []
         for (const category of props.categorylevels) {
-            let fetchedProducts = await axios.post(`${config.api_uri}/category/level2products/categoryonetwowise`, {
+            let fetchedProducts = await axios.post(`${process.env.NEXT_PUBLIC_API_URI}/category/level2products/categoryonetwowise`, {
                 category1: props.slug,
                 category2: category.category_url
             })
@@ -81,7 +80,7 @@ const index = (props) => {
 
 export async function getServerSideProps({ query }) {
 
-    let res = await axios.get(`${config.api_uri}/category/${query.slug}`)
+    let res = await axios.get(`${process.env.NEXT_PUBLIC_API_URI}/category/${query.slug}`)
     let productres = []
     let categoryLevels = res.data.categorylevels
 

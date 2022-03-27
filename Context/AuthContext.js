@@ -1,6 +1,6 @@
 import React, { useState, useEffect, createContext } from 'react'
 import axios from 'axios'
-import config from '../config.json'
+import { useSession, signIn, signOut } from "next-auth/react"
 import { useRouter } from 'next/router';
 
 export const AuthContext = createContext();
@@ -12,6 +12,9 @@ const AuthContextProvider = (props) => {
     const [isMobile, setIsMobile] = useState(false)
     const [showAuthModal, setShowAuthModal] = useState(false)
     const [token, setToken] = useState('')
+
+    const { data: session, status } = useSession()
+    console.log("🚀 ~ file: AuthPopup.js ~ line 21 ~ AuthPopup ~ session", session, status)
 
     const router = useRouter()
 
@@ -26,7 +29,7 @@ const AuthContextProvider = (props) => {
         if (token) {
             setToken(token)
             axios.post(
-                `${config.api_uri}/user/getauthenticateuser/post/data`,
+                `${process.env.NEXT_PUBLIC_API_URI}/user/getauthenticateuser/post/data`,
                 {},
                 {
                     headers: {
@@ -47,7 +50,7 @@ const AuthContextProvider = (props) => {
 
     const getUserDetails = (token) => {
         axios.post(
-            `${config.api_uri}/user/getauthenticateuser/post/data`,
+            `${process.env.NEXT_PUBLIC_API_URI}/user/getauthenticateuser/post/data`,
             {},
             {
                 headers: {
@@ -71,8 +74,15 @@ const AuthContextProvider = (props) => {
         setToken('')
     }
 
+    const loginSocial = async () => {
+        // signIn()
+        let crfToken = await axios.get('/api/auth/csrf')
+        let auth = await axios.post('/api/auth/signin/google', { data: crfToken.data.csrfToken })
+        console.log(auth.data)
+    }
+
     return (
-        <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn, userDetails, setUserDetails, isMobile, getUserDetails, showAuthModal, setShowAuthModal, token, setToken, logout }}>
+        <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn, userDetails, setUserDetails, isMobile, getUserDetails, showAuthModal, setShowAuthModal, token, setToken, logout, loginSocial }}>
             {props.children}
         </AuthContext.Provider>
     )

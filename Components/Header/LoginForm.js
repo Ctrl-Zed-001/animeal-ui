@@ -13,7 +13,7 @@ const LoginForm = (props) => {
         <div className='text-gray-900 login-form'>
             <h1 className="text-xl font-medium text-center">Login Now</h1>
             <div className="flex justify-between gap-4 md:gap-0 md:justify-around items-center mt-6 text-xs md:text-base">
-                <div className="with-social-button flex items-center border rounded-lg py-2 px-4 border-yellow-500 font-semibold">
+                <div onClick={props.loginSocial} className="with-social-button flex items-center border rounded-lg py-2 px-4 border-yellow-500 font-semibold">
                     <img src="/img/icons/google.png" alt="" className='h-6 mr-2' />
                     Login with Google
                 </div>

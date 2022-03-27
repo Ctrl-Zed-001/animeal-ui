@@ -1,6 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
-import config from '../../config.json'
+
 
 const ShopByPet = (props) => {
 
@@ -16,7 +16,7 @@ const ShopByPet = (props) => {
                             <Link href={`/${animal.category_name.toLowerCase()}`} key={id}>
                                 <div className="petbox drop-shadow hover:drop-shadow-none relative bg-white p-4 rounded-lg pb-20 transition duration-150 ease-in cursor-pointer">
                                     <h1 className='w-2/6'>{animal.category_name}</h1>
-                                    <img src={config.category_uri + '/' + animal.category_icon} alt="" className='absolute -bottom-0 right-0 h-32 lg:h-36 lg:-bottom-0' />
+                                    <img src={process.env.NEXT_PUBLIC_CATEGORY_URI + '/' + animal.category_icon} alt="" className='absolute -bottom-0 right-0 h-32 lg:h-36 lg:-bottom-0' />
                                 </div>
                             </Link>
                         )
