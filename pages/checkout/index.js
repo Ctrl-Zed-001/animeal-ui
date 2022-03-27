@@ -16,12 +16,18 @@ import { CartContext } from '../../Context/CartContext'
 import axios from 'axios';
 import config from '../../config.json'
 import NewAddressModal from '../../Components/CheckoutComponents/NewAddressModal';
+import OrderStatusPopup from '../../Components/CheckoutComponents/OrderStatusPopup';
+import { useRouter } from 'next/router'
+import OtpPopup from '../../Components/CheckoutComponents/OtpPopup'
+
 
 
 
 const Checkout = () => {
 
     SwiperCore.use([Virtual, Navigation]);
+    const router = useRouter()
+
     const { token, userDetails } = useContext(AuthContext)
     const { cartTotal } = useContext(CartContext)
 
@@ -29,6 +35,10 @@ const Checkout = () => {
     const [address, setAddress] = useState()
     const [savedAddresses, setSavedAddresses] = useState()
     const [newAddressModal, ToggleNewAddressModal] = useState(false)
+    const [statusModal, setStatusModal] = useState()
+    const [otpModal, setOtpModal] = useState()
+    const [orderStatus, setOrderStatus] = useState(false)
+    const [isOnlinePayment, setIsOnlinePayment] = useState(true)
 
     useEffect(() => {
         if (token) {
@@ -94,25 +104,28 @@ const Checkout = () => {
 
     const callRazorPay = () => {
         axios.post(
-            `https://api.razorpay.com/v1/orders`,
+            `${config.api_uri}/user/razorpayordercreate/post/data`,
             {
-                "amount": 1000000,
-                "currency": "INR",
-                "receipt": "Receipt no. 1",
-                "notes": {
-                    "notes_key_1": "Tea, Earl Grey, Hot",
-                    "notes_key_2": "Tea, Earl Grey… decaf."
+                "amount": cartTotal * 100
+            },
+            {
+                headers: {
+                    Authorization: token
                 }
             }
         )
-            .then(res => console.log("RAZORPAY RESPONSE", res.data))
+            .then(res => {
+                if (res.data.razorpayOrderDetails.id) {
+                    makePayment(res.data.razorpayOrderDetails.id)
+                }
+            })
             .catch(err => console.log(err))
     }
 
     const makePayment = (orderId) => {
         let rzp1;
         var options = {
-            "key": "rzp_test_cgVa13U4q2vidA", // Enter the Key ID generated from the Dashboard
+            "key": config.razorPayKey, // Enter the Key ID generated from the Dashboard
             "amount": cartTotal * 100, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
             "currency": "INR",
             "name": "Animeal",
@@ -120,9 +133,36 @@ const Checkout = () => {
             "order_id": orderId,
             "image": "/img/logo.png",
             "handler": function (response) {
-                alert(response.razorpay_payment_id);
-                alert(response.razorpay_order_id);
-                alert(response.razorpay_signature)
+                let payment_id = response.razorpay_payment_id
+                let order_id = response.razorpay_order_id;
+                let signature = response.razorpay_signature;
+                axios.post(
+                    `${config.api_uri}/user/onlinePayment/post/data`,
+                    {
+                        name: address.addname,
+                        drname: "zed",
+                        email: address.addemail,
+                        number: address.addnumber,
+                        altnumber: address.addaltnumber,
+                        address1: address.addaddress1,
+                        address2: address.addaddress2,
+                        city: address.addcity,
+                        pincode: address.addpincode,
+                        state: address.addstate,
+                        razorpay_payment_id: payment_id
+                    },
+                    {
+                        headers: {
+                            Authorization: token
+                        }
+                    }
+                )
+                    .then(res => {
+                        console.log(res.data)
+                        setOrderStatus(true)
+                        setStatusModal(true)
+                    })
+                    .catch(err => console.log(err))
             },
             "prefill": {
                 "name": "Gaurav Kumar",
@@ -150,8 +190,22 @@ const Checkout = () => {
             // alert(response.error.metadata.payment_id);
 
             // OPEN PAYMENT FAIL POPUP HERE
+            setOrderStatus(false)
+            setStatusModal(true)
         });
     }
+
+    const placeOrder = (otp) => {
+        setOtpModal(false)
+        console.log(otp)
+        // VALIDATE OTP API
+        console.log("validating otp")
+        // PLACE ORDER API
+        console.log("order placed")
+        setStatusModal(true)
+        setOrderStatus(true)
+    }
+
 
     return (
         <div className='block lg:flex lg:gap-12 checkout-page container my-5'>
@@ -173,11 +227,11 @@ const Checkout = () => {
 
 
             {/* LEFT SECTION */}
-            <div className="left-section w-9/12">
+            <div className="left-section w-full lg:w-9/12">
 
                 <div className="lg:flex gap-3 hidden">
                     {/* DESKTOP ADDRESS SLIDER */}
-                    <Radio.Group value='' className='w-10/12'>
+                    <Radio.Group className='w-10/12'>
                         <Swiper
                             modules={[Virtual]}
                             slidesPerView={3}
@@ -222,7 +276,7 @@ const Checkout = () => {
                 </div>
 
                 {/* EDIT ADDRESS FORM */}
-                <div className="hidden lg:block address-form bg-slate-100 p-4 rounded-lg mt-4">
+                <div className="address-form bg-slate-100 p-4 rounded-lg mt-4">
                     <h1 className="font-semibold text-lg">Delivery Address</h1>
                     <div className="flex justify-between gap-14 my-14 w-full">
                         <Input
@@ -241,7 +295,7 @@ const Checkout = () => {
                             type="number"
                         />
                     </div>
-                    <div className="flex justify-between gap-14 my-14 w-full">
+                    <div className="grid grid-cols-1 lg:flex justify-between gap-14 my-14 w-full">
                         <Input
                             fullWidth
                             clearable
@@ -256,7 +310,7 @@ const Checkout = () => {
                             label="Area / locality"
                             initialValue={address?.addaddress2}
                         />
-                        <select name='addtype' value={address?.addresstype} className='bg-transparent border-b-2 border-gray-200 w-8/12'>
+                        <select name='addtype' value={address?.addresstype} className='bg-transparent border-b-2 border-gray-200 w-full lg:w-8/12'>
                             <option value="Office">Office</option>
                             <option value="Home">Home</option>
                         </select>
@@ -271,7 +325,7 @@ const Checkout = () => {
                         />
                         
                     </div> */}
-                    <div className="flex justify-between gap-14 my-14 w-full">
+                    <div className="grid grid-cols-1 lg:flex justify-between gap-14 my-14 w-full">
                         <Input
                             fullWidth
                             clearable
@@ -333,15 +387,15 @@ const Checkout = () => {
                 </div>
 
                 {/* PAYMENT OPTIONS  */}
-                <Radio.Group value='online'>
+                <Radio.Group onChange={(value) => setIsOnlinePayment(value)} value={true}>
                     <div className='online-payment bg-white p-3 rounded-lg mt-4'>
                         <div className="flex items-center">
-                            <Radio checked={true} value="online" size={'xs'} color='success' css={{ 'margin': '0 !important' }}></Radio>
+                            <Radio value={true} size={'xs'} color='success' css={{ 'margin': '0 !important' }}></Radio>
                             <h1 className='font-semibold'>Online Payment</h1>
                         </div>
-                        <div className="flex items-center text-green-600 my-2">
+                        <div className="flex items-start text-green-600 my-2">
                             <HiShieldCheck />
-                            <p className='text-xs'>100% payment protection and easy refunds.</p>
+                            <p className='text-xs ml-1'>100% payment protection and easy refunds.</p>
                         </div>
                         <div className="flex justify-evenly items-center mt-3 ml-5">
                             <img src="/img/icons/visa.png" alt="" className='h-6' />
@@ -354,15 +408,22 @@ const Checkout = () => {
 
                     <div className='cod bg-white p-3 rounded-lg mt-4'>
                         <div className="flex items-center">
-                            <Radio value="cod" size={'xs'} color='success' css={{ 'margin': '0 !important' }}></Radio>
+                            <Radio value={false} size={'xs'} color='success' css={{ 'margin': '0 !important' }}></Radio>
                             <h1 className='font-semibold'>Cash On Delivery</h1>
                         </div>
                     </div>
                 </Radio.Group>
 
-                <button onClick={callRazorPay} className="w-full text-center bg-theme p-2 rounded-lg py-4 mt-8 shadow font-semibold">
-                    Place Order
-                </button>
+                {
+                    isOnlinePayment ?
+                        <button onClick={callRazorPay} className="w-full text-center bg-theme p-2 rounded-lg py-4 mt-8 shadow font-semibold">
+                            Pay Online
+                        </button>
+                        :
+                        <button onClick={() => { setOtpModal(true) }} className="w-full text-center bg-theme p-2 rounded-lg py-4 mt-8 shadow font-semibold">
+                            Place Order
+                        </button>
+                }
             </div >
 
             {/* MOBILE ADDRESS MODAL */}
@@ -371,7 +432,20 @@ const Checkout = () => {
             {/* NEW ADDRESS MODAL */}
             <NewAddressModal isOpen={newAddressModal} close={() => ToggleNewAddressModal(false)} save={addNewAddress} />
 
-            {/* PROMOCODE MODAL */}
+            {/* ORDER STATUS MODAL */}
+            {
+                statusModal !== undefined ?
+                    <OrderStatusPopup isOpen={statusModal} status={orderStatus} close={() => { setStatusModal(false); router.replace('/') }} /> :
+                    <></>
+            }
+
+            {/* OTP MODAL */}
+            {
+                otpModal !== undefined ?
+                    <OtpPopup isOpen={otpModal} close={() => setOtpModal(false)} placeOrder={placeOrder} /> :
+                    <></>
+            }
+
         </div >
     )
 }

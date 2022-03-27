@@ -15,11 +15,11 @@ const LoginForm = (props) => {
             <div className="flex justify-between gap-4 md:gap-0 md:justify-around items-center mt-6 text-xs md:text-base">
                 <div className="with-social-button flex items-center border rounded-lg py-2 px-4 border-yellow-500 font-semibold">
                     <img src="/img/icons/google.png" alt="" className='h-6 mr-2' />
-                    Signup with Google
+                    Login with Google
                 </div>
                 <div className="with-social-button flex items-center border rounded-lg py-2 px-4 border-yellow-500 font-semibold">
                     <img src="/img/icons/fb.png" alt="" className='h-6 mr-2' />
-                    Signup with Facebook
+                    Login with Facebook
                 </div>
             </div>
             <h1 className='text-center my-2 md:my-4 text-gray-500 font-semibold'>- OR -</h1>
