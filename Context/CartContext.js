@@ -112,8 +112,12 @@ const CartContextProvider = (props) => {
         })
     }
 
+    const clearCart = () => {
+        setCartItems([])
+    }
+
     return (
-        <CartContext.Provider value={{ cartItems, setCartItems, cartTotal, setCartTotal, qty, setQty, removeAllItems, removeCartItem, updateCartQuantity, addToCart, cartDiscount, subTotal }}>
+        <CartContext.Provider value={{ cartItems, setCartItems, cartTotal, setCartTotal, qty, setQty, removeAllItems, removeCartItem, updateCartQuantity, addToCart, cartDiscount, subTotal, clearCart }}>
             {props.children}
         </CartContext.Provider>
     )

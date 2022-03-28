@@ -10,7 +10,7 @@ const OtpPopup = (props) => {
 
     const otpValidate = (e) => {
         setValue(e.target.value)
-        if (e.target.value.length === 4) {
+        if (e.target.value.length === 6) {
             otpField.current.blur()
         }
     }

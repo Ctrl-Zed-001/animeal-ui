@@ -17,7 +17,7 @@ const LoginForm = (props) => {
                     <img src="/img/icons/google.png" alt="" className='h-6 mr-2' />
                     Login with Google
                 </div>
-                <div className="with-social-button flex items-center border rounded-lg py-2 px-4 border-yellow-500 font-semibold">
+                <div onClick={props.loginSocial} className="with-social-button flex items-center border rounded-lg py-2 px-4 border-yellow-500 font-semibold">
                     <img src="/img/icons/fb.png" alt="" className='h-6 mr-2' />
                     Login with Facebook
                 </div>

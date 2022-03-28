@@ -14,7 +14,7 @@ const AuthContextProvider = (props) => {
     const [token, setToken] = useState('')
 
     const { data: session, status } = useSession()
-    console.log("🚀 ~ file: AuthPopup.js ~ line 21 ~ AuthPopup ~ session", session, status)
+
 
     const router = useRouter()
 
@@ -24,9 +24,10 @@ const AuthContextProvider = (props) => {
         } else {
             setIsMobile(false)
         }
-
+        console.log(session, status)
         let token = localStorage.getItem('token')
         if (token) {
+            console.log("got the token")
             setToken(token)
             axios.post(
                 `${process.env.NEXT_PUBLIC_API_URI}/user/getauthenticateuser/post/data`,
@@ -45,8 +46,35 @@ const AuthContextProvider = (props) => {
                     setIsLoggedIn(false)
                     setUserDetails()
                 })
+        } else if (status == 'authenticated') {
+            console.log("checking session")
+            axios.post(
+                `${process.env.NEXT_PUBLIC_API_URI}/user/sociallogin/post/data`,
+                {
+                    name: session.user.name,
+                    email: session.user.email
+                }
+            )
+                .then(res => {
+                    setIsLoggedIn(true)
+                    setToken('Bearer ' + res.data.token)
+                    setUserDetails(res.data.user)
+                    localStorage.setItem('token', 'Bearer ' + res.data.token)
+                })
+                .catch(err => {
+                    setIsLoggedIn(false)
+                    setUserDetails()
+                    setToken('')
+                })
+        } else {
+            console.log("not logged in")
+            localStorage.removeItem('token');
+            setIsLoggedIn(false)
+            setUserDetails()
+            setToken('')
         }
-    }, [token])
+    }, [status])
+
 
     const getUserDetails = (token) => {
         axios.post(
@@ -72,13 +100,16 @@ const AuthContextProvider = (props) => {
         setIsLoggedIn(false)
         setUserDetails()
         setToken('')
+        if (status == 'authenticated') {
+            signOut()
+        }
     }
 
     const loginSocial = async () => {
-        // signIn()
-        let crfToken = await axios.get('/api/auth/csrf')
-        let auth = await axios.post('/api/auth/signin/google', { data: crfToken.data.csrfToken })
-        console.log(auth.data)
+        signIn()
+        // let crfToken = await axios.get('/api/auth/csrf')
+        // let auth = await axios.post('/api/auth/signin/google', { data: crfToken.data.csrfToken })
+        // console.log(auth.data)
     }
 
     return (

@@ -28,7 +28,7 @@ const Checkout = () => {
     const router = useRouter()
 
     const { token, userDetails } = useContext(AuthContext)
-    const { cartTotal } = useContext(CartContext)
+    const { cartTotal, clearCart } = useContext(CartContext)
 
     const [showAddressModal, setShowAddressModal] = useState(false)
     const [address, setAddress] = useState()
@@ -38,6 +38,7 @@ const Checkout = () => {
     const [otpModal, setOtpModal] = useState()
     const [orderStatus, setOrderStatus] = useState(false)
     const [isOnlinePayment, setIsOnlinePayment] = useState(true)
+
 
     useEffect(() => {
         if (token) {
@@ -158,6 +159,7 @@ const Checkout = () => {
                     .then(res => {
                         setOrderStatus(true)
                         setStatusModal(true)
+                        clearCart()
                     })
                     .catch(err => console.log(err))
             },
@@ -192,15 +194,66 @@ const Checkout = () => {
         });
     }
 
-    const placeOrder = (otp) => {
+    const callOtp = () => {
+        setOtpModal(true)
+        axios.post(`${process.env.NEXT_PUBLIC_API_URI}/user/otpgeneration/post/data`,
+            {
+                number: address.addnumber.toString()
+            },
+            {
+                headers: {
+                    Authorization: token
+                }
+            }
+        )
+            .then(res => {
+                let genOtp = res.data.OTPGenerated.substr(res.data.OTPGenerated.length - 6);
+                setOtp(genOtp)
+            })
+            .catch(err => console.log(err))
+    }
+
+    const placeOrder = (value) => {
         setOtpModal(false)
-        console.log(otp)
         // VALIDATE OTP API
-        console.log("validating otp")
+
+        axios.post(
+            `${process.env.NEXT_PUBLIC_API_URI}/user/codorder/post/data`,
+            {
+                otp: value,
+                name: address.addname,
+                drname: "zed",
+                email: address.addemail,
+                number: address.addnumber,
+                altnumber: address.addaltnumber,
+                address1: address.addaddress1,
+                address2: address.addaddress2,
+                city: address.addcity,
+                pincode: address.addpincode,
+                state: address.addstate
+            },
+            {
+                headers: {
+                    Authorization: token
+                }
+            }
+        )
+            .then(res => {
+                console.log(res.data)
+                setOrderStatus(true)
+                setStatusModal(true)
+                clearCart()
+            })
+            .catch(err => {
+                setOrderStatus(false)
+                setStatusModal(true)
+                console.log(err)
+            })
+
+
+
         // PLACE ORDER API
-        console.log("order placed")
-        setStatusModal(true)
-        setOrderStatus(true)
+
     }
 
 
@@ -417,7 +470,7 @@ const Checkout = () => {
                             Pay Online
                         </button>
                         :
-                        <button onClick={() => { setOtpModal(true) }} className="w-full text-center bg-theme p-2 rounded-lg py-4 mt-8 shadow font-semibold">
+                        <button onClick={callOtp} className="w-full text-center bg-theme p-2 rounded-lg py-4 mt-8 shadow font-semibold">
                             Place Order
                         </button>
                 }

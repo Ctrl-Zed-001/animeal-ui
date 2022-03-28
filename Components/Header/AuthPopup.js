@@ -77,7 +77,7 @@ const AuthPopup = (props) => {
                     <div className="form-section p-6 rounded-l-xl bg-slate-200 h-full md:w-8/12">
                         <Swiper className="mySwiper">
                             <SwiperSlide className=''><LoginForm login={login} loginSocial={loginSocial} /></SwiperSlide>
-                            <SwiperSlide><SignupForm signup={signup} /></SwiperSlide>
+                            <SwiperSlide><SignupForm signup={signup} loginSocial={loginSocial} /></SwiperSlide>
                         </Swiper>
                     </div>
                 </div>

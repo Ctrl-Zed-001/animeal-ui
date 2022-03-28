@@ -13,6 +13,7 @@ import { CartContext } from '../../Context/CartContext'
 import { Swiper, SwiperSlide } from 'swiper/react';
 // import required modules
 import { FreeMode, Navigation, Thumbs } from "swiper";
+import toast, { Toaster } from 'react-hot-toast';
 
 
 import axios from 'axios';
@@ -81,6 +82,7 @@ const Product = (props) => {
                     }
                 })
                 .then(res => {
+                    toast.success('Item added to cart');
                     setInCart(true)
                     addToCart([{
                         ...res.data.success,
@@ -188,15 +190,17 @@ const Product = (props) => {
                         {
                             props.product.availableStock == 0 ?
                                 <p className='text-red-500 text-sm font-semibold mb-4'>Out Of Stock</p> :
-                                <p className='text-red-500 text-sm font-semibold mb-4'>Only {props.product.availableStock} left in stock</p>
+                                props.product.availableStock <= 10 ?
+                                    <p className='text-red-500 text-sm font-semibold mb-4'>Only {props.product.availableStock} left in stock</p> :
+                                    <p className='text-green-500 text-sm font-semibold mb-4'>In stock</p>
                         }
 
                         <div className="lg:flex items-center xl:w-full 2xl:w-5/6 justify-between">
                             <div className='flex items-center gap-3'>
                                 <p className="text-sm font-semibold">Deliver to : </p>
-                                {/* <Input clearable placeholder='check for delivery' type={'number'} /> */}
+                                <Input clearable placeholder='check for delivery' type={'number'} />
                             </div>
-                            <p className="text-sm font-semibold text-green-600 mt-3 lg:mt-0 ml-2 lg:ml-0 ">Delivery available for 410 206</p>
+                            <p className="text-sm font-semibold text-green-600 mt-3 lg:mt-0 ml-2 lg:ml-0 "></p>
                         </div>
 
                         <div className="flex items-start w-full mt-4">
@@ -282,8 +286,8 @@ const Product = (props) => {
             </div>
 
             {/* CUSTOMER REVIEW */}
-            <Reviews />
-
+            {/* <Reviews /> */}
+            <Toaster />
         </div>
     )
 }
