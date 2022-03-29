@@ -14,6 +14,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 // import required modules
 import { FreeMode, Navigation, Thumbs } from "swiper";
 import toast, { Toaster } from 'react-hot-toast';
+import getWeight from '../../Helpers/GetWeight'
 
 
 import axios from 'axios';
@@ -54,6 +55,7 @@ const Product = (props) => {
                 .then(res => setInCart(res.data.validateAddToCart))
                 .catch(err => console.log(err))
         }
+
     }, [token])
 
     useEffect(() => {
@@ -147,22 +149,27 @@ const Product = (props) => {
                 {/* PRODUCT IMAGE SLIDER */}
                 <div className='rounded-lg lg:w-5/12 single-product-slider'>
                     {/* MAIN SLIDER */}
-                    <Swiper
-                        slidesPerView={1}
-                        className='mx-auto h-full main-img-container drop-shadow'
-                        thumbs={{ swiper: thumbsSwiper }}
-                        modules={[FreeMode, Navigation, Thumbs]}
-                    >
-                        {
-                            productImages.map((image, index) => {
-                                return (<SwiperSlide key={index} className=''>
-                                    <div id='img-container'>
-                                        <img src={`${process.env.NEXT_PUBLIC_IMAGE_URI}/${image.product_id}/${image.product_image}`} alt="" id="single-product-image" className='rounded-lg mx-auto bg-white' />
-                                    </div>
-                                </SwiperSlide>)
-                            })
-                        }
-                    </Swiper>
+                    {
+                        !productImages || productImages.length === 0 ?
+                            <div className='mx-auto bg-white rounded-lg p-4'><img src='/img/product-placeholder.png' className='h-96 mx-auto' /></div> :
+                            <Swiper
+                                slidesPerView={1}
+                                className='mx-auto h-full main-img-container drop-shadow'
+                                thumbs={{ swiper: thumbsSwiper }}
+                                modules={[FreeMode, Navigation, Thumbs]}
+                            >
+                                {
+                                    productImages.map((image, index) => {
+                                        return (<SwiperSlide key={index} className=''>
+                                            <div id='img-container'>
+                                                <img src={`${process.env.NEXT_PUBLIC_IMAGE_URI}/${image.product_id}/${image.product_image}`} alt="" id="single-product-image" className='rounded-lg mx-auto bg-white' />
+                                            </div>
+                                        </SwiperSlide>)
+                                    })
+                                }
+                            </Swiper>
+                    }
+
 
                     {/* MINI SLIDER */}
                     <Swiper
@@ -193,38 +200,38 @@ const Product = (props) => {
                     <h1 className="text-base lg:text-3xl font-semibold text-slate-900">
                         {props.product.products.website_pro_name}
                     </h1>
-                    <p className='text-sm text-slate-600 font-medium my-2'>by : {props.product.products.brand}</p>
-                    <div className="flex">
+                    <p className='text text-slate-600 font-medium my-2'>by : {props.product.products.brand}</p>
+                    <div className="flex items-center">
                         <Rating value={0} />
-                        <p className='text-xs lg:text-sm text-slate-600 ml-3 font-medium'>{props.product.ratinglist.length} customer reviews</p>
+                        <p className='text-xs lg:text-base text-slate-600 ml-3 font-medium'>{props.product.ratinglist.length} customer reviews</p>
                     </div>
 
                     <div className="flex mt-4 items-center">
-                        <h3 className="text-sm font-medium text-gray-500 flex items-center mr-2 line-through"><BiRupee />{props.product.products.mrp}</h3>
+                        <h3 className="text-sm lg:text-base font-medium text-gray-500 flex items-center mr-2 line-through"><BiRupee />{props.product.products.mrp}</h3>
                         <h1 className="text-2xl flex items-center font-semibold"><BiRupee />{props.product.productPriceApi}</h1>
                     </div>
-                    <p className="text-sm flex items-center mt-2 text-green-500 font-semibold">you save <BiRupee /> {parseInt(props.product.products.mrp) - parseInt(props.product.productPriceApi)} </p>
+                    <p className="text-sm lg:text-base flex items-center mt-2 text-green-700 font-semibold">you save <BiRupee /> {parseInt(props.product.products.mrp) - parseInt(props.product.productPriceApi)} </p>
                     {/* <p className='text-sm text-slate-600 mt-3 font-medium'>Free 1-3 day shipping on this item.</p> */}
 
                     <div className="bg-white rounded-lg p-3 mt-3">
                         {
                             props.product.availableStock == 0 ?
-                                <p className='text-red-500 text-sm font-semibold mb-4'>Out Of Stock</p> :
+                                <p className='text-red-500 text-sm lg:text-base font-semibold mb-4'>Out Of Stock</p> :
                                 props.product.availableStock <= 10 ?
-                                    <p className='text-red-500 text-sm font-semibold mb-4'>Only {props.product.availableStock} left in stock</p> :
-                                    <p className='text-green-500 text-sm font-semibold mb-4'>In stock</p>
+                                    <p className='text-red-500 text-sm lg:text-base font-semibold mb-4'>Only {props.product.availableStock} left in stock</p> :
+                                    <p className='text-green-500 text-sm lg:text-base font-semibold mb-4'>In stock</p>
                         }
 
                         <div className="lg:flex items-center xl:w-full 2xl:w-5/6 gap-6">
                             <div className='flex items-center gap-3'>
-                                <p className="text-sm font-semibold">Deliver to : </p>
+                                <p className="text-sm lg:text-base font-semibold">Deliver to : </p>
                                 <form onSubmit={checkAvailability}>
                                     <Input onClearClick={() => { setCheckPinCode(); setIsDeliverable() }} onChange={(e) => setCheckPinCode(e.target.value)} clearable placeholder='check for delivery' type={'number'} />
                                 </form>
                             </div>
                             {
                                 isDeliverable !== undefined ?
-                                    <p className={`text-xs font-semibold ${isDeliverable ? 'text-green-600' : 'text-red-400'} mt-3 lg:mt-0 ml-2 lg:ml-0`}>
+                                    <p className={`text-xs lg:text-base font-semibold ${isDeliverable ? 'text-green-600' : 'text-red-400'} mt-3 lg:mt-0 ml-2 lg:ml-0`}>
                                         {
                                             isDeliverable ?
                                                 "will reach you in 24hrs" :
@@ -250,12 +257,21 @@ const Product = (props) => {
                             {
                                 props.product.similarproduct ?
                                     <div className="variations">
-                                        <p className="mb-3 text-sm font-medium">Variations</p>
+                                        <p className="mb-3 text-sm lg:text-base font-medium">Variations</p>
                                         <div className="flex">
                                             {
                                                 props.product.similarproduct.map((prod, index) => {
-                                                    return <Link key={index} href={`/product/${prod.website_slug_name}`}><div className="size cursor-pointer bg-slate-100 p-2 text-sm rounded mr-4">{prod.product_weight}</div></Link>
+                                                    return (<Link key={index} href={`/product/${prod.website_slug_name}`}>
+                                                        <div className="size cursor-pointer bg-slate-100 p-2 text-sm lg:text-base text-center font-medium shadow rounded mr-4">
+                                                            {prod.product_weight}
+                                                            <br />
+                                                            <div className="flex items-center text-sm text-slate-600 mt-2">
+                                                                <BiRupee /> {prod.product_price / getWeight(prod.product_weight)} / Kg
+                                                            </div>
+                                                        </div>
+                                                    </Link>)
                                                 })
+
                                             }
 
                                         </div>
@@ -304,9 +320,10 @@ const Product = (props) => {
                     <hr className='border-1 border-gray-300 my-6' />
 
                     <div className="content-box">
-                        <p className={`text-justify text-sm leading-5 text-slate-600 mb-4 font-medium h-16 hover:h-fit overflow-hidden transition-all ease-in-out duration-500`}>
+                        <p className={`text-justify text-sm leading-5 text-slate-600 mb-0 font-medium h-16 hover:h-fit overflow-hidden transition-all ease-in-out duration-500`}>
                             {props.product.products.shortdescription}
                         </p>
+                        <p className="text-sm text-theme">read more..</p>
                     </div>
 
                 </div>
@@ -314,7 +331,7 @@ const Product = (props) => {
             </div>
 
             {/* RELATED ITEMS */}
-            {/* <ProductRow title="Related products" products={props.product.similarproduct} /> */}
+            <ProductRow title="Your fur baby might also like this" products={props.relatedProducts} />
 
             <div className="container">
                 <hr className='border-1 border-gray-300 my-10' />
@@ -332,11 +349,14 @@ export async function getServerSideProps({ query }) {
     let slug = query.slug;
 
     let res = await axios.get(`${process.env.NEXT_PUBLIC_API_URI}/singleproduct/${slug}`)
+    let relatedRes = await axios.get(`${process.env.NEXT_PUBLIC_API_URI}/similarproducts/${slug}`)
     let product = await res.data
+    let relatedProducts = await relatedRes.data
 
     return {
         props: {
-            product: product
+            product: product,
+            relatedProducts: relatedProducts.similarProducts
         }
     }
 }

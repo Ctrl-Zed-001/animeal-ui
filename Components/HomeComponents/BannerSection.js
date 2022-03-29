@@ -42,7 +42,7 @@ const BannerSection = () => {
                 <Link href='/shop?slug=toys'>
                     <div className="popular-category-item flex items-center mt-6 gap-2  font-medium cursor-pointer">
                         <img src="/img/icons/toys.png" alt="" className='h-6' />
-                        Toys
+                        Supplies
                     </div>
                 </Link>
             </div>
@@ -53,12 +53,14 @@ const BannerSection = () => {
                     <div className="relative cursor-pointer">
                         <img src="/img/banner-1.png" alt="" className='h-52 xl:h-60 mb-3 xl:mb-4 rounded-lg w-full object-cover shadow' />
                         <h1 className="text-white text-3xl font-bold absolute top-10 left-5 w-7/12">Best Quanlity <br /> Pet Food</h1>
+                        <button className='bg-transparent border-2 border-white px-4 py-2 text-white absolute bottom-10 left-5 rounded-lg'>shop now</button>
                     </div>
                 </Link>
                 <Link href='/shop?slug=veterinary supplements medicine'>
                     <div className="relative">
                         <img src="/img/banner-2.png" alt="" className='h-52 xl:h-60 mt-3 xl:mt-4 rounded-lg w-full object-cover shadow' />
                         <h1 className="text-white text-3xl font-bold absolute top-10 left-5 w-7/12">Veterinary Products</h1>
+                        <button className='bg-transparent border-2 border-white px-4 py-2 text-white absolute bottom-10 left-5 rounded-lg'>shop now </button>
                     </div>
                 </Link>
             </div>
@@ -68,12 +70,13 @@ const BannerSection = () => {
                 <div className="relative h-90 lg:w-3/6 w-3/6 text-center">
                     <img src="/img/3rd.png" alt="" className='h-full object-cover rounded-lg w-full shadow' />
                     <h1 className="text-white text-xl font-bold absolute top-10 left-0 w-full px-2">Upload Prescription And Get Medicine</h1>
+                    <button className='bg-transparent border-2 border-white px-4 py-2 text-white absolute bottom-10 left-16 xl:left-14 rounded-lg'>upload now</button>
                 </div>
 
                 {/* RIGHT BANNER 2 */}
                 <div className="relative h-90 w-3/6 lg:w-3/6 text-center">
                     <img src="/img/4th.png" alt="" className='h-full object-cover rounded-lg w-full shadow' />
-                    <h1 className="text-white text-xl font-bold absolute top-10 left-0 w-full px-2">Pathology <br /> Coming Soon</h1>
+                    <h1 className="text-white text-xl font-bold absolute top-10 left-0 w-full px-2">Pathology <br /> <span className='text-3xl'>Coming Soon</span> </h1>
                 </div>
             </div>
         </div>

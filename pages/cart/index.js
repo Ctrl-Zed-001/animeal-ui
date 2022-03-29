@@ -8,7 +8,7 @@ import { CartContext } from '../../Context/CartContext';
 
 const Cart = () => {
 
-    const { cartItems, cartTotal, qty, removeAllItems, removeCartItem, updateCartQuantity, cartDiscount, subTotal } = useContext(CartContext)
+    const { cartItems, cartTotal, qty, removeAllItems, removeCartItem, updateCartQuantity, cartDiscount, subTotal, hasMedicine } = useContext(CartContext)
 
     const [showPrescriptionModal, setShowPrescriptionModal] = useState(false)
 
@@ -46,7 +46,12 @@ const Cart = () => {
 
                             }
 
-                            <p className="text-gray-500 text-sm text-center">Some of your itmes require prescription. Please upload theme to continue further. <span className='text-theme font-semibold underline cursor-pointer' onClick={() => { setShowPrescriptionModal(true) }}>Upload Prescription</span></p>
+                            {
+                                hasMedicine ?
+                                    <p className="text-gray-500 text-sm lg:text-base text-center">Some of your itmes require prescription. Please upload theme to continue further. <span className='text-theme font-semibold underline cursor-pointer' onClick={() => { setShowPrescriptionModal(true) }}>Upload Prescription</span></p> :
+                                    <></>
+                            }
+
 
 
                         </div>

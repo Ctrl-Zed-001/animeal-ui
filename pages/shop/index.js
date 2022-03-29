@@ -9,7 +9,6 @@ import { Pagination } from '@nextui-org/react';
 const Shop = () => {
 
     const router = useRouter()
-    const [sortBy, setSortBy] = useState('Popularity')
     const [srpData, setSrpData] = useState()
     const [page, setPage] = useState(1)
 
@@ -37,6 +36,10 @@ const Shop = () => {
     }, [router])
 
     const paginate = (pageNumber) => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth',
+        })
         if (router.query.animal) {
             axios.post(`${process.env.NEXT_PUBLIC_API_URI}/alllevelwiseproducts/post/data?page=${pageNumber}`, {
                 category1: router.query.animal,
@@ -57,7 +60,7 @@ const Shop = () => {
 
     }
 
-
+    console.log(router)
     return (
         <div className='shop-page my-10'>
 
@@ -70,8 +73,12 @@ const Shop = () => {
 
                 {/* PRODUCT LIST CONTAINER */}
                 <div className="right-section flex-1">
-
-                    <div className="sorting hidden md:flex justify-between items-center relative">
+                    {
+                        router.query.slug ?
+                            <h1 className="text-lg font-semibold text-slate-400">Search results for : <span className="text-slate-700 capitalize">{router.query.slug}</span> </h1> :
+                            <h1 className="text-lg font-semibold text-slate-400">Top results for   <span className="capitalize text-slate-700">{router.query.animal}</span> , <span className="capitalize text-slate-700">{router.query.subcategory}</span></h1>
+                    }
+                    <div className="sorting hidden md:flex justify-between items-center relative mt-4">
                         <p className='text-sm font-medium'>showing {srpData && srpData.to} out of {srpData && srpData.total} products</p>
                         <div>
                             <i className='absolute -top-2 right-28 text-gray-500 text-xs'>sort by</i>

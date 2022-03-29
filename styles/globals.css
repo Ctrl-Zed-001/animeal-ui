@@ -25,6 +25,12 @@ body {
   user-select: none;
   background: linear-gradient(21.93deg, #F58E10 -11.7%, #FCB62D 82.12%);
 }
+.header{
+  -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    background: hsl(0deg 0% 100% / 0%);
+    box-shadow: 0 0.063rem 0.625rem 0 rgb(0 0 0 / 20%);
+}
 .container{
   padding-left: 1rem;
   padding-right: 1rem;
@@ -270,4 +276,10 @@ body.sidemenu-open .sidebar {
   background-size: cover;
   background-repeat: no-repeat;
   background-position: top;
+}
+.helplinepopup{
+  transition: 0.5s;
+}
+.helplinepopup.block, .helplinepopup.hidden{
+  transition: 0.5s;
 }

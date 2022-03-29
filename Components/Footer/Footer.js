@@ -11,16 +11,16 @@ const Footer = () => {
                 <div className="top-row flex justify-between items-center lg:px-28">
                     <div className="flex items-center gap-8">
                         <img src="/img/logo.png" alt="" className='h-10 hidden lg:block' />
-                        <h1 className="text-xs lg:text-2xl font-semibold">Our Experts are available 24 x 7</h1>
+                        <h1 className="text-xs lg:text-2xl font-semibold">Experts are available 24 x 7</h1>
                     </div>
                     <div className="flex justify-between gap-4 lg:gap-8">
                         <button className='lg:text-base flex items-center gap-2 bg-theme px-4 py-2 rounded-lg'><BsChatDots />contact us</button>
-                        <button className='hidden text-xs lg:text-base lg:flex items-center gap-2 border-2 text-yellow-500 border-yellow-500 px-4 py-2 rounded-lg'><MdCall />959446664</button>
+                        <button className='hidden text-xs lg:text-base lg:flex items-center gap-2 border-2 text-yellow-500 border-yellow-500 px-4 py-2 rounded-lg'><MdCall />9004485093</button>
                     </div>
                 </div>
                 <hr className='w-full bg-gray-500 my-8' />
                 <div className="lg:flex justify-between items-center lg:px-28 lg:gap-10">
-                    <div className="flex justify-between items-center lg:gap-6 text-xs lg:text-sm">
+                    <div className="flex justify-between items-start lg:gap-6 text-xs lg:text-sm">
                         <div className="icon-text text-center">
                             <img src="/img/icons/reliable.png" alt="" className='mb-2 mx-auto h-10' />
                             <p className='font-semibold'>Reliable</p>
@@ -44,11 +44,10 @@ const Footer = () => {
                             <img src="/img/icons/shield.png" alt="" />
                             <p className="font-semibold text-sm text-green-500">100% payment protection, easy return policy</p>
                         </div>
-                        <div className="flex justify-center mt-4">
+                        <div className="grid grid-cols-4 gap-4 mt-4">
                             <img src="/img/icons/visa_footer.png" alt="" className='mx-auto h-4' />
                             <img src="/img/icons/googlePay_footer.png" alt="" className='mx-auto h-4' />
                             <img src="/img/icons/mastercard_footer.png" alt="" className='mx-auto h-4' />
-                            <img src="/img/icons/visa_footer.png" alt="" className='mx-auto h-4' />
                         </div>
                     </div>
                     <hr className='lg:hidden w-full bg-gray-500 my-8' />
@@ -69,13 +68,12 @@ const Footer = () => {
                         <img src="/img/icons/visa_footer.png" alt="" className='mx-auto h-4' />
                         <img src="/img/icons/googlePay_footer.png" alt="" className='mx-auto h-4' />
                         <img src="/img/icons/mastercard_footer.png" alt="" className='mx-auto h-4' />
-                        <img src="/img/icons/visa_footer.png" alt="" className='mx-auto h-4' />
                     </div>
                 </div>
                 <hr className='w-full bg-gray-500 my-8' />
                 <div className="lg:flex justify-between items-center lg:px-28">
                     <div className="lg:flex items-center gap-4 px-10">
-                        <img src="/img/logo.png" alt="" className='h-6 mx-auto' />
+                        <img src="/img/logo.png" alt="" className='h-10 mx-auto' />
                         <h1 className='font-semibold text-xs lg:text-base text-center'> is brought to you by <span className="text-theme">GOODMAN VETCARE PVT. LTD.</span>  </h1>
                     </div>
                     <h1 className='font-semibold text-xs lg:text-base text-center'>© 2022 Copyright Animeal.in</h1>

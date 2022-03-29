@@ -28,7 +28,7 @@ const ProductBox = (props) => {
                     </div>
                 </div>
 
-                <div className="whiteslide bg-white w-full h-3/5 ease-in duration-300 transition absolute bottom-0 left-0 -z-20 rounded-3xl"></div>
+                <div className="whiteslide bg-white w-full h-3/5 ease-in duration-300 transition absolute bottom-0 left-0 -z-20 rounded-2xl"></div>
 
             </div>
         </a>

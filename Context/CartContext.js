@@ -12,6 +12,7 @@ const CartContextProvider = (props) => {
     const [qty, setQty] = useState(0)
     const [cartDiscount, setCartDiscount] = useState(0)
     const [subTotal, setSubtotal] = useState(0)
+    const [hasMedicine, setHasMedicine] = useState(false)
 
     const { token } = useContext(AuthContext)
 
@@ -28,6 +29,7 @@ const CartContextProvider = (props) => {
                 .then(res => {
                     setCartItems(res.data.cartDetails)
                     setTotalAndQuantity(res.data.cartDetails)
+                    checkMedicine(res.data.cartDetails)
                 })
                 .catch(err => console.log(err.response))
         }
@@ -48,6 +50,13 @@ const CartContextProvider = (props) => {
         setQty(quantity)
         setCartDiscount(discount)
         setSubtotal(subtotal)
+    }
+
+    const checkMedicine = (data) => {
+        let containFilter = data.filter(item => item[0].category == "MEDICINE")
+        if (containFilter.length > 0) {
+            setHasMedicine(true)
+        }
     }
 
     const updateCartQuantity = (action, id, quantity) => {
@@ -80,6 +89,7 @@ const CartContextProvider = (props) => {
     const addToCart = (item) => {
         setCartItems([...cartItems, item])
         setTotalAndQuantity([...cartItems, item])
+        checkMedicine([...cartItems, item])
     }
 
     const removeCartItem = (id, type) => {
@@ -117,7 +127,7 @@ const CartContextProvider = (props) => {
     }
 
     return (
-        <CartContext.Provider value={{ cartItems, setCartItems, cartTotal, setCartTotal, qty, setQty, removeAllItems, removeCartItem, updateCartQuantity, addToCart, cartDiscount, subTotal, clearCart }}>
+        <CartContext.Provider value={{ cartItems, setCartItems, cartTotal, setCartTotal, qty, setQty, removeAllItems, removeCartItem, updateCartQuantity, addToCart, cartDiscount, subTotal, clearCart, hasMedicine }}>
             {props.children}
         </CartContext.Provider>
     )

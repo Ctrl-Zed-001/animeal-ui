@@ -19,6 +19,7 @@ const Header = (props) => {
     const [searchValue, setSearchValue] = useState('')
     const [suggestions, setSuggestions] = useState([])
     const [suggestionHeading, setSuggestionHeading] = useState('Top Suggestions')
+    const [showHelpline, setShowHelpline] = useState(false)
 
 
     useEffect(() => {
@@ -66,7 +67,7 @@ const Header = (props) => {
 
 
     return (
-        <div className="header py-4 fixed top-0 bg-slate-200 w-full z-50">
+        <div className="header py-4 fixed top-0 w-full z-50">
             <div className="container lg:flex justify-between items-center">
 
                 <div className={`flex lg-block gap-10 ${showSearch ? '' : 'flex-1'}`}>
@@ -113,25 +114,33 @@ const Header = (props) => {
 
 
 
-                {
-                    isLoggedIn ?
-                        <span onClick={logout} className='hidden lg:flex text-sm rounded-lg p-3 px-3 bg-red-300 text-white justify-between items-center mx-2 cursor-pointer'>
-                            <HiOutlineLogout className='text-lg  mr-1' />
-                            Logout
-                        </span>
-                        :
-                        <div className="lg:flex justify-between hidden">
-                            <span href="" className='text-sm rounded-lg p-3 px-3 bg-white text-gray-600 mx-2'>
-                                24/7 help
-                            </span>
+
+                <div className="lg:flex justify-between hidden relative">
+                    <span href="" className='text-sm rounded-lg p-3 px-3 bg-white text-gray-600 mx-2 cursor-pointer' onMouseEnter={() => setShowHelpline(true)} onMouseLeave={() => setShowHelpline(false)}>
+                        24/7 help
+                    </span>
+                    {
+                        isLoggedIn ?
+                            <span onClick={logout} className='hidden lg:flex text-sm rounded-lg p-3 px-3 bg-red-500 text-white justify-between items-center mx-2 cursor-pointer'>
+                                <HiOutlineLogout className='text-lg  mr-1' />
+                                Logout
+                            </span> :
                             <span onClick={() => setShowAuthModal(true)} className='text-sm rounded-lg p-3 px-3 bg-white flex justify-between items-center text-gray-600 mx-2 cursor-pointer'>
                                 <img src="/img/icons/profile-header.png" alt="" className='h-4 mr-2' />
                                 Signup / Login
                             </span>
-                        </div>}
+                    }
+
+                    <div className={`${showHelpline ? 'block' : 'hidden'}  helplinepopup bg-white rounded-lg p-4 text-center absolute top-14 -left-28 transition-all z-10`}>
+                        <p className="text-sm text-gray-500 pb-2">Get help from our experts 24/7</p>
+                        <h1 className="text-2xl">9004485093</h1>
+                    </div>
+                </div>
 
             </div>
             <AuthPopup isMobile={isMobile} />
+            <div className={`${showHelpline ? 'block' : 'hidden'}  helplinepopup bg-black opacity-40 z-0 absolute top-0 left-0 transition-all h-screen w-screen`}>
+            </div>
         </div>
     )
 }

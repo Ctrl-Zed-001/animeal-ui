@@ -1,16 +1,18 @@
 import React, { useState } from 'react'
 import { Modal } from '@nextui-org/react';
-import { Radio, Input } from '@nextui-org/react';
+import { Switch, Input } from '@nextui-org/react';
 
 const NewAddressModal = (props) => {
-    const [name, setName] = useState('')
-    const [number, setNumber] = useState('')
-    const [address1, setAddress1] = useState('')
-    const [address2, setAddress2] = useState('')
-    const [type, setType] = useState('')
-    const [city, setCity] = useState('')
-    const [state, setState] = useState('')
-    const [zipcode, setZipcode] = useState('')
+    const [addname, setName] = useState('')
+    const [addnumber, setNumber] = useState('')
+    const [addaddress1, setAddress1] = useState('')
+    const [addaddress2, setAddress2] = useState('')
+    const [addresstype, setType] = useState('')
+    const [addcity, setCity] = useState('')
+    const [addstate, setState] = useState('')
+    const [addpincode, setZipcode] = useState('')
+    const [addaltnumber, setAltNumber] = useState('')
+    const [defaultAddress, setDefaultAddress] = useState(false)
 
     return (
         <Modal
@@ -40,6 +42,15 @@ const NewAddressModal = (props) => {
                             initialValue=""
                             type="number"
                             onChange={(e) => setNumber(e.target.value)}
+                        />
+                        <Input
+                            fullWidth
+                            clearable
+                            underlined
+                            label="Alternate Number"
+                            initialValue=""
+                            type="number"
+                            onChange={(e) => setAltNumber(e.target.value)}
                         />
                     </div>
                     <div className="flex justify-between gap-14 my-14 w-full">
@@ -101,10 +112,11 @@ const NewAddressModal = (props) => {
                             onChange={(e) => setZipcode(e.target.value)}
                         />
                     </div>
+                    <div className="flex justify-end items-center gap-6">Set as default address <Switch onChange={(e) => setDefaultAddress(e.target.checked)} color='success' /> </div>
                 </div>
             </Modal.Body>
             <Modal.Footer>
-                <button className='px-4 py-2 bg-theme text-white rounded-lg' onClick={() => props.save({ name, number, address1, address2, type, city, state, zipcode })}>
+                <button className='px-4 py-2 bg-theme text-white rounded-lg' onClick={() => props.save({ addname, addcity, addnumber, addaddress1, addaddress2, addresstype, addcity, addstate, addpincode, addaltnumber, defaultAddress })}>
                     Save
                 </button>
                 <button className='px-4 py-2 bg-red-400 text-white rounded-lg' onClick={props.close}>

@@ -14,13 +14,15 @@ export default function Home(props) {
   const [topProducts, setTopProducts] = useState()
   const [customerFav, setCustomerFav] = useState()
   const [expertPick, setExpertPick] = useState()
+  const [brands, setBrands] = useState()
 
   useEffect(() => {
     let endpoints = [
       `${process.env.NEXT_PUBLIC_API_URI}/getcategories`,
       `${process.env.NEXT_PUBLIC_API_URI}/topratedproducts/get/data`,
       `${process.env.NEXT_PUBLIC_API_URI}/customerfavorite/get/data`,
-      `${process.env.NEXT_PUBLIC_API_URI}/pickedbyexperts/get/data`
+      `${process.env.NEXT_PUBLIC_API_URI}/pickedbyexperts/get/data`,
+      `${process.env.NEXT_PUBLIC_API_URI}/brand/homepagebrand`
     ];
 
     axios.all(endpoints.map((endpoint) => axios.get(endpoint)))
@@ -29,6 +31,7 @@ export default function Home(props) {
         setTopProducts(res[1].data.topRatedProducts)
         setCustomerFav(res[2].data.customerFavoriteProducts)
         setExpertPick(res[3].data.pickedByExpertsProducts)
+        setBrands(res[4].data.homePageBrand)
       })
       .catch(err => console.log(err))
   }, []);
@@ -46,16 +49,16 @@ export default function Home(props) {
       {/* TOP PRODUCTS */}
       <ProductRow title="Top Products" products={topProducts} />
 
-      {/* EXPERT PICK */}
-      <ProductRow title="Picked By Our Experts" products={customerFav} />
-
       {/* CUSTOMER FAVORITES */}
       <ProductRow title="Customer Favorites" products={expertPick} />
+
+      {/* TOP SUPPLIES */}
+      <ProductRow title="Top Supplies" products={customerFav} />
 
       {/* CTA */}
 
       {/* BRANDS */}
-      <Brands />
+      <Brands brands={brands} />
 
     </div>
 

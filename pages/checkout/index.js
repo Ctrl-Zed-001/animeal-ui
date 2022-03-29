@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect, useRef } from 'react'
 import PaymentItem from '../../Components/CheckoutComponents/PaymentItem';
 import { BiRupee } from 'react-icons/bi';
-import { Radio, Input } from '@nextui-org/react';
+import { Radio, Input, Switch } from '@nextui-org/react';
 import AddressModal from '../../Components/CheckoutComponents/AddressModal';
 import { IoMdPricetag } from 'react-icons/io'
 import { HiShieldCheck, HiChevronRight } from 'react-icons/hi'
@@ -32,6 +32,7 @@ const Checkout = () => {
 
     const [showAddressModal, setShowAddressModal] = useState(false)
     const [address, setAddress] = useState()
+    console.log("🚀 ~ file: index.js ~ line 35 ~ Checkout ~ address", address)
     const [savedAddresses, setSavedAddresses] = useState()
     const [newAddressModal, ToggleNewAddressModal] = useState(false)
     const [statusModal, setStatusModal] = useState()
@@ -62,17 +63,18 @@ const Checkout = () => {
 
     const addNewAddress = (newData) => {
         let body = {
-            addname: newData.name,
-            addemail: userDetails.email,
-            addnumber: newData.number,
-            addaltnumber: userDetails.altnumber,
-            addaddress1: newData.address1,
-            addaddress2: newData.address2,
-            addcity: newData.city,
-            addpincode: newData.zipcode,
-            addstate: newData.state,
-            addresstype: newData.type,
-            defaultaddress: 'No'
+            addname: newData.addname,
+            addemail: userDetails.addemail,
+            addnumber: newData.addnumber,
+            addaltnumber: newData.altnumber,
+            addaddress1: newData.addaddress1,
+            addaddress2: newData.addaddress2,
+            addcity: newData.addcity,
+            addpincode: newData.addpincode,
+            addstate: newData.addstate,
+            addresstype: newData.addresstype,
+            defaultaddress: newData.defaultAddress ? 'Yes' : 'No',
+            drname: newData.drname ? newData.drname : ''
         }
         axios.post(
             `${process.env.NEXT_PUBLIC_API_URI}/user/addnewdaddress/post/data`,
@@ -89,7 +91,44 @@ const Checkout = () => {
                     ...savedAddresses
                 ])
             })
-            .catch(err => console.log(err))
+            .catch(err => console.log(err.response))
+    }
+
+    const saveAddress = (paymentType) => {
+        if (!address.id) {
+            addNewAddress(address)
+        } else {
+            axios.post(
+                `${process.env.NEXT_PUBLIC_API_URI}/user/updatesaveddaddress/post/data`,
+                {
+                    addressid: address.id,
+                    addname: address.addname,
+                    addemail: userDetails.addemail,
+                    addnumber: address.addnumber,
+                    addaltnumber: address.addaltnumber,
+                    addaddress1: address.addaddress1,
+                    addaddress2: address.addaddress2,
+                    addcity: address.addcity,
+                    addpincode: address.addpincode,
+                    addstate: address.addstate,
+                    addresstype: address.addresstype,
+                    defaultaddress: address.defaultAddress ? 'Yes' : 'No',
+                    drname: address.drname ? address.drname : null
+                },
+                {
+                    headers: {
+                        Authorization: token
+                    }
+                }
+            )
+                .then(res => console.log(res.data))
+                .catch(err => console.log(err))
+        }
+        if (paymentType === 'online') {
+            callRazorPay()
+        } else {
+            callOtp()
+        }
     }
 
     const changeAddress = (index) => {
@@ -249,11 +288,6 @@ const Checkout = () => {
                 setStatusModal(true)
                 console.log(err)
             })
-
-
-
-        // PLACE ORDER API
-
     }
 
 
@@ -319,7 +353,7 @@ const Checkout = () => {
 
                     <div onClick={() => ToggleNewAddressModal(true)} className="new-address-box p-4 rounded-lg text-center bg-white flex items-center justify-center w-2/12 cursor-pointer">
                         <div>
-                            <h1>Add New</h1>
+                            <h1>Add New Address</h1>
                             <AiFillPlusCircle className='text-gray-400 text-3xl mx-auto' />
                         </div>
                     </div>
@@ -335,6 +369,8 @@ const Checkout = () => {
                             underlined
                             label="Name"
                             initialValue={address?.addname}
+                            required
+                            onChange={(e) => setAddress({ ...address, addname: e.target.value })}
                         />
                         <Input
                             fullWidth
@@ -343,6 +379,18 @@ const Checkout = () => {
                             label="Phone Number"
                             initialValue={address?.addnumber}
                             type="number"
+                            required
+                            onChange={(e) => setAddress({ ...address, addnumber: e.target.value })}
+                        />
+                        <Input
+                            fullWidth
+                            clearable
+                            underlined
+                            label="Alternate Number"
+                            initialValue={address?.addaltnumber}
+                            type="number"
+                            required
+                            onChange={(e) => setAddress({ ...address, addaltnumber: e.target.value })}
                         />
                     </div>
                     <div className="grid grid-cols-1 lg:flex justify-between gap-14 my-14 w-full">
@@ -352,6 +400,8 @@ const Checkout = () => {
                             underlined
                             label="Roo no. / house no. / street"
                             initialValue={address?.addaddress1}
+                            required
+                            onChange={(e) => setAddress({ ...address, addaddress1: e.target.value })}
                         />
                         <Input
                             fullWidth
@@ -359,8 +409,10 @@ const Checkout = () => {
                             underlined
                             label="Area / locality"
                             initialValue={address?.addaddress2}
+                            required
+                            onChange={(e) => setAddress({ ...address, addaddress2: e.target.value })}
                         />
-                        <select name='addtype' value={address?.addresstype} className='bg-transparent border-b-2 border-gray-200 w-full lg:w-8/12'>
+                        <select onChange={(e) => setAddress({ ...address, addresstype: e.target.value })} name='addtype' value={address?.addresstype} className='bg-transparent border-b-2 border-gray-200 w-full lg:w-8/12'>
                             <option value="Office">Office</option>
                             <option value="Home">Home</option>
                         </select>
@@ -382,6 +434,8 @@ const Checkout = () => {
                             underlined
                             label="City / Town"
                             initialValue={address?.addcity}
+                            required
+                            onChange={(e) => setAddress({ ...address, addcity: e.target.value })}
                         />
                         <Input
                             fullWidth
@@ -389,6 +443,8 @@ const Checkout = () => {
                             underlined
                             label="State"
                             initialValue={address?.addstate}
+                            required
+                            onChange={(e) => setAddress({ ...address, addstate: e.target.value })}
                         />
                         <Input
                             fullWidth
@@ -397,8 +453,11 @@ const Checkout = () => {
                             label="ZipCode"
                             initialValue={address?.addpincode}
                             type="number"
+                            required
+                            onChange={(e) => setAddress({ ...address, addpincode: e.target.value })}
                         />
                     </div>
+                    <div className="flex justify-end items-center gap-6">Set as default address <Switch initialChecked={address?.defaultaddress == "Yes" ? true : false} onChange={(e) => setAddress({ ...address, defaultAddress: e.target.checked })} color='success' /> </div>
                 </div>
 
             </div>
@@ -466,11 +525,11 @@ const Checkout = () => {
 
                 {
                     isOnlinePayment ?
-                        <button onClick={callRazorPay} className="w-full text-center bg-theme p-2 rounded-lg py-4 mt-8 shadow font-semibold">
+                        <button onClick={() => saveAddress('online')} className="w-full text-center bg-theme p-2 rounded-lg py-4 mt-8 shadow font-semibold">
                             Pay Online
                         </button>
                         :
-                        <button onClick={callOtp} className="w-full text-center bg-theme p-2 rounded-lg py-4 mt-8 shadow font-semibold">
+                        <button onClick={() => saveAddress('cod')} className="w-full text-center bg-theme p-2 rounded-lg py-4 mt-8 shadow font-semibold">
                             Place Order
                         </button>
                 }

@@ -2,10 +2,12 @@ import Link from 'next/link';
 import React, { useContext } from 'react'
 import { MdStore, MdAccountCircle, MdFavorite, MdPets } from "react-icons/md";
 import { AuthContext } from '../../Context/AuthContext'
+import { CartContext } from '../../Context/CartContext'
 
 const BottomNavigation = (props) => {
 
     const { setShowAuthModal, isLoggedIn } = useContext(AuthContext)
+    const { qty } = useContext(CartContext)
 
     return (
         <div className="bottom-navigation">
@@ -26,7 +28,12 @@ const BottomNavigation = (props) => {
                             </div>
                         </Link>
                     </div>
-                    <div className="p-4">
+                    <div className="p-4 relative">
+                        {
+                            qty === 0 ?
+                                <></> :
+                                <span className='absolute -top-6 py-1 px-2 right-2 shadow text-theme text-xs bg-white rounded-full '>{qty}</span>
+                        }
                         <Link href="/cart">
                             <div className="btn btn-default shadow centerbutton bg-theme cursor-pointer">
                                 <img src="/img/icons/cart.png" alt="" />

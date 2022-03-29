@@ -36,7 +36,7 @@ const CartItem = (props) => {
                         <HiMinusSm className='bg-slate-300 text-slate-800 rounded-lg text-2xl' />
                     </button>
                     <span className='mx-5 text-lg'>{parseInt(props.item.quantity)}</span>
-                    <button className='disabled:cursor-not-allowed' onClick={() => props.updateCartQuantity('updatecartplus', props.item.product_id, parseInt(props.item.quantity) + 1)}>
+                    <button disabled={parseInt(props.item.quantity) === parseInt(props.item.available_stock) ? true : false} className='disabled:cursor-not-allowed' onClick={() => props.updateCartQuantity('updatecartplus', props.item.product_id, parseInt(props.item.quantity) + 1)}>
                         <HiPlusSm className='bg-slate-300 text-slate-800 rounded-lg text-2xl' />
                     </button>
                 </div>
