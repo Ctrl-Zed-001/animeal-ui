@@ -1,4 +1,5 @@
 import React from 'react'
+import ProfileInfoBox from '../../Components/ProfilePageComponents/ProfileInfoBox'
 
 const address = () => {
   return (
