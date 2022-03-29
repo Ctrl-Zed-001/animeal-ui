@@ -29,7 +29,7 @@ const CartContextProvider = (props) => {
                     setCartItems(res.data.cartDetails)
                     setTotalAndQuantity(res.data.cartDetails)
                 })
-                .catch(err => console.log(err))
+                .catch(err => console.log(err.response))
         }
     }, [token])
 

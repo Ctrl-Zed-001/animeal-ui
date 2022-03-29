@@ -59,8 +59,8 @@ const AuthPopup = (props) => {
                 console.log(error)
                 toast.error("Invalid Credentials")
             })
-
     }
+
 
     return (
         <Modal
@@ -76,16 +76,13 @@ const AuthPopup = (props) => {
                     <img src="/img/authbanner.png" alt="" className='h-44 md:h-80 mx-auto' />
                     <div className="form-section p-6 rounded-l-xl bg-slate-200 h-full md:w-8/12">
                         <Swiper className="mySwiper">
-                            <SwiperSlide className=''><LoginForm login={login} loginSocial={loginSocial} /></SwiperSlide>
-                            <SwiperSlide><SignupForm signup={signup} loginSocial={loginSocial} /></SwiperSlide>
+                            <SwiperSlide><LoginForm login={login} loginSocial={loginSocial} close={() => setShowAuthModal(false)} /></SwiperSlide>
+                            <SwiperSlide><SignupForm signup={signup} loginSocial={loginSocial} close={() => setShowAuthModal(false)} /></SwiperSlide>
                         </Swiper>
                     </div>
                 </div>
             </Modal.Body>
-            <Toaster
-                position="top-center"
-                reverseOrder={true}
-            />
+
         </Modal>
     )
 }

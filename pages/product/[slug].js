@@ -26,10 +26,11 @@ import "swiper/css/thumbs";
 
 
 const Product = (props) => {
-
     const [inWishlist, setInWishlist] = useState(false)
     const [inCart, setInCart] = useState(false)
     const [productImages, setProductImages] = useState([...props.product.productimages])
+    const [checkPinCode, setCheckPinCode] = useState('')
+    const [isDeliverable, setIsDeliverable] = useState()
 
     const { setShowAuthModal, isLoggedIn, token } = useContext(AuthContext)
     const { addToCart } = useContext(CartContext)
@@ -119,6 +120,25 @@ const Product = (props) => {
         }
     }
 
+    const checkAvailability = (e) => {
+        e.preventDefault()
+        axios.post(
+            `${process.env.NEXT_PUBLIC_API_URI}/valid/pincode/post/data`,
+            {
+                pincode: checkPinCode
+            }
+        )
+            .then(res => {
+                if (res.data.pincode == 'Pincode Found') {
+                    setIsDeliverable(true)
+                } else {
+                    setIsDeliverable(false)
+                }
+
+            })
+            .catch(err => setIsDeliverable(false))
+    }
+
     return (
 
         <div className='product-page my-10'>
@@ -169,11 +189,11 @@ const Product = (props) => {
                 {/* DATA */}
                 <div className="product-data flex-1 mt-6 lg:mt-0">
                     {/* <Breadcrumb className="hidden lg:block" /> */}
-                    <h3 className="text-xs lg:text-base text-theme font-semibold">{props.product.products.animal}</h3>
+                    <h3 className="text-xs lg:text-sm text-theme font-semibold">{props.product.products.subcategory}</h3>
                     <h1 className="text-base lg:text-3xl font-semibold text-slate-900">
                         {props.product.products.website_pro_name}
                     </h1>
-                    <p className='text-sm text-slate-600 font-medium my-2'>by : whiskers</p>
+                    <p className='text-sm text-slate-600 font-medium my-2'>by : {props.product.products.brand}</p>
                     <div className="flex">
                         <Rating value={0} />
                         <p className='text-xs lg:text-sm text-slate-600 ml-3 font-medium'>{props.product.ratinglist.length} customer reviews</p>
@@ -183,8 +203,8 @@ const Product = (props) => {
                         <h3 className="text-sm font-medium text-gray-500 flex items-center mr-2 line-through"><BiRupee />{props.product.products.mrp}</h3>
                         <h1 className="text-2xl flex items-center font-semibold"><BiRupee />{props.product.productPriceApi}</h1>
                     </div>
-                    <p className="text-sm flex items-center mt-2 text-green-500 font-semibold">you save <BiRupee /> 1000 </p>
-                    <p className='text-sm text-slate-600 mt-3 font-medium'>Free 1-3 day shipping on this item.</p>
+                    <p className="text-sm flex items-center mt-2 text-green-500 font-semibold">you save <BiRupee /> {parseInt(props.product.products.mrp) - parseInt(props.product.productPriceApi)} </p>
+                    {/* <p className='text-sm text-slate-600 mt-3 font-medium'>Free 1-3 day shipping on this item.</p> */}
 
                     <div className="bg-white rounded-lg p-3 mt-3">
                         {
@@ -195,12 +215,25 @@ const Product = (props) => {
                                     <p className='text-green-500 text-sm font-semibold mb-4'>In stock</p>
                         }
 
-                        <div className="lg:flex items-center xl:w-full 2xl:w-5/6 justify-between">
+                        <div className="lg:flex items-center xl:w-full 2xl:w-5/6 gap-6">
                             <div className='flex items-center gap-3'>
                                 <p className="text-sm font-semibold">Deliver to : </p>
-                                <Input clearable placeholder='check for delivery' type={'number'} />
+                                <form onSubmit={checkAvailability}>
+                                    <Input onClearClick={() => { setCheckPinCode(); setIsDeliverable() }} onChange={(e) => setCheckPinCode(e.target.value)} clearable placeholder='check for delivery' type={'number'} />
+                                </form>
                             </div>
-                            <p className="text-sm font-semibold text-green-600 mt-3 lg:mt-0 ml-2 lg:ml-0 "></p>
+                            {
+                                isDeliverable !== undefined ?
+                                    <p className={`text-xs font-semibold ${isDeliverable ? 'text-green-600' : 'text-red-400'} mt-3 lg:mt-0 ml-2 lg:ml-0`}>
+                                        {
+                                            isDeliverable ?
+                                                "will reach you in 24hrs" :
+                                                "sorry we are not delivering to your area yet"
+                                        }
+                                    </p> :
+                                    <></>
+                            }
+
                         </div>
 
                         <div className="flex items-start w-full mt-4">
@@ -270,9 +303,11 @@ const Product = (props) => {
 
                     <hr className='border-1 border-gray-300 my-6' />
 
-                    <p className="text-justify text-sm leading-5 text-slate-600 mb-10 font-medium">
-                        {props.product.products.shortdescription}
-                    </p>
+                    <div className="content-box">
+                        <p className={`text-justify text-sm leading-5 text-slate-600 mb-4 font-medium h-16 hover:h-fit overflow-hidden transition-all ease-in-out duration-500`}>
+                            {props.product.products.shortdescription}
+                        </p>
+                    </div>
 
                 </div>
 

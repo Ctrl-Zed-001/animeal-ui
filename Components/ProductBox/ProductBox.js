@@ -4,7 +4,6 @@ import Rating from './Rating'
 
 
 const ProductBox = (props) => {
-
     return (
         <a target="__blank" rel="noopener noreferrer" href={`/product/${props.product[0].product_slugname}`}>
             <div className="productbox rounded-3xl border-2 border-white shadow cursor-pointer relative">
@@ -16,7 +15,7 @@ const ProductBox = (props) => {
                         {props.product[0].product_offer}% off
                     </div>
 
-                    <h2 className="animal text-slate-700 text-xs">{props.product[0].product_for_animal}</h2>
+                    <h2 className="animal text-slate-700 text-xs">{props.product[0].product_subcategory}</h2>
                     <h1 className='text-sm font-medium product-box-name'>{props.product[0].product_name}</h1>
                     <h1 className="text-xs text-slate-700">{props.product[0].product_size}</h1>
                     <Rating value={props.product[0].rating_average} />

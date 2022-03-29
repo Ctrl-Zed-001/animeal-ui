@@ -81,13 +81,15 @@ const Header = (props) => {
                 {
                     showSearch ?
                         <div className="flex w-full mt-4 lg:mt-0 lg:w-3/6 relative">
-                            <div className="relative w-full mr-1">
-                                <MdSearch className='absolute top-3 left-2 text-2xl text-gray-400' />
-                                <input onChange={autoSuggest} type="text" className="p-3 w-full rounded-lg pl-10" placeholder="Search store" onClick={() => props.setIsAutoSuggestOpen(!props.isAutoSuggestOpen)} />
-                            </div>
-                            <button onClick={() => search(searchValue)} className='bg-theme p-3 text-xl rounded-lg'>
-                                <img src="/img/icons/search.png" alt="" className='' />
-                            </button>
+                            <form className='flex w-full' onSubmit={(e) => { e.preventDefault(); search(searchValue) }}>
+                                <div className="relative w-full mr-1">
+                                    <MdSearch className='absolute top-3 left-2 text-2xl text-gray-400' />
+                                    <input onChange={autoSuggest} type="text" className="p-3 w-full rounded-lg pl-10" placeholder="Search store" onClick={() => props.setIsAutoSuggestOpen(!props.isAutoSuggestOpen)} />
+                                </div>
+                                <button type="submit" className='bg-theme p-3 text-xl rounded-lg'>
+                                    <img src="/img/icons/search.png" alt="" className='' />
+                                </button>
+                            </form>
 
                             {
                                 props.isAutoSuggestOpen ?
@@ -113,7 +115,7 @@ const Header = (props) => {
 
                 {
                     isLoggedIn ?
-                        <span onClick={logout} className='hidden lg:flex text-sm rounded-lg p-3 px-3 bg-white justify-between items-center text-gray-600 mx-2 cursor-pointer'>
+                        <span onClick={logout} className='hidden lg:flex text-sm rounded-lg p-3 px-3 bg-red-300 text-white justify-between items-center mx-2 cursor-pointer'>
                             <HiOutlineLogout className='text-lg  mr-1' />
                             Logout
                         </span>

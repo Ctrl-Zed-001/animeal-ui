@@ -103,6 +103,7 @@ const AuthContextProvider = (props) => {
         if (status == 'authenticated') {
             signOut()
         }
+        router.replace('/')
     }
 
     const loginSocial = async () => {

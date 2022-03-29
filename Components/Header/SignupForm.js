@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useSwiper } from 'swiper/react';
 import { Input, Spacer } from '@nextui-org/react';
+import { Toaster } from 'react-hot-toast';
 
 
 const SignupForm = (props) => {
@@ -34,6 +35,10 @@ const SignupForm = (props) => {
                 <button className="bg-theme px-2 py-4 w-full shadow rounded-lg" onClick={() => props.signup(name, email, password)}>Create Account</button>
             </div>
             <p className="text-center mt-4 font-medium">Already have an account? <span onClick={() => swiper.slidePrev()} className="text-theme">click to Login.</span></p>
+            <Toaster
+                position="top-center"
+                reverseOrder={true}
+            />
         </div>
     )
 }

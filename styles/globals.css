@@ -258,6 +258,9 @@ body.sidemenu-open .sidebar {
       width: 3rem;
       border-radius: 0;
   }
+  .order-timeline{
+    font-size: 0.5rem;
+  }
 }
 .nextui-c-bLiKyn-iNZaNK-closeButton-true{
   padding-top: 0;

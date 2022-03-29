@@ -9,13 +9,13 @@ const BannerSection = () => {
             <div className="hidden lg:block popular-categories bg-white shadow rounded-lg p-3 h-full text-sm col-span-2">
                 <h1 className='font-semibold'>Popular Categories</h1>
 
-                <Link href='/shop?slug=dog'>
+                <Link href='/dog/food'>
                     <div className="popular-category-item flex items-center mt-6 gap-2 font-medium cursor-pointer">
                         <img src="/img/icons/dog.png" alt="" className='h-6' />
                         Dog Food
                     </div>
                 </Link>
-                <Link href='/shop?slug=cat'>
+                <Link href='/cat/food'>
                     <div className="popular-category-item flex items-center mt-6 gap-2  font-medium cursor-pointer">
                         <img src="/img/icons/cat.png" alt="" className='h-6' />
                         Cat Food
@@ -49,14 +49,18 @@ const BannerSection = () => {
 
             {/* MAIN BANNER */}
             <div className="main-banner col-span-5">
-                <div className="relative">
-                    <img src="/img/banner-1.png" alt="" className='h-52 xl:h-60 mb-3 xl:mb-4 rounded-lg w-full object-cover shadow' />
-                    <h1 className="text-white text-3xl font-bold absolute top-10 left-5 w-7/12">Best Quanlity <br /> Pet Food</h1>
-                </div>
-                <div className="relative">
-                    <img src="/img/banner-2.png" alt="" className='h-52 xl:h-60 mt-3 xl:mt-4 rounded-lg w-full object-cover shadow' />
-                    <h1 className="text-white text-3xl font-bold absolute top-10 left-5 w-7/12">Veterinary Products</h1>
-                </div>
+                <Link href='/shop?slug=food'>
+                    <div className="relative cursor-pointer">
+                        <img src="/img/banner-1.png" alt="" className='h-52 xl:h-60 mb-3 xl:mb-4 rounded-lg w-full object-cover shadow' />
+                        <h1 className="text-white text-3xl font-bold absolute top-10 left-5 w-7/12">Best Quanlity <br /> Pet Food</h1>
+                    </div>
+                </Link>
+                <Link href='/shop?slug=veterinary supplements medicine'>
+                    <div className="relative">
+                        <img src="/img/banner-2.png" alt="" className='h-52 xl:h-60 mt-3 xl:mt-4 rounded-lg w-full object-cover shadow' />
+                        <h1 className="text-white text-3xl font-bold absolute top-10 left-5 w-7/12">Veterinary Products</h1>
+                    </div>
+                </Link>
             </div>
 
             <div className="flex col-span-5 gap-1 lg:gap-4 lg:mt-0 mt-2">
