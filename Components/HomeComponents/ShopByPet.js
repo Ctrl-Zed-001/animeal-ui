@@ -3,7 +3,6 @@ import Link from 'next/link'
 
 
 const ShopByPet = (props) => {
-    console.log("🚀 ~ file: ShopByPet.js ~ line 6 ~ ShopByPet ~ props", props)
 
     return (
         <div className="shop-by-pet container my-8">

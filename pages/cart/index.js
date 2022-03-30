@@ -5,10 +5,12 @@ import PrescriptionModal from '../../Components/CartPageComponents/PrescriptionM
 import { FaTrash } from 'react-icons/fa'
 import CartSummary from '../../Components/CartPageComponents/CartSummary';
 import { CartContext } from '../../Context/CartContext';
+import { AuthContext } from '../../Context/AuthContext'
 
 const Cart = () => {
 
     const { cartItems, cartTotal, qty, removeAllItems, removeCartItem, updateCartQuantity, cartDiscount, subTotal, hasMedicine } = useContext(CartContext)
+    const { isLoggedIn, setShowAuthModal } = useContext(AuthContext)
 
     const [showPrescriptionModal, setShowPrescriptionModal] = useState(false)
 
@@ -56,7 +58,7 @@ const Cart = () => {
 
                         </div>
 
-                        <CartSummary cartTotal={cartTotal} qty={qty} cartDiscount={cartDiscount} subTotal={subTotal} />
+                        <CartSummary showAuthModal={setShowAuthModal} isLoggedIn={isLoggedIn} cartTotal={cartTotal} qty={qty} cartDiscount={cartDiscount} subTotal={subTotal} />
                     </div> :
                     <div>
                         <img src='/img/empty-cart.png' className='w-5/12 mx-auto' />

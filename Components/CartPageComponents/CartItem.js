@@ -4,7 +4,6 @@ import { HiMinusSm, HiPlusSm } from 'react-icons/hi';
 import { FaTrash } from 'react-icons/fa'
 
 const CartItem = (props) => {
-    console.log("🚀 ~ file: CartItem.js ~ line 7 ~ CartItem ~ props", props)
     return (
         <div className="cart-item bg-slate-100 p-3 rounded-lg grid grid-cols-6 my-4 relative gap-3">
             <div className='flex items-start col-span-5 md:col-span-3'>

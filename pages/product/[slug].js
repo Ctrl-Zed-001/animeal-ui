@@ -34,7 +34,7 @@ const Product = (props) => {
     const [isDeliverable, setIsDeliverable] = useState()
 
     const { setShowAuthModal, isLoggedIn, token } = useContext(AuthContext)
-    const { addToCart } = useContext(CartContext)
+    const { addToCart, setRefreshCart, refreshCart } = useContext(CartContext)
 
     const [thumbsSwiper, setThumbsSwiper] = useState(null);
 
@@ -70,7 +70,6 @@ const Product = (props) => {
 
     }, [])
 
-
     const cartClicked = () => {
         if (isLoggedIn) {
             axios.post(`${process.env.NEXT_PUBLIC_API_URI}/user/addtocart/post/data`,
@@ -84,12 +83,12 @@ const Product = (props) => {
                     }
                 })
                 .then(res => {
-                    console.log("🚀 ~ file: [slug].js ~ line 89 ~ cartClicked ~ res", res)
                     toast.success('Item added to cart');
                     setInCart(true)
                     addToCart([{
                         ...res.data.success,
-                        available_stock: parseInt(props.product.availableStock) - 1
+                        available_stock: parseInt(props.product.availableStock) - 1,
+                        category: props.product.products.category
                     }])
                 })
                 .catch(err => console.log(err))
@@ -111,12 +110,18 @@ const Product = (props) => {
                 product_discount_total: parseInt(props.product.products.mrp) - parseInt(props.product.productPriceApi),
                 product_weight: props.product.products.size,
                 updated_at: props.product.products.updated_at,
-                created_at: props.product.products.created_at
+                created_at: props.product.products.created_at,
+                category: props.product.products.category
             }
-            addToCart([{
-                ...itemForCart,
-                available_stock: parseInt(props.product.availableStock) - 1
-            }])
+            let localCartList = JSON.parse(localStorage.getItem('unauthcart'))
+            if (localCartList) {
+                localCartList.push([itemForCart])
+            } else {
+                localCartList = [[itemForCart]]
+            }
+
+            localStorage.setItem('unauthcart', JSON.stringify(localCartList))
+            setRefreshCart(refreshCart + 1)
         }
     }
 

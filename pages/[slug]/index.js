@@ -81,15 +81,18 @@ const index = (props) => {
 export async function getServerSideProps({ query }) {
 
     let res = await axios.get(`${process.env.NEXT_PUBLIC_API_URI}/category/${query.slug}`)
+    let bannerRes = await axios.get(`${process.env.NEXT_PUBLIC_API_URI}/getcategorybanner`)
     let productres = []
     let categoryLevels = res.data.categorylevels
+    let banner = bannerRes.data
 
 
     return {
         props: {
             // categoryWiseProducts: categoryWiseProducts,
             categorylevels: categoryLevels,
-            slug: query.slug
+            slug: query.slug,
+            banner: banner
         }
     }
 }
