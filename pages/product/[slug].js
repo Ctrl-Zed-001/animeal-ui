@@ -71,7 +71,6 @@ const Product = (props) => {
     }, [])
 
 
-    console.log(props.product)
     const cartClicked = () => {
         if (isLoggedIn) {
             axios.post(`${process.env.NEXT_PUBLIC_API_URI}/user/addtocart/post/data`,
@@ -85,6 +84,7 @@ const Product = (props) => {
                     }
                 })
                 .then(res => {
+                    console.log("🚀 ~ file: [slug].js ~ line 89 ~ cartClicked ~ res", res)
                     toast.success('Item added to cart');
                     setInCart(true)
                     addToCart([{
@@ -97,8 +97,24 @@ const Product = (props) => {
             // setShowAuthModal(true)
             toast.success('Item added to cart');
             setInCart(true)
+            let itemForCart = {
+                product_main_id: props.product.products.id,
+                product_id: props.product.products.product_id,
+                product_name: props.product.products.website_pro_name,
+                product_image: props.product.productimages[0].product_image,
+                product_description: props.product.products.shortdescription,
+                quantity: 1,
+                product_price: props.product.productPriceApi,
+                product_discount: parseInt(props.product.products.mrp) - parseInt(props.product.productPriceApi),
+                product_offer: props.product.products.offer,
+                product_total: props.product.productPriceApi,
+                product_discount_total: parseInt(props.product.products.mrp) - parseInt(props.product.productPriceApi),
+                product_weight: props.product.products.size,
+                updated_at: props.product.products.updated_at,
+                created_at: props.product.products.created_at
+            }
             addToCart([{
-                ...props.product.products,
+                ...itemForCart,
                 available_stock: parseInt(props.product.availableStock) - 1
             }])
         }

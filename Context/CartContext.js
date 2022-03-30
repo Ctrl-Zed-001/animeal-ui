@@ -90,6 +90,11 @@ const CartContextProvider = (props) => {
             .then(res => {
                 if (type === 'all') {
                     setCartItems([])
+                    setCartTotal(0)
+                    setQty(0)
+                    setCartDiscount(0)
+                    setSubtotal(0)
+                    setHasMedicine(false)
                 } else {
                     let oldList = [...cartItems];
                     let newList = oldList.filter(item => item[0].product_id !== id)
