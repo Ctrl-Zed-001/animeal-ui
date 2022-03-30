@@ -28,36 +28,20 @@ const CartContextProvider = (props) => {
                 })
                 .then(res => {
                     setCartItems(res.data.cartDetails)
-                    setTotalAndQuantity(res.data.cartDetails)
-                    checkMedicine(res.data.cartDetails)
+                    validateAndUpdateCart(res.data.cartDetails)
                 })
                 .catch(err => console.log(err.response))
+        } else {
+            setCartItems([]);
+            setCartTotal(0)
+            setQty(0)
+            setCartDiscount(0)
+            setSubtotal(0)
+            setHasMedicine(false)
         }
     }, [token])
 
-    const setTotalAndQuantity = (data) => {
-        let total = 0;
-        let quantity = 0;
-        let discount = 0;
-        let subtotal = 0;
-        data.forEach(item => {
-            total = parseInt(total) + parseInt(item[0].product_total)
-            quantity = parseInt(quantity) + parseInt(item[0].quantity)
-            discount = parseInt(discount) + parseInt(item[0].product_discount_total)
-            subtotal = parseInt(total) + parseInt(discount)
-        })
-        setCartTotal(total)
-        setQty(quantity)
-        setCartDiscount(discount)
-        setSubtotal(subtotal)
-    }
 
-    const checkMedicine = (data) => {
-        let containFilter = data.filter(item => item[0].category == "MEDICINE")
-        if (containFilter.length > 0) {
-            setHasMedicine(true)
-        }
-    }
 
     const updateCartQuantity = (action, id, quantity) => {
         axios.post(
@@ -81,15 +65,14 @@ const CartContextProvider = (props) => {
                     oldList[oldItemIndex][0] = { ...oldList[oldItemIndex][0], quantity: parseInt(oldList[oldItemIndex][0].quantity) - 1, product_total: res.data.cartUpdateMinus.product_total, product_discount_total: parseInt(res.data.cartUpdateMinus.product_discount_total) }
                 }
                 setCartItems([...oldList])
-                setTotalAndQuantity([...oldList])
+                validateAndUpdateCart([...oldList])
             })
             .catch(err => console.log(err))
     }
 
     const addToCart = (item) => {
         setCartItems([...cartItems, item])
-        setTotalAndQuantity([...cartItems, item])
-        checkMedicine([...cartItems, item])
+        validateAndUpdateCart([...cartItems, item])
     }
 
     const removeCartItem = (id, type) => {
@@ -111,6 +94,7 @@ const CartContextProvider = (props) => {
                     let oldList = [...cartItems];
                     let newList = oldList.filter(item => item[0].product_id !== id)
                     setCartItems([...newList])
+                    validateAndUpdateCart([...newList])
                 }
             })
             .catch(err => console.log(err))
@@ -124,6 +108,34 @@ const CartContextProvider = (props) => {
 
     const clearCart = () => {
         setCartItems([])
+    }
+
+    const validateAndUpdateCart = (data) => {
+        let total = 0;
+        let quantity = 0;
+        let discount = 0;
+        let subtotal = 0;
+        data.forEach(item => {
+            total = parseInt(total) + parseInt(item[0].product_total)
+            quantity = parseInt(quantity) + parseInt(item[0].quantity)
+            discount = parseInt(discount) + parseInt(item[0].product_discount_total)
+            subtotal = parseInt(total) + parseInt(discount)
+        })
+        setCartTotal(total)
+        setQty(quantity)
+        setCartDiscount(discount)
+        setSubtotal(subtotal)
+        checkMedicine(data)
+    }
+
+    const checkMedicine = (data) => {
+        console.log("🚀 ~ file: CartContext.js ~ line 125 ~ checkMedicine ~ data", data)
+        let containFilter = data.filter(item => item[0].category.toLowerCase() == "medicine")
+        if (containFilter.length > 0) {
+            setHasMedicine(true)
+        } else {
+            setHasMedicine(false)
+        }
     }
 
     return (

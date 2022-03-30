@@ -23,10 +23,10 @@ const Cart = () => {
                             {/* TOP YELLOW BOX   */}
                             <div className="grid grid-cols-6 gap-3 topbox bg-theme p-6 rounded-lg">
                                 <div className="col col-span-4 lg:col-span-3">
-                                    <h1>Products</h1>
+                                    <h1 className='text-xl mt-2'>Products</h1>
                                 </div>
                                 <div className="hidden lg:block col">
-                                    <h1>Quantity</h1>
+                                    <h1 className='text-xl mt-2'>Quantity</h1>
                                 </div>
                                 <div className="hidden lg:block col text-center">
                                     <h1>Total</h1>

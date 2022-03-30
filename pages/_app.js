@@ -24,12 +24,12 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
         <CartContextProvider>
           <div className='theme'>
             <Sidebar />
-            <div className="wrapper pt-28 md:pt-28" onClick={handleWrapperClick}>
+            <div className="wrapper pt-40 md:pt-28" onClick={handleWrapperClick}>
               <Header isAutoSuggestOpen={isAutoSuggestOpen} setIsAutoSuggestOpen={setIsAutoSuggestOpen} />
               <Component {...pageProps} />
               <Footer />
               <BottomNavigation />
-              <Loader />
+              {/* <Loader /> */}
             </div>
           </div>
         </CartContextProvider>

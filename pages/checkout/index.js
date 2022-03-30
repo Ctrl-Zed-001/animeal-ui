@@ -28,7 +28,7 @@ const Checkout = () => {
     const router = useRouter()
 
     const { token, userDetails } = useContext(AuthContext)
-    const { cartTotal, clearCart } = useContext(CartContext)
+    const { cartTotal, clearCart, cartDiscount } = useContext(CartContext)
 
     const [showAddressModal, setShowAddressModal] = useState(false)
     const [address, setAddress] = useState()
@@ -412,7 +412,7 @@ const Checkout = () => {
                             required
                             onChange={(e) => setAddress({ ...address, addaddress2: e.target.value })}
                         />
-                        <select onChange={(e) => setAddress({ ...address, addresstype: e.target.value })} name='addtype' value={address?.addresstype} className='bg-transparent border-b-2 border-gray-200 w-full lg:w-8/12'>
+                        <select onChange={(e) => setAddress({ ...address, addresstype: e.target.value })} name='addtype' value={address?.addresstype} className='bg-transparent border-b-2 border-gray-200 w-full lg:w-12/12'>
                             <option value="Office">Office</option>
                             <option value="Home">Home</option>
                         </select>
@@ -481,10 +481,10 @@ const Checkout = () => {
                         <h1 className='font-semibold'>Payment Details</h1>
                     </div>
 
-                    <PaymentItem title='Total Price' price={cartTotal} />
+                    <PaymentItem title='Sub Total' price={parseInt(cartTotal) + parseInt(cartDiscount)} />
                     <PaymentItem title='Delivery Charge' price='0' />
                     <PaymentItem title='Coupon Discount' price='0' />
-                    <PaymentItem title='You Have Saved' price='0' />
+                    <PaymentItem className='text-green-600 font-semibold' title='You Have Saved' price={cartDiscount} />
 
                     <hr className='w-full border-1 border-dashed my-4' />
 

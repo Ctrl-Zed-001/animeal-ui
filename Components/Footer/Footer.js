@@ -1,6 +1,6 @@
 import React from 'react'
 import { MdCall } from 'react-icons/md'
-import { BsChatDots } from 'react-icons/bs'
+import { AiOutlineWhatsApp } from 'react-icons/ai'
 
 const Footer = () => {
     return (
@@ -14,8 +14,8 @@ const Footer = () => {
                         <h1 className="text-xs lg:text-2xl font-semibold">Experts are available 24 x 7</h1>
                     </div>
                     <div className="flex justify-between gap-4 lg:gap-8">
-                        <button className='lg:text-base flex items-center gap-2 bg-theme px-4 py-2 rounded-lg'><BsChatDots />contact us</button>
-                        <button className='hidden text-xs lg:text-base lg:flex items-center gap-2 border-2 text-yellow-500 border-yellow-500 px-4 py-2 rounded-lg'><MdCall />9004485093</button>
+                        <a href="https://wa.me/+919004485093" className='lg:text-base flex items-center gap-2 bg-theme px-4 py-2 rounded-lg'><AiOutlineWhatsApp />chat with us</a>
+                        <a href="tel:+919004485093" className='hidden text-xs lg:text-base lg:flex items-center gap-2 border-2 text-yellow-500 border-yellow-500 px-4 py-2 rounded-lg'><MdCall />9004485093</a>
                     </div>
                 </div>
                 <hr className='w-full bg-gray-500 my-8' />

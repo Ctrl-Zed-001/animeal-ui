@@ -59,7 +59,7 @@ const PrescriptionModal = (props) => {
                                     }) :
                                     <></>
                             }
-                            <div className="upload-box bg-slate-200 rounded-lg w-full h-16 flex items-center cursor-pointer">
+                            <div className={`${previews.length === 2 ? 'hidden' : ''} upload-box h-28 w-28 bg-slate-100 p-4 rounded-lg flex items-center justify-center`}>
                                 <input onChange={(e) => addFiles(e.target.files)} name='prescription' ref={fileInput} type="file" className='hidden' />
                                 <HiPlusSm className='bg-white rounded-full h-8 w-8 mx-auto' onClick={() => fileInput.current.click()} />
                             </div>

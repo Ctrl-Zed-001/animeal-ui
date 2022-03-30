@@ -1,7 +1,11 @@
-import React from 'react'
+import React, { useContext, useState } from 'react'
 import Link from 'next/link'
+import PrescriptionUpload from './PrescriptionUpload'
+import { AuthContext } from '../../Context/AuthContext'
 
 const BannerSection = () => {
+    const { isMobile } = useContext(AuthContext)
+    const [isUploadModalOpen, setIsUploadModalOpen] = useState(false)
     return (
         <div className="banner-section lg:grid lg:grid-cols-12 lg:gap-4 justify-between container">
 
@@ -39,7 +43,7 @@ const BannerSection = () => {
                         Treats
                     </div>
                 </Link>
-                <Link href='/shop?slug=toys'>
+                <Link href='/shop?slug=supplies'>
                     <div className="popular-category-item flex items-center mt-6 gap-2  font-medium cursor-pointer">
                         <img src="/img/icons/toys.png" alt="" className='h-6' />
                         Supplies
@@ -52,7 +56,7 @@ const BannerSection = () => {
                 <Link href='/shop?slug=food'>
                     <div className="relative cursor-pointer">
                         <img src="/img/banner-1.png" alt="" className='h-52 xl:h-60 mb-3 xl:mb-4 rounded-lg w-full object-cover shadow' />
-                        <h1 className="text-white text-3xl font-bold absolute top-10 left-5 w-7/12">Best Quanlity <br /> Pet Food</h1>
+                        <h1 className="text-white text-3xl font-bold absolute top-10 left-5 w-7/12">Best Quantity <br /> Pet Food</h1>
                         <button className='bg-transparent border-2 border-white px-4 py-2 text-white absolute bottom-10 left-5 rounded-lg'>shop now</button>
                     </div>
                 </Link>
@@ -69,8 +73,8 @@ const BannerSection = () => {
                 {/* RIGHT BANNER 1 */}
                 <div className="relative h-90 lg:w-3/6 w-3/6 text-center">
                     <img src="/img/3rd.png" alt="" className='h-full object-cover rounded-lg w-full shadow' />
-                    <h1 className="text-white text-xl font-bold absolute top-10 left-0 w-full px-2">Upload Prescription And Get Medicine</h1>
-                    <button className='bg-transparent border-2 border-white px-4 py-2 text-white absolute bottom-10 left-16 xl:left-14 rounded-lg'>upload now</button>
+                    <h1 className="text-white text-xl font-bold absolute top-10 left-0 w-full px-2">Send us the prescription and we'll have it delivered</h1>
+                    <button onClick={() => setIsUploadModalOpen(true)} className='bg-transparent border-2 border-white px-4 py-2 text-white absolute bottom-10 left-16 xl:left-14 rounded-lg'>upload now</button>
                 </div>
 
                 {/* RIGHT BANNER 2 */}
@@ -79,6 +83,7 @@ const BannerSection = () => {
                     <h1 className="text-white text-xl font-bold absolute top-10 left-0 w-full px-2">Pathology <br /> <span className='text-3xl'>Coming Soon</span> </h1>
                 </div>
             </div>
+            <PrescriptionUpload isOpen={isUploadModalOpen} isMobile={isMobile} close={() => setIsUploadModalOpen(false)} />
         </div>
     )
 }

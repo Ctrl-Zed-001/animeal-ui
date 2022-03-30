@@ -46,7 +46,7 @@ const AuthContextProvider = (props) => {
                     setIsLoggedIn(false)
                     setUserDetails()
                 })
-        } else if (status == 'authenticated') {
+        } else if (!token && status == 'authenticated') {
             console.log("checking session")
             axios.post(
                 `${process.env.NEXT_PUBLIC_API_URI}/user/sociallogin/post/data`,

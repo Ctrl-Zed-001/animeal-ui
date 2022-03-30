@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect, useContext, useRef } from 'react'
 import { MdSearch } from "react-icons/md";
 import Link from 'next/link';
 import { useRouter } from 'next/router'
@@ -14,12 +14,14 @@ const Header = (props) => {
 
     const router = useRouter()
     const { isLoggedIn, isMobile, setShowAuthModal, logout } = useContext(AuthContext)
+    const autoSuggestDropdownRef = useRef([])
 
     const [showSearch, setShowSearch] = useState(true)
     const [searchValue, setSearchValue] = useState('')
     const [suggestions, setSuggestions] = useState([])
     const [suggestionHeading, setSuggestionHeading] = useState('Top Suggestions')
     const [showHelpline, setShowHelpline] = useState(false)
+    const [highlightedSuggestion, setHighlightedSuggestion] = useState(0)
 
 
     useEffect(() => {
@@ -39,6 +41,31 @@ const Header = (props) => {
             .catch(err => console.log(err))
     }, [])
 
+    const unHighlightAll = () => {
+        autoSuggestDropdownRef.current.forEach(element => element.classList.remove('bg-slate-200'))
+    }
+    // const highlightSuggestion = (e) => {
+    //     console.log(highlightedSuggestion)
+    //     console.log(autoSuggestDropdownRef.current[highlightedSuggestion])
+
+    //     if (e.code == "ArrowDown" && highlightedSuggestion === 0) {
+    //         unHighlightAll()
+    //         autoSuggestDropdownRef.current[0].classList.add('bg-slate-200')
+    //         setHighlightedSuggestion(1)
+    //     } else if (e.code == "ArrowDown" && highlightedSuggestion !== 5) {
+    //         unHighlightAll()
+    //         autoSuggestDropdownRef.current[highlightedSuggestion].classList.add('bg-slate-200')
+    //         setHighlightedSuggestion(highlightedSuggestion + 1)
+    //     } else if (e.code == "ArrowUp" && highlightedSuggestion === 0) {
+    //         unHighlightAll()
+    //         autoSuggestDropdownRef.current[4].classList.add('bg-slate-200')
+    //         setHighlightedSuggestion(3)
+    //     } else if (e.code == "ArrowUp" && highlightedSuggestion >= 1) {
+    //         unHighlightAll()
+    //         autoSuggestDropdownRef.current[highlightedSuggestion].classList.add('bg-slate-200')
+    //         setHighlightedSuggestion(highlightedSuggestion - 1)
+    //     }
+    // }
 
     const autoSuggest = async (e) => {
         // SET SEARCH VALUE STATE
@@ -96,10 +123,10 @@ const Header = (props) => {
                                 props.isAutoSuggestOpen ?
                                     <div className="autocomplete absolute top-14 bg-white rounded-lg w-11/12">
                                         <h1 className='p-2 text-theme text-xs'>{suggestionHeading}</h1>
-                                        <ul>
+                                        <ul >
                                             {
                                                 suggestions.map((suggestion, index) => {
-                                                    return <li onClick={() => search(suggestion.keyword)} className='hover:bg-slate-100 p-3 rounded cursor-pointer' key={index}>{Capitalize(suggestion.keyword)}</li>
+                                                    return <li ref={el => autoSuggestDropdownRef.current[index] = el} onClick={() => search(suggestion.keyword)} className='hover:bg-slate-100 p-3 rounded cursor-pointer' key={index}>{Capitalize(suggestion.keyword)}</li>
                                                 })
                                             }
 
@@ -116,9 +143,9 @@ const Header = (props) => {
 
 
                 <div className="lg:flex justify-between hidden relative">
-                    <span href="" className='text-sm rounded-lg p-3 px-3 bg-white text-gray-600 mx-2 cursor-pointer' onMouseEnter={() => setShowHelpline(true)} onMouseLeave={() => setShowHelpline(false)}>
+                    <a href="tel:+919004485093" className='z-10 text-sm rounded-lg p-3 px-3 bg-white text-gray-600 mx-2 cursor-pointer' onMouseEnter={() => setShowHelpline(true)} onMouseLeave={() => setShowHelpline(false)}>
                         24/7 help
-                    </span>
+                    </a>
                     {
                         isLoggedIn ?
                             <span onClick={logout} className='hidden lg:flex text-sm rounded-lg p-3 px-3 bg-red-500 text-white justify-between items-center mx-2 cursor-pointer'>

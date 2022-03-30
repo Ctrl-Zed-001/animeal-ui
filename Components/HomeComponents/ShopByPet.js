@@ -3,6 +3,7 @@ import Link from 'next/link'
 
 
 const ShopByPet = (props) => {
+    console.log("🚀 ~ file: ShopByPet.js ~ line 6 ~ ShopByPet ~ props", props)
 
     return (
         <div className="shop-by-pet container my-8">
@@ -13,7 +14,7 @@ const ShopByPet = (props) => {
                 {
                     props.animals?.map((animal, id) => {
                         return (
-                            <Link href={`/${animal.category_name.toLowerCase()}`} key={id}>
+                            <Link href={`/${animal.category_url.toLowerCase()}`} key={id}>
                                 <div className="petbox drop-shadow hover:drop-shadow-none relative bg-white p-4 rounded-lg pb-20 transition duration-150 ease-in cursor-pointer">
                                     <h1 className='w-2/6'>{animal.category_name}</h1>
                                     <img src={process.env.NEXT_PUBLIC_IMAGE_URI + '/category-icon/' + animal.category_icon} alt="" className='absolute -bottom-0 md:-bottom-3 right-0 h-32 md:h-24 lg:h-28 xl:h-28 lg:-bottom-4' />

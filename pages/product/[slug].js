@@ -71,7 +71,7 @@ const Product = (props) => {
     }, [])
 
 
-
+    console.log(props.product)
     const cartClicked = () => {
         if (isLoggedIn) {
             axios.post(`${process.env.NEXT_PUBLIC_API_URI}/user/addtocart/post/data`,
@@ -94,7 +94,13 @@ const Product = (props) => {
                 })
                 .catch(err => console.log(err))
         } else {
-            setShowAuthModal(true)
+            // setShowAuthModal(true)
+            toast.success('Item added to cart');
+            setInCart(true)
+            addToCart([{
+                ...props.product.products,
+                available_stock: parseInt(props.product.availableStock) - 1
+            }])
         }
     }
 
@@ -200,6 +206,14 @@ const Product = (props) => {
                     <h1 className="text-base lg:text-3xl font-semibold text-slate-900">
                         {props.product.products.website_pro_name}
                     </h1>
+                    {
+                        props.product.products.category.toLowerCase() == 'medicine' ?
+                            <div className="flex items-center gap-2">
+                                <img src="/img/icons/rx.png" className='h-8' alt="" />
+                                <p className='text-xs font-semibold text-theme'>Prescription required</p>
+                            </div> :
+                            <></>
+                    }
                     <p className='text text-slate-600 font-medium my-2'>by : {props.product.products.brand}</p>
                     <div className="flex items-center">
                         <Rating value={0} />
@@ -219,7 +233,7 @@ const Product = (props) => {
                                 <p className='text-red-500 text-sm lg:text-base font-semibold mb-4'>Out Of Stock</p> :
                                 props.product.availableStock <= 10 ?
                                     <p className='text-red-500 text-sm lg:text-base font-semibold mb-4'>Only {props.product.availableStock} left in stock</p> :
-                                    <p className='text-green-500 text-sm lg:text-base font-semibold mb-4'>In stock</p>
+                                    <p className='text-green-700 text-sm lg:text-base font-semibold mb-4'>In stock</p>
                         }
 
                         <div className="lg:flex items-center xl:w-full 2xl:w-5/6 gap-6">
@@ -266,7 +280,7 @@ const Product = (props) => {
                                                             {prod.product_weight}
                                                             <br />
                                                             <div className="flex items-center text-sm text-slate-600 mt-2">
-                                                                <BiRupee /> {prod.product_price / getWeight(prod.product_weight)} / Kg
+                                                                <BiRupee /> {Math.round(prod.product_price / getWeight(prod.product_weight))} / Kg
                                                             </div>
                                                         </div>
                                                     </Link>)
