@@ -13,7 +13,7 @@ const Brand = () => {
             <AnimalBanner image={props.banner} />
 
             <div className="container my-10">
-                <Swiper
+                {/* <Swiper
                     modules={[Autoplay]}
                     breakpoints={{
                         320: {
@@ -37,23 +37,34 @@ const Brand = () => {
                         })
 
                     }
-                </Swiper>
+                </Swiper> */}
 
             </div>
 
             {/* CATEGORY */}
-            {
+            {/* {
                 categoryWiseProducts && categoryWiseProducts.map((products, index) => {
                     if (products.products.categoryLevel2WiseProduct && products.products.categoryLevel2WiseProduct.length !== null) {
                         return <ProductRow key={index} title={products.category} products={products.products.categoryLevel2WiseProduct} />
                     }
                 })
 
-            }
+            } */}
 
 
         </div>
     )
+}
+
+export async function getServerSideProps({ query }) {
+
+
+
+    return {
+        props: {
+            brands: []
+        }
+    }
 }
 
 export default Brand
