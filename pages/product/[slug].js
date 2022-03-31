@@ -54,6 +54,16 @@ const Product = (props) => {
             )
                 .then(res => setInCart(res.data.validateAddToCart))
                 .catch(err => console.log(err))
+        } else {
+            // check kar local cart mei hai kya
+            if (JSON.parse(localStorage.getItem('unauthcart'))) {
+                let localCart = JSON.parse(localStorage.getItem('unauthcart'))
+                let findItem = localCart.filter(item => item[0].product_id == props.product.products.product_id)
+                if (findItem && findItem.length > 0) {
+                    setInCart(true)
+                }
+            }
+
         }
 
     }, [token])
@@ -111,7 +121,8 @@ const Product = (props) => {
                 product_weight: props.product.products.size,
                 updated_at: props.product.products.updated_at,
                 created_at: props.product.products.created_at,
-                category: props.product.products.category
+                category: props.product.products.category,
+                available_stock: parseInt(props.product.products.stock)
             }
             let localCartList = JSON.parse(localStorage.getItem('unauthcart'))
             if (localCartList) {

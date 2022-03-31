@@ -43,7 +43,7 @@ const Cart = () => {
                             {/* CART ITEMS */}
                             {
                                 cartItems?.map((item, index) => {
-                                    return <CartItem updateCartQuantity={updateCartQuantity} key={index} item={item[0]} removeCartItem={removeCartItem} />
+                                    return <CartItem isLoggedIn={isLoggedIn} updateCartQuantity={updateCartQuantity} key={index} item={item[0]} removeCartItem={removeCartItem} />
                                 })
 
                             }

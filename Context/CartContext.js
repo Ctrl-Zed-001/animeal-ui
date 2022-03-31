@@ -15,7 +15,7 @@ const CartContextProvider = (props) => {
     const [hasMedicine, setHasMedicine] = useState(false)
     const [refreshCart, setRefreshCart] = useState(1)
 
-    const { token } = useContext(AuthContext)
+    const { token, isLoggedIn } = useContext(AuthContext)
 
     useEffect(() => {
         if (token) {
@@ -43,7 +43,6 @@ const CartContextProvider = (props) => {
 
     useEffect(() => {
         if (localStorage.getItem('unauthcart')) {
-            console.log("in here")
             let unauthcart = JSON.parse(localStorage.getItem('unauthcart'))
             setCartItems([...unauthcart]);
             validateAndUpdateCart([...unauthcart])
@@ -55,20 +54,49 @@ const CartContextProvider = (props) => {
         let localCart = JSON.parse(localStorage.getItem('unauthcart'))
 
         if (localCart && data === null) {
+            console.log("sirf local mei hai")
             // LOCAL MEI HAI BUT RES MEI NAI
             setCartItems([...localCart]);
             validateAndUpdateCart([...localCart])
         } else if (!localCart && data != null) {
+            console.log("sirf db mei hai")
             // RES MEI HAI BUT LOCAL MEI NAI
             setCartItems(data)
             validateAndUpdateCart(data)
         } else {
+            console.log("Dono mei hai")
             // DONO MEI HAI
             // CHECK K SAME PRODUCT WAPS TO NAI DALA
 
             data.forEach((item, index) => {
                 localCart = localCart.filter(localItem => localItem[0].product_id !== item[0].product_id)
             })
+
+            // abi ye local cart ko db mei push karne ka
+            localCart.forEach((item) => {
+                axios.post(`${process.env.NEXT_PUBLIC_API_URI}/user/addtocart/post/data`,
+                    {
+                        product_id: item[0].product_id,
+                        quantity: 2
+                    },
+                    {
+                        headers: {
+                            Authorization: token
+                        }
+                    })
+                    .then(res => {
+                        // RES AAYA TO LOCAL STORAGE CLEAR KARNE KA
+                        if (res && res.status == 200) {
+                            localStorage.removeItem('unauthcart')
+                        }
+
+                    })
+                    .catch(err => console.log('Add to cart Error', err))
+            })
+
+
+
+            // finally state update
             let newList = [...data, ...localCart]
 
             setCartItems([...newList])
@@ -78,39 +106,21 @@ const CartContextProvider = (props) => {
     }
 
     const updateCartQuantity = (action, id, quantity) => {
-        axios.post(
-            `${process.env.NEXT_PUBLIC_API_URI}/user/${action}/post/data`,
-            {
-                "product_id": id,
-                "quantity": quantity
-            },
-            {
-                headers: {
-                    Authorization: token
+        // CHECK K BANDA LOGGEDIN HAI KYA
+        if (isLoggedIn) {
+            axios.post(
+                `${process.env.NEXT_PUBLIC_API_URI}/user/${action}/post/data`,
+                {
+                    "product_id": id,
+                    "quantity": quantity
+                },
+                {
+                    headers: {
+                        Authorization: token
+                    }
                 }
-            }
-        )
-            .then(res => {
-                if (res.data.cartUpdatePlus === null || res.data.cartUpdateMinus === null) {
-                    let localCart = JSON.parse(localStorage.getItem('unauthcart'))
-                    let newItem = localCart.filter(item => item[0].product_id == id)
-                    axios.post(`${process.env.NEXT_PUBLIC_API_URI}/user/addtocart/post/data`,
-                        {
-                            product_id: newItem[0][0].product_id,
-                            quantity: 2
-                        },
-                        {
-                            headers: {
-                                Authorization: token
-                            }
-                        })
-                        .then(res => {
-                            setCartItems([...cartItems])
-                            validateAndUpdateCart([...cartItems])
-                        })
-                        .catch(err => console.log(err))
-                } else {
-                    console.log("in else")
+            )
+                .then(res => {
                     let oldList = [...cartItems];
                     let oldItemIndex = cartItems.findIndex(item => item[0].product_id == id)
                     if (action === 'updatecartplus') {
@@ -120,10 +130,24 @@ const CartContextProvider = (props) => {
                     }
                     setCartItems([...oldList])
                     validateAndUpdateCart([...oldList])
-                }
 
-            })
-            .catch(err => console.log(err))
+                })
+                .catch(err => console.log(err))
+        } else {
+            // AGAR LOGGEDIN NAHI HAI TO SIRF STATE UPDATE HOYEGA
+            let oldList = [...cartItems];
+            let oldItemIndex = cartItems.findIndex(item => item[0].product_id == id)
+            console.log(oldList[oldItemIndex][0])
+            if (action === 'updatecartplus') {
+                oldList[oldItemIndex][0] = { ...oldList[oldItemIndex][0], quantity: parseInt(oldList[oldItemIndex][0].quantity) + 1, product_total: parseInt(oldList[oldItemIndex][0].product_total) + parseInt(oldList[oldItemIndex][0].product_price), product_discount_total: parseInt(oldList[oldItemIndex][0].product_discount_total) + parseInt(oldList[oldItemIndex][0].product_discount) }
+            } else {
+                oldList[oldItemIndex][0] = { ...oldList[oldItemIndex][0], quantity: parseInt(oldList[oldItemIndex][0].quantity) - 1, product_total: parseInt(oldList[oldItemIndex][0].product_total) - parseInt(oldList[oldItemIndex][0].product_price), product_discount_total: parseInt(oldList[oldItemIndex][0].product_discount_total) - parseInt(oldList[oldItemIndex][0].product_discount) }
+            }
+            setCartItems([...oldList])
+            validateAndUpdateCart([...oldList])
+        }
+
+
     }
 
     const addToCart = (item) => {
@@ -138,33 +162,52 @@ const CartContextProvider = (props) => {
     }
 
     const removeCartItem = (id, type) => {
-        axios.post(
-            `${process.env.NEXT_PUBLIC_API_URI}/user/removecartitem/post/data`,
-            {
-                "product_id": id
-            },
-            {
-                headers: {
-                    Authorization: token
+        if (isLoggedIn) {
+            axios.post(
+                `${process.env.NEXT_PUBLIC_API_URI}/user/removecartitem/post/data`,
+                {
+                    "product_id": id
+                },
+                {
+                    headers: {
+                        Authorization: token
+                    }
+                }
+            )
+                .then(res => {
+                    clearCartState(id, type)
+                })
+                .catch(err => console.log(err))
+        } else {
+            clearCartState(id, type)
+        }
+    }
+
+    const clearCartState = (id, type) => {
+        if (type === 'all') {
+            if (!isLoggedIn) {
+                localStorage.removeItem('unauthcart')
+            }
+            setCartItems([])
+            setCartTotal(0)
+            setQty(0)
+            setCartDiscount(0)
+            setSubtotal(0)
+            setHasMedicine(false)
+        } else {
+            let oldList = [...cartItems];
+            let newList = oldList.filter(item => item[0].product_id !== id)
+            setCartItems([...newList])
+            validateAndUpdateCart([...newList])
+            if (!isLoggedIn) {
+                if (!newList || newList.length === 0) {
+                    localStorage.removeItem('unauthcart')
+                } else {
+                    localStorage.removeItem('unauthcart')
+                    localStorage.setItem('unauthcart', JSON.stringify([...newList]))
                 }
             }
-        )
-            .then(res => {
-                if (type === 'all') {
-                    setCartItems([])
-                    setCartTotal(0)
-                    setQty(0)
-                    setCartDiscount(0)
-                    setSubtotal(0)
-                    setHasMedicine(false)
-                } else {
-                    let oldList = [...cartItems];
-                    let newList = oldList.filter(item => item[0].product_id !== id)
-                    setCartItems([...newList])
-                    validateAndUpdateCart([...newList])
-                }
-            })
-            .catch(err => console.log(err))
+        }
     }
 
     const removeAllItems = () => {
@@ -183,7 +226,6 @@ const CartContextProvider = (props) => {
         let discount = 0;
         let subtotal = 0;
         data.forEach(item => {
-            console.log("🚀 ~ file: CartContext.js ~ line 172 ~ validateAndUpdateCart ~ item", item)
             total = parseInt(total) + parseInt(item[0].product_total)
             quantity = parseInt(quantity) + parseInt(item[0].quantity)
             discount = parseInt(discount) + parseInt(item[0].product_discount_total)
