@@ -15,6 +15,11 @@ const CartContextProvider = (props) => {
     const [hasMedicine, setHasMedicine] = useState(false)
     const [refreshCart, setRefreshCart] = useState(1)
 
+    const [prescriptionUploaded, setPrescriptionUploaded] = useState(false)
+    const [prescriptionFiles, setPrescriptionFiles] = useState([])
+
+    const [doctorName, setDoctorName] = useState('')
+
     const { token, isLoggedIn } = useContext(AuthContext)
 
     useEffect(() => {
@@ -248,7 +253,7 @@ const CartContextProvider = (props) => {
     }
 
     return (
-        <CartContext.Provider value={{ cartItems, setCartItems, cartTotal, setCartTotal, qty, setQty, removeAllItems, removeCartItem, updateCartQuantity, addToCart, cartDiscount, subTotal, clearCart, hasMedicine, setRefreshCart, refreshCart }}>
+        <CartContext.Provider value={{ cartItems, setCartItems, cartTotal, setCartTotal, qty, setQty, removeAllItems, removeCartItem, updateCartQuantity, addToCart, cartDiscount, subTotal, clearCart, hasMedicine, setRefreshCart, refreshCart, prescriptionUploaded, setPrescriptionFiles, prescriptionFiles, setPrescriptionUploaded, doctorName, setDoctorName }}>
             {props.children}
         </CartContext.Provider>
     )

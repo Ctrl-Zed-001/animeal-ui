@@ -4,20 +4,45 @@ import { Input, Textarea } from '@nextui-org/react';
 import { HiPlusSm } from 'react-icons/hi';
 import { AiFillCloseCircle } from 'react-icons/ai'
 import { useForm } from "react-hook-form";
+import FormData from 'form-data';
+import axios from 'axios';
 
 
 const PrescriptionUpload = (props) => {
 
     const { register, handleSubmit, formState: { errors } } = useForm();
-    const onSubmit = data => console.log(data);
-
+    const form = new FormData();
     const fileInput = useRef(null);
     const [files, setFiles] = useState([])
     const [previews, setPreviews] = useState([])
 
+
+    const onSubmit = data => {
+        form.append('petname', data.petname)
+        form.append('pettype', data.pettype)
+        form.append('drname', data.drname)
+        form.append('name', data.name)
+        form.append('email', data.email)
+        form.append('phone', data.phone)
+        form.append('altphone', data.altphone)
+        form.append('address', data.address)
+
+        files.forEach((file, index) => {
+            form.append(`file${index}`, file, file.name)
+        })
+
+        axios.post(
+            `${process.env.NEXT_PUBLIC_API_URI}/user/prescription/post/data`,
+            form
+        )
+            .then(res => console.log(res.data))
+            .catch(err => console.log(err))
+    };
+
     const addFiles = (file) => {
         const objectUrl = URL.createObjectURL(file[0])
-        setFiles([...files, file[0]])
+        let fileArray = [...files, file[0]]
+        setFiles([...fileArray])
         setPreviews([...previews, objectUrl])
     }
 
@@ -33,6 +58,8 @@ const PrescriptionUpload = (props) => {
 
         setFiles([...newFiles])
         setPreviews([...newPreviews])
+
+
     }
 
 
@@ -67,7 +94,7 @@ const PrescriptionUpload = (props) => {
                             <></>
                     }
                     <div className={`${previews.length === 2 ? 'hidden' : ''} upload-box h-28 w-28 bg-slate-100 p-4 rounded-lg flex items-center justify-center`}>
-                        <input onChange={(e) => addFiles(e.target.files)} name='prescription' ref={fileInput} type="file" className='hidden' />
+                        <input {...register("prescription")} onChange={(e) => addFiles(e.target.files)} ref={fileInput} type="file" className='hidden' />
                         <HiPlusSm className='bg-white rounded-full h-12 w-12 mx-auto' onClick={() => fileInput.current.click()} />
                     </div>
                 </div>

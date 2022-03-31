@@ -1,10 +1,10 @@
 import React, { useState, useContext, useEffect } from 'react';
 import Rating from '../../Components/ProductBox/Rating';
 import Breadcrumb from '../../Components/ProductPageComponents/Breadcrumb';
-import { BiRupee } from 'react-icons/bi';
+import { BiRupee, } from 'react-icons/bi';
 import { RiShoppingCartLine, RiHeart3Line, RiHeart3Fill } from 'react-icons/ri';
-import { HiMinusSm, HiPlusSm } from 'react-icons/hi';
-import { Input } from '@nextui-org/react';
+import { HiMinusSm, HiPlusSm, HiDotsHorizontal } from 'react-icons/hi';
+import { Input, Collapse, Text } from '@nextui-org/react';
 import ProductRow from '../../Components/HomeComponents/ProductRow'
 import Reviews from '../../Components/ProductPageComponents/Reviews';
 import Link from 'next/link';
@@ -15,6 +15,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { FreeMode, Navigation, Thumbs } from "swiper";
 import toast, { Toaster } from 'react-hot-toast';
 import getWeight from '../../Helpers/GetWeight'
+
 
 
 import axios from 'axios';
@@ -311,9 +312,14 @@ const Product = (props) => {
                                                         <div className="size cursor-pointer bg-slate-100 p-2 text-sm lg:text-base text-center font-medium shadow rounded mr-4">
                                                             {prod.product_weight}
                                                             <br />
-                                                            <div className="flex items-center text-sm text-slate-600 mt-2">
-                                                                <BiRupee /> {Math.round(prod.product_price / getWeight(prod.product_weight))} / Kg
-                                                            </div>
+                                                            {
+                                                                props.product.products.category.toLowerCase() == 'food' ?
+                                                                    <div className="flex items-center text-sm text-slate-600 mt-2">
+                                                                        <BiRupee /> {Math.round(prod.product_price / getWeight(prod.product_weight))} / Kg
+                                                                    </div> :
+                                                                    <></>
+                                                            }
+
                                                         </div>
                                                     </Link>)
                                                 })
@@ -365,12 +371,20 @@ const Product = (props) => {
 
                     <hr className='border-1 border-gray-300 my-6' />
 
-                    <div className="content-box">
-                        <p className={`text-justify text-sm leading-5 text-slate-600 mb-0 font-medium h-16 hover:h-fit overflow-hidden transition-all ease-in-out duration-500`}>
+                    {/* <div className="content-box">
+                        <p className={`text-justify text-sm leading-5 text-slate-600 mb-0 font-medium max-h-16 hover:max-h-fit overflow-hidden transition-all ease-in-out duration-500`}>
                             {props.product.products.shortdescription}
                         </p>
                         <p className="text-sm text-theme">read more..</p>
-                    </div>
+                    </div> */}
+                    <Collapse title={props.product.products.shortdescription.substr(0, 90)} arrowIcon={<HiDotsHorizontal />}>
+                        <Text>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+                            minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+                            aliquip ex ea commodo consequat.
+                        </Text>
+                    </Collapse>
 
                 </div>
 

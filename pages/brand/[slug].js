@@ -1,38 +1,14 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import AnimalBanner from '../../Components/AnimalPageComponents/AnimalBanner'
-import CategoryBox from '../../Components/AnimalPageComponents/CategoryBox'
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay } from 'swiper';
-import axios from 'axios'
-import ProductRow from '../../Components/HomeComponents/ProductRow'
+import ProductRow from '../../Components/HomeComponents/ProductRow';
 
 import 'swiper/css';
 import 'swiper/css/autoplay';
 
-const index = (props) => {
-
-    const [categoryWiseProducts, setCategoryWiseProducts] = useState()
-
-    useEffect(() => {
-        getProductsByCategory()
-    }, [props])
-
-    const getProductsByCategory = async () => {
-        let allFetchedProducts = []
-        for (const category of props.categorylevels) {
-            let fetchedProducts = await axios.post(`${process.env.NEXT_PUBLIC_API_URI}/category/level2products/categoryonetwowise`, {
-                category1: props.slug,
-                category2: category.category_url
-            })
-            allFetchedProducts.push({
-                category: category.category_name,
-                products: fetchedProducts.data
-            })
-        }
-        setCategoryWiseProducts(allFetchedProducts)
-    }
+const Brand = () => {
     return (
-        <div className='main-animal-page mt-4'>
+        <div className='main-brand-page mt-4'>
             {/* Banner */}
             <AnimalBanner image={props.banner} />
 
@@ -74,26 +50,10 @@ const index = (props) => {
                 })
 
             }
+
+
         </div>
     )
 }
 
-export async function getServerSideProps({ query }) {
-
-    let res = await axios.get(`${process.env.NEXT_PUBLIC_API_URI}/category/${query.slug}`)
-    let bannerRes = await axios.get(`${process.env.NEXT_PUBLIC_API_URI}/banners/getcategorybanner/${query.slug}`)
-    let categoryLevels = res.data.categorylevels
-    let banner = bannerRes.data.categoryBanner
-
-
-    return {
-        props: {
-            // categoryWiseProducts: categoryWiseProducts,
-            categorylevels: categoryLevels,
-            slug: query.slug,
-            banner: banner
-        }
-    }
-}
-
-export default index
+export default Brand

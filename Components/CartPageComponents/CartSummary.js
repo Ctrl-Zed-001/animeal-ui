@@ -36,9 +36,11 @@ const CartSummary = (props) => {
             </table>
             {
                 props.isLoggedIn ?
-                    <Link onClick={() => localStorage.removeItem('unauthcart')} href='/checkout'>
-                        <button className='bg-theme px-4 rounded-lg w-full font-semibold py-3 mt-4'>Proceed to checkout</button>
-                    </Link> :
+                    props.prescriptionUploaded ?
+                        <Link onClick={() => localStorage.removeItem('unauthcart')} href='/checkout'>
+                            <button className='bg-theme px-4 rounded-lg w-full font-semibold py-3 mt-4'>Proceed to checkout</button>
+                        </Link> :
+                        <button onClick={() => props.setShowPrescriptionModal(true)} className='bg-theme px-4 rounded-lg w-full font-semibold py-3 mt-4'>Proceed to checkout</button> :
                     <button onClick={() => props.showAuthModal(true)} className='bg-theme px-4 rounded-lg w-full font-semibold py-3 mt-4'>Proceed to checkout</button>
             }
         </div>

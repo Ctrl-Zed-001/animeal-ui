@@ -5,7 +5,7 @@ const edit = () => {
   return (
     <div className="change-password">
       <div className="container">
-        <h1 className='font-semibold text-2xl mb-4'>Change Password</h1>
+        <h1 className='font-semibold text-2xl mb-4'>Edit Profile</h1>
 
         <div className="grid grid-cols-12">
           {/* PROFILE INFO */}
@@ -13,10 +13,12 @@ const edit = () => {
 
           <div className="blank-col"></div>
 
-          {/* PROFILE ACTIONS */}
+          {/* EDIT PROFILE */}
           <div className="profile-action-section col-span-8">
-
+            <form></form>
           </div>
+
+
         </div>
 
       </div>

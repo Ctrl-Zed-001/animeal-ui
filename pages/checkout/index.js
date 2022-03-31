@@ -18,6 +18,8 @@ import NewAddressModal from '../../Components/CheckoutComponents/NewAddressModal
 import OrderStatusPopup from '../../Components/CheckoutComponents/OrderStatusPopup';
 import { useRouter } from 'next/router'
 import OtpPopup from '../../Components/CheckoutComponents/OtpPopup'
+import toast, { Toaster } from 'react-hot-toast'
+import FormData from 'form-data';
 
 
 
@@ -26,13 +28,13 @@ const Checkout = () => {
 
     SwiperCore.use([Virtual, Navigation]);
     const router = useRouter()
+    const form = new FormData();
 
     const { token, userDetails } = useContext(AuthContext)
-    const { cartTotal, clearCart, cartDiscount } = useContext(CartContext)
+    const { cartTotal, clearCart, cartDiscount, doctorName, prescriptionFiles, prescriptionUploaded } = useContext(CartContext)
 
     const [showAddressModal, setShowAddressModal] = useState(false)
     const [address, setAddress] = useState()
-    console.log("🚀 ~ file: index.js ~ line 35 ~ Checkout ~ address", address)
     const [savedAddresses, setSavedAddresses] = useState()
     const [newAddressModal, ToggleNewAddressModal] = useState(false)
     const [statusModal, setStatusModal] = useState()
@@ -61,12 +63,18 @@ const Checkout = () => {
         }
     }, [token])
 
+    useEffect(() => {
+        if (!prescriptionUploaded) {
+            router.replace('/cart')
+        }
+    }, [prescriptionUploaded])
+
     const addNewAddress = (newData) => {
         let body = {
             addname: newData.addname,
-            addemail: userDetails.addemail,
+            addemail: userDetails.email,
             addnumber: newData.addnumber,
-            addaltnumber: newData.altnumber,
+            addaltnumber: newData.addaltnumber,
             addaddress1: newData.addaddress1,
             addaddress2: newData.addaddress2,
             addcity: newData.addcity,
@@ -74,7 +82,7 @@ const Checkout = () => {
             addstate: newData.addstate,
             addresstype: newData.addresstype,
             defaultaddress: newData.defaultAddress ? 'Yes' : 'No',
-            drname: newData.drname ? newData.drname : ''
+            drname: doctorName ? doctorName : ''
         }
         axios.post(
             `${process.env.NEXT_PUBLIC_API_URI}/user/addnewdaddress/post/data`,
@@ -95,39 +103,47 @@ const Checkout = () => {
     }
 
     const saveAddress = (paymentType) => {
-        if (!address.id) {
-            addNewAddress(address)
+
+        if (address.addname == '' || address.addnumber == '' || address.addaltnumber == '' || address.addaddress1 == '' || address.addaddress2 == '' || address.addcity == '' || address.addpincode == '' || address.addstate == '' || address.addresstype == '') {
+            toast.error("Please fill in all the fields")
+        } else if (address.addpincode.length > 6 || address.addpincode.length < 6) {
+            toast.error("Please check your pincode")
         } else {
-            axios.post(
-                `${process.env.NEXT_PUBLIC_API_URI}/user/updatesaveddaddress/post/data`,
-                {
-                    addressid: address.id,
-                    addname: address.addname,
-                    addemail: userDetails.addemail,
-                    addnumber: address.addnumber,
-                    addaltnumber: address.addaltnumber,
-                    addaddress1: address.addaddress1,
-                    addaddress2: address.addaddress2,
-                    addcity: address.addcity,
-                    addpincode: address.addpincode,
-                    addstate: address.addstate,
-                    addresstype: address.addresstype,
-                    defaultaddress: address.defaultAddress ? 'Yes' : 'No',
-                    drname: address.drname ? address.drname : null
-                },
-                {
-                    headers: {
-                        Authorization: token
+            if (!address.id) {
+                addNewAddress(address)
+            } else {
+                axios.post(
+                    `${process.env.NEXT_PUBLIC_API_URI}/user/updatesaveddaddress/post/data`,
+                    {
+                        addressid: address.id,
+                        addname: address.addname,
+                        addemail: userDetails.email,
+                        addnumber: address.addnumber,
+                        addaltnumber: address.addaltnumber,
+                        addaddress1: address.addaddress1,
+                        addaddress2: address.addaddress2,
+                        addcity: address.addcity,
+                        addpincode: address.addpincode,
+                        addstate: address.addstate,
+                        addresstype: address.addresstype,
+                        defaultaddress: address.defaultAddress ? 'Yes' : 'No',
+                        drname: doctorName ? doctorName : null
+                    },
+                    {
+                        headers: {
+                            Authorization: token
+                        }
                     }
-                }
-            )
-                .then(res => console.log(res.data))
-                .catch(err => console.log(err))
-        }
-        if (paymentType === 'online') {
-            callRazorPay()
-        } else {
-            callOtp()
+                )
+                    .then(res => console.log(res.data))
+                    .catch(err => console.log(err))
+            }
+
+            if (paymentType === 'online') {
+                callRazorPay()
+            } else {
+                callOtp()
+            }
         }
     }
 
@@ -196,6 +212,7 @@ const Checkout = () => {
                     }
                 )
                     .then(res => {
+                        uploadPrescription()
                         setOrderStatus(true)
                         setStatusModal(true)
                         clearCart()
@@ -255,7 +272,6 @@ const Checkout = () => {
     const placeOrder = (value) => {
         setOtpModal(false)
         // VALIDATE OTP API
-
         axios.post(
             `${process.env.NEXT_PUBLIC_API_URI}/user/codorder/post/data`,
             {
@@ -279,6 +295,7 @@ const Checkout = () => {
         )
             .then(res => {
                 console.log(res.data)
+                uploadPrescription()
                 setOrderStatus(true)
                 setStatusModal(true)
                 clearCart()
@@ -290,10 +307,38 @@ const Checkout = () => {
             })
     }
 
+    // UPLOAD PRESCRIPTION
+    const uploadPrescription = () => {
+        if (prescriptionUploaded) {
+            let fullAddress = address.addaddress1 + ' ' + address.addaddress2 + ' ' + address.addcity + ' ' + address.addpincode + ' ' + address.addstate;
+            form.append('petname', '')
+            form.append('pettype', '')
+            form.append('drname', doctorName)
+            form.append('name', address.addname)
+            form.append('email', address.addemail)
+            form.append('phone', address.addnumber)
+            form.append('altphone', address.addaltphone)
+            form.append('address', fullAddress)
+
+            prescriptionFiles.forEach((file, index) => {
+                form.append(`file${index}`, file, file.name)
+            })
+
+            axios.post(
+                `${process.env.NEXT_PUBLIC_API_URI}/user/prescription/post/data`,
+                form
+            )
+                .then(res => console.log(res.data))
+                .catch(err => console.log(err))
+        }
+    }
+
 
     return (
         <div className='block lg:flex lg:gap-12 checkout-page container my-5'>
-
+            <Toaster
+                position='top-center'
+            />
             {/* MOBILE DELIVERY BOX */}
             {
                 address ?
@@ -457,7 +502,7 @@ const Checkout = () => {
                             onChange={(e) => setAddress({ ...address, addpincode: e.target.value })}
                         />
                     </div>
-                    <div className="flex justify-end items-center gap-6">Set as default address <Switch initialChecked={address?.defaultaddress == "Yes" ? true : false} onChange={(e) => setAddress({ ...address, defaultAddress: e.target.checked })} color='success' /> </div>
+                    <div className="flex justify-end items-center gap-6">Set as default address <Switch checked={address?.defaultaddress == "Yes" ? true : false} onChange={(e) => setAddress({ ...address, defaultAddress: e.target.checked })} color='success' /> </div>
                 </div>
 
             </div>
@@ -471,7 +516,7 @@ const Checkout = () => {
                     <div className='flex justify-between gap-2 items-center'>
                         <IoMdPricetag className='text-theme h-8 w-10' />
                         <Input clearable underlined className='w-11/12' />
-                        <HiChevronRight className='bg-theme rounded-full h-8 w-8' />
+                        <HiChevronRight onClick={() => toast.error("oops! that didn't work.")} className='bg-theme rounded-full h-8 w-8' />
                     </div>
                 </div>
 

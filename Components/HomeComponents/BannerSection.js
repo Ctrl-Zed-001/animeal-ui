@@ -56,15 +56,15 @@ const BannerSection = () => {
                 <Link href='/shop?slug=food'>
                     <div className="relative cursor-pointer">
                         <img src="/img/banner-1.png" alt="" className='h-52 xl:h-60 mb-3 xl:mb-4 rounded-lg w-full object-cover shadow' />
-                        <h1 className="text-white text-3xl font-bold absolute top-10 left-5 w-7/12">Best Quantity <br /> Pet Food</h1>
-                        <button className='bg-transparent border-2 border-white px-4 py-2 text-white absolute bottom-10 left-5 rounded-lg'>shop now</button>
+                        <h1 className="text-white text-3xl font-bold absolute top-10 left-5 w-7/12">Best Quality <br /> Pet Food</h1>
+                        <button className='bg-red-500 font-semibold border-2 border-white px-4 py-2 text-white absolute bottom-10 left-5 rounded-lg'>shop now</button>
                     </div>
                 </Link>
                 <Link href='/shop?slug=veterinary supplements medicine'>
                     <div className="relative">
                         <img src="/img/banner-2.png" alt="" className='h-52 xl:h-60 mt-3 xl:mt-4 rounded-lg w-full object-cover shadow' />
-                        <h1 className="text-white text-3xl font-bold absolute top-10 left-5 w-7/12">Veterinary Products</h1>
-                        <button className='bg-transparent border-2 border-white px-4 py-2 text-white absolute bottom-10 left-5 rounded-lg'>shop now </button>
+                        <h1 className="text-white text-3xl font-bold absolute top-10 left-5 w-7/12">Veterinary <br /> Products</h1>
+                        <button className='bg-red-500 font-semibold border-2 border-white px-4 py-2 text-white absolute bottom-10 left-5 rounded-lg'>shop now</button>
                     </div>
                 </Link>
             </div>
@@ -74,7 +74,7 @@ const BannerSection = () => {
                 <div className="relative h-90 lg:w-3/6 w-3/6 text-center">
                     <img src="/img/3rd.png" alt="" className='h-full object-cover rounded-lg w-full shadow' />
                     <h1 className="text-white text-xl font-bold absolute top-10 left-0 w-full px-2">Send us the prescription and we'll have it delivered</h1>
-                    <button onClick={() => setIsUploadModalOpen(true)} className='bg-transparent border-2 border-white px-4 py-2 text-white absolute bottom-10 left-16 xl:left-14 rounded-lg'>upload now</button>
+                    <button onClick={() => setIsUploadModalOpen(true)} className='bg-red-500 border-2 border-white px-4 py-2 text-white absolute bottom-10 left-16 xl:left-20 rounded-lg'>upload now</button>
                 </div>
 
                 {/* RIGHT BANNER 2 */}
