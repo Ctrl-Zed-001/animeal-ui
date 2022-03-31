@@ -34,7 +34,7 @@ const index = (props) => {
     return (
         <div className='main-animal-page mt-4'>
             {/* Banner */}
-            <AnimalBanner image={props.banner} />
+            <AnimalBanner image={props.banner} title={`The ${props.slug} Shop`} />
 
             <div className="container my-10">
                 <Swiper

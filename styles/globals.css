@@ -286,6 +286,10 @@ body.sidemenu-open .sidebar {
   .order-timeline {
     font-size: 0.5rem;
   }
+
+  .header {
+    box-shadow: none;
+  }
 }
 
 .nextui-c-bLiKyn-iNZaNK-closeButton-true {

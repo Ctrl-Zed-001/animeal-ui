@@ -377,14 +377,19 @@ const Product = (props) => {
                         </p>
                         <p className="text-sm text-theme">read more..</p>
                     </div> */}
-                    <Collapse title={props.product.products.shortdescription.substr(0, 90)} arrowIcon={<HiDotsHorizontal />}>
-                        <Text>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-                            minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                            aliquip ex ea commodo consequat.
-                        </Text>
-                    </Collapse>
+                    {
+                        props.product.products.shortdescription ?
+                            <Collapse title={props.product.products.shortdescription.substr(0, 90)} arrowIcon={<HiDotsHorizontal />}>
+                                <Text>
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                                    eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+                                    minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+                                    aliquip ex ea commodo consequat.
+                                </Text>
+                            </Collapse> :
+                            <></>
+                    }
+
 
                 </div>
 

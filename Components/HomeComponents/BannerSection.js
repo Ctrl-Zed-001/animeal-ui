@@ -56,15 +56,15 @@ const BannerSection = () => {
                 <Link href='/shop?slug=food'>
                     <div className="relative cursor-pointer">
                         <img src="/img/banner-1.png" alt="" className='h-52 xl:h-60 mb-3 xl:mb-4 rounded-lg w-full object-cover shadow' />
-                        <h1 className="text-white text-3xl font-bold absolute top-10 left-5 w-7/12">Best Quality <br /> Pet Food</h1>
-                        <button className='bg-red-500 font-semibold border-2 border-white px-4 py-2 text-white absolute bottom-10 left-5 rounded-lg'>shop now</button>
+                        <h1 className="text-white xl:text-3xl font-bold absolute top-10 left-5 w-7/12">Best Quality <br /> Pet Food <br /> 10% OFF</h1>
+                        <button className='bg-red-500 font-semibold border-2 border-white px-4 py-2 text-white text-xs xl:text-base absolute bottom-10 left-5 rounded-lg'>shop now</button>
                     </div>
                 </Link>
                 <Link href='/shop?slug=veterinary supplements medicine'>
                     <div className="relative">
                         <img src="/img/banner-2.png" alt="" className='h-52 xl:h-60 mt-3 xl:mt-4 rounded-lg w-full object-cover shadow' />
-                        <h1 className="text-white text-3xl font-bold absolute top-10 left-5 w-7/12">Veterinary <br /> Products</h1>
-                        <button className='bg-red-500 font-semibold border-2 border-white px-4 py-2 text-white absolute bottom-10 left-5 rounded-lg'>shop now</button>
+                        <h1 className="text-white xl:text-3xl font-bold absolute top-10 left-5 w-7/12">Veterinary <br /> Products <br />10% OFF</h1>
+                        <button className='bg-amber-600 font-semibold border-2 border-white px-4 py-2 text-white text-xs xl:text-base absolute bottom-10 left-5 rounded-lg'>shop now</button>
                     </div>
                 </Link>
             </div>
@@ -73,8 +73,8 @@ const BannerSection = () => {
                 {/* RIGHT BANNER 1 */}
                 <div className="relative h-90 lg:w-3/6 w-3/6 text-center">
                     <img src="/img/3rd.png" alt="" className='h-full object-cover rounded-lg w-full shadow' />
-                    <h1 className="text-white text-xl font-bold absolute top-10 left-0 w-full px-2">Send us the prescription and we'll have it delivered</h1>
-                    <button onClick={() => setIsUploadModalOpen(true)} className='bg-red-500 border-2 border-white px-4 py-2 text-white absolute bottom-10 left-16 xl:left-20 rounded-lg'>upload now</button>
+                    <h1 className="text-white xl:text-xl font-bold absolute top-10 left-0 w-full px-2">Send us the prescription and we'll have it delivered</h1>
+                    <button onClick={() => setIsUploadModalOpen(true)} className='bg-amber-900 border-2 border-white px-4 py-2 text-white absolute top-36 left-6 xl:left-16 font-semibold rounded-lg'>upload now</button>
                 </div>
 
                 {/* RIGHT BANNER 2 */}

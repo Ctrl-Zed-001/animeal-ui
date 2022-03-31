@@ -1,7 +1,7 @@
 import React from 'react'
-import AnimalBanner from '../../Components/AnimalPageComponents/AnimalBanner'
+import AnimalBanner from '../../../Components/AnimalPageComponents/AnimalBanner'
 import { Swiper, SwiperSlide } from 'swiper/react';
-import ProductRow from '../../Components/HomeComponents/ProductRow';
+import ProductRow from '../../../Components/HomeComponents/ProductRow';
 
 import 'swiper/css';
 import 'swiper/css/autoplay';

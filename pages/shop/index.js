@@ -11,6 +11,7 @@ const Shop = () => {
     const router = useRouter()
     const [srpData, setSrpData] = useState()
     const [page, setPage] = useState(1)
+    const [sort, setSort] = useState('relevent')
 
     useEffect(() => {
         if (router) {
@@ -18,7 +19,8 @@ const Shop = () => {
                 axios.post(`${process.env.NEXT_PUBLIC_API_URI}/alllevelwiseproducts/post/data`, {
                     category1: router.query.animal,
                     category2: router.query.category,
-                    category3: router.query.subcategory
+                    category3: router.query.subcategory,
+                    sort: sort
                 })
                     .then(res => {
                         setSrpData(res.data.categoryAllLevelsWiseProduct)
@@ -26,7 +28,8 @@ const Shop = () => {
                     .catch(err => console.log(err))
             } else if (router.query.slug) {
                 axios.post(`${process.env.NEXT_PUBLIC_API_URI}/dyanamicsearchproducts/get/data`, {
-                    query: router.query.slug
+                    query: router.query.slug,
+                    sort: sort
                 })
                     .then(res => setSrpData(res.data.productBySearch))
                     .catch(err => console.log(err))
@@ -36,6 +39,7 @@ const Shop = () => {
     }, [router])
 
     const paginate = (pageNumber) => {
+        setPage(pageNumber)
         window.scrollTo({
             top: 0,
             behavior: 'smooth',
@@ -44,7 +48,8 @@ const Shop = () => {
             axios.post(`${process.env.NEXT_PUBLIC_API_URI}/alllevelwiseproducts/post/data?page=${pageNumber}`, {
                 category1: router.query.animal,
                 category2: router.query.category,
-                category3: router.query.subcategory
+                category3: router.query.subcategory,
+                sort: sort
             })
                 .then(res => {
                     setSrpData(res.data.categoryAllLevelsWiseProduct)
@@ -52,7 +57,8 @@ const Shop = () => {
                 .catch(err => console.log(err))
         } else if (router.query.slug) {
             axios.post(`${process.env.NEXT_PUBLIC_API_URI}/dyanamicsearchproducts/get/data?page=${pageNumber}`, {
-                query: router.query.slug
+                query: router.query.slug,
+                sort: sort
             })
                 .then(res => setSrpData(res.data.productBySearch))
                 .catch(err => console.log(err))
@@ -60,7 +66,30 @@ const Shop = () => {
 
     }
 
-    console.log(router)
+    const sortResults = (e) => {
+
+        if (router.query.animal) {
+            axios.post(`${process.env.NEXT_PUBLIC_API_URI}/alllevelwiseproducts/post/data?page=${page}`, {
+                category1: router.query.animal,
+                category2: router.query.category,
+                category3: router.query.subcategory,
+                sort: e.target.value
+            })
+                .then(res => {
+                    setSrpData(res.data.categoryAllLevelsWiseProduct)
+                })
+                .catch(err => console.log(err))
+        } else if (router.query.slug) {
+            axios.post(`${process.env.NEXT_PUBLIC_API_URI}/dyanamicsearchproducts/get/data?page=${page}`, {
+                query: router.query.slug,
+                sort: e.target.value
+            })
+                .then(res => setSrpData(res.data.productBySearch))
+                .catch(err => console.log(err))
+        }
+    }
+
+
     return (
         <div className='shop-page my-10'>
 
@@ -81,14 +110,13 @@ const Shop = () => {
                     <div className="sorting hidden md:flex justify-between items-center relative mt-4">
                         <p className='text-sm font-medium'>showing {srpData && srpData.to} out of {srpData && srpData.total} products</p>
                         <div>
-                            <i className='absolute -top-2 right-28 text-gray-500 text-xs'>sort by</i>
+                            <span className='absolute -top-2 right-28 text-gray-500 text-xs'>sort by</span>
 
-                            <select name="sorting" id="sorting" className='text-sm text-left rounded-lg px-2 py-3 bg-slate-100 text-gray-600 mx-2 flex justify-between items-center shadow'>
-                                <option value="popularity">Popularity</option>
-                                <option value="price-lowest">price : high to low</option>
-                                <option value="price-highest">price : low to high</option>
-                                <option value="rating">rating : high to low</option>
-                                <option value="relevance">relevance</option>
+                            <select value={sort} name="sorting" id="sorting" onChange={(e) => sortResults(e)} className='text-sm text-left rounded-lg px-2 py-3 bg-slate-100 text-gray-600 mx-2 flex justify-between items-center shadow'>
+                                <option value="relevent">Popularity</option>
+                                <option value="hightolow">price : high to low</option>
+                                <option value="lowtohigh">price : low to high</option>
+                                <option value="ratinghigh">rating : high to low</option>
                             </select>
                         </div>
                     </div>

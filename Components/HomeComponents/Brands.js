@@ -1,4 +1,5 @@
 import React from 'react'
+import Link from 'next/link'
 
 const Brands = (props) => {
     return (
@@ -9,9 +10,11 @@ const Brands = (props) => {
                 {
                     props.brands ?
                         props.brands.map((brand, index) => {
-                            return (<div key={index} className="brand-box rounded-lg cursor-pointer">
-                                <img src={`${process.env.NEXT_PUBLIC_IMAGE_URI}/brand-icon/${brand.brand_icon}`} alt="" className='rounded-lg' />
-                            </div>)
+                            return (<Link href='/'>
+                                <div key={index} className="brand-box rounded-lg cursor-pointer">
+                                    <img src={`${process.env.NEXT_PUBLIC_IMAGE_URI}/brand-icon/${brand.brand_icon}`} alt="" className='rounded-lg' />
+                                </div>
+                            </Link>)
                         }) :
                         <></>
                 }

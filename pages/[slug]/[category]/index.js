@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import SubCategoryBox from '../../../Components/AnimalPageComponents/SubCategoryBox'
 import ProductRow from '../../../Components/HomeComponents/ProductRow'
+import AnimalBanner from '../../../Components/AnimalPageComponents/AnimalBanner'
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay } from 'swiper';
@@ -34,9 +35,12 @@ const index = (props) => {
     }
 
     return (
-        <div className='subcategory-page my-10'>
+        <div className='subcategory-page mt-4'>
 
-            <div className="subcategory-row container">
+            {/* Banner */}
+            <AnimalBanner image={props.banner} title={`${props.animal} ${props.category}`} />
+
+            <div className="subcategory-row container my-10">
                 <Swiper
                     modules={[Autoplay]}
                     breakpoints={{
@@ -78,18 +82,16 @@ const index = (props) => {
 }
 
 export async function getServerSideProps({ query }) {
-
     let res = await axios.get(`${process.env.NEXT_PUBLIC_API_URI}/category/${query.slug}/${query.category}`)
-
+    let bannerRes = await axios.get(`${process.env.NEXT_PUBLIC_API_URI}/banners/getcategorybannerlevel2/${query.slug}/${query.category}`)
     let categorylevels = res.data.categorylevels3;
-
-
-
+    let banner = bannerRes.data.categoryLevel2Banner
     return {
         props: {
             categorylevels: categorylevels,
             animal: query.slug,
-            category: query.category
+            category: query.category,
+            banner: banner
         }
     }
 }
