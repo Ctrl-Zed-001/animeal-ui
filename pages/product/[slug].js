@@ -28,6 +28,7 @@ import "swiper/css/thumbs";
 
 
 const Product = (props) => {
+    console.log("🚀 ~ file: [slug].js ~ line 31 ~ Product ~ props", props)
     const [inWishlist, setInWishlist] = useState(false)
     const [inCart, setInCart] = useState(false)
     const [productImages, setProductImages] = useState([...props.product.productimages])
@@ -182,7 +183,7 @@ const Product = (props) => {
 
     return (
 
-        <div className='product-page my-10'>
+        <div className='product-page xl:my-10'>
 
             <div className="lg:flex container gap-20 mb-20">
                 {/* PRODUCT IMAGE SLIDER */}

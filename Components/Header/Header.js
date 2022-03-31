@@ -101,7 +101,7 @@ const Header = (props) => {
                     <button className="btn btn-link text-dark menu-btn"><img src="/img/icons/menu.png" alt="" /></button>
 
                     <Link href='/'>
-                        <img src="/img/logo.png" alt="" className="header-logo h-10 cursor-pointer mx-auto" />
+                        <img src="/img/logo.png" alt="" className="header-logo h-10 cursor-pointer xl:mx-auto ml-16" />
                     </Link>
                 </div>
 

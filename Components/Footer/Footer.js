@@ -1,10 +1,26 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { MdCall } from 'react-icons/md'
 import { AiOutlineWhatsApp } from 'react-icons/ai'
+import { useRouter } from 'next/router'
 
 const Footer = () => {
+
+    const router = useRouter()
+    const [show, setShow] = useState(true)
+
+
+    useEffect(() => {
+        if (router) {
+            if (router.pathname == '/checkout' || router.pathname == '/cart') {
+                setShow(false)
+            } else {
+                setShow(true)
+            }
+        }
+    }, [router])
+
     return (
-        <div className="footer mt-32 pb-10 lg:pb-24 relative px-4 lg:px-0">
+        <div className={`${show ? 'block' : 'hidden'} footer mt-32 pb-10 lg:pb-24 relative px-4 lg:px-0`}>
             <img src="/img/footer-bg.png" alt="" className='hidden lg:block -z-10 lg:absolute lg:bottom-0 left-0' />
             <img src="/img/footer-mobile-bg.png" alt="" className='lg:hidden -z-10 absolute -bottom-10 left-0' />
             <div className="container py-6 bg-white rounded-3xl ">
@@ -57,10 +73,10 @@ const Footer = () => {
                             <img src="/img/icons/love.png" alt="" />
                         </div>
                         <div className="flex justify-center gap-4 lg:gap-4 text-center lg:mt-4">
-                            <img src="/img/icons/fb.png" alt="" className='h-8' />
-                            <img src="/img/icons/twitter.png" alt="" className='h-8' />
-                            <img src="/img/icons/insta.png" alt="" className='h-8' />
-                            <img src="/img/icons/whatsapp.png" alt="" className='h-8' />
+                            <a href="https://www.facebook.com/animeal.in"><img src="/img/icons/fb.png" alt="" className='h-8' /></a>
+                            <a href="https://www.instagram.com/animeal.in/"><img src="/img/icons/twitter.png" alt="" className='h-8' /></a>
+                            <a href="https://twitter.com/animeal_in"><img src="/img/icons/insta.png" alt="" className='h-8' /></a>
+                            <a href="https://wa.me/+919004485093"><img src="/img/icons/whatsapp.png" alt="" className='h-8' /></a>
                         </div>
                     </div>
                     <hr className='lg:hidden w-full bg-gray-500 my-8' />
@@ -74,7 +90,8 @@ const Footer = () => {
                 <div className="lg:flex justify-between items-center lg:px-28">
                     <div className="lg:flex items-center gap-4 px-10">
                         <img src="/img/logo.png" alt="" className='h-10 mx-auto' />
-                        <h1 className='font-semibold text-xs lg:text-base text-center'> is brought to you by <span className="text-theme">GOODMAN VETCARE PVT. LTD.</span>  </h1>
+                        <h1 className='font-semibold hidden xl:block text-xs lg:text-base text-center'> is brought to you by <span className="text-theme">GOODMAN VETCARE PVT. LTD.</span>  </h1>
+                        <h1 className='font-semibold block xl:hidden text-xs lg:text-base text-center'> is brought to you by <br /> <span className="text-theme">GOODMAN VETCARE PVT. LTD.</span>  </h1>
                     </div>
                     <h1 className='font-semibold text-xs lg:text-base text-center'>© 2022 Copyright Animeal.in</h1>
                 </div>

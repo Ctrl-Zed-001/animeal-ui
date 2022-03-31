@@ -10,17 +10,19 @@ const Brands = (props) => {
                 {
                     props.brands ?
                         props.brands.map((brand, index) => {
-                            return (<Link href='/'>
+                            console.log("🚀 ~ file: Brands.js ~ line 19 ~ props.brands.map ~ brand", brand)
+                            return (<Link href={`/brand/${brand.brand_url.toString()}`}>
                                 <div key={index} className="brand-box rounded-lg cursor-pointer">
                                     <img src={`${process.env.NEXT_PUBLIC_IMAGE_URI}/brand-icon/${brand.brand_icon}`} alt="" className='rounded-lg' />
                                 </div>
                             </Link>)
                         }) :
+
                         <></>
                 }
 
             </div>
-        </div>
+        </div >
     )
 }
 

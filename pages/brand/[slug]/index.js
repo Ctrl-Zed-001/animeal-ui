@@ -5,8 +5,9 @@ import ProductRow from '../../../Components/HomeComponents/ProductRow';
 
 import 'swiper/css';
 import 'swiper/css/autoplay';
+import axios from 'axios';
 
-const Brand = () => {
+const Brand = (props) => {
     return (
         <div className='main-brand-page mt-4'>
             {/* Banner */}
@@ -57,6 +58,18 @@ const Brand = () => {
 }
 
 export async function getServerSideProps({ query }) {
+
+    let endpoints = [
+        `${process.env.NEXT_PUBLIC_API_URI}/brand/branddetails/post/data`, { brand_slug: query.slug, category: 'food' },
+        `${process.env.NEXT_PUBLIC_API_URI}/brand/branddetails/post/data`, { brand_slug: query.slug, category: 'food' },
+        `${process.env.NEXT_PUBLIC_API_URI}/brand/branddetails/post/data`, { brand_slug: query.slug, category: 'food' },
+        `${process.env.NEXT_PUBLIC_API_URI}/brand/branddetails/post/data`, { brand_slug: query.slug, category: 'food' },
+        `${process.env.NEXT_PUBLIC_API_URI}/brand/branddetails/post/data`, { brand_slug: query.slug, category: 'food' }
+    ];
+
+    let allResponse = await axios.all(endpoints.map((endpoint) => axios.get(endpoint)))
+    console.log("🚀 ~ file: index.js ~ line 71 ~ getServerSideProps ~ allResponse", allResponse)
+
 
 
 

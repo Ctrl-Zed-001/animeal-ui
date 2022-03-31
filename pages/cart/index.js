@@ -60,8 +60,8 @@ const Cart = () => {
 
                         <CartSummary setShowPrescriptionModal={setShowPrescriptionModal} prescriptionUploaded={prescriptionUploaded} showAuthModal={setShowAuthModal} isLoggedIn={isLoggedIn} cartTotal={cartTotal} qty={qty} cartDiscount={cartDiscount} subTotal={subTotal} />
                     </div> :
-                    <div>
-                        <img src='/img/empty-cart.png' className='w-5/12 mx-auto' />
+                    <div className='mt-28'>
+                        <img src='/img/empty-cart.png' className=' w-full xl:w-5/12 mx-auto' />
                         <p className="text-center font-semibold">You have no items in your cart.</p>
                     </div>
             }
