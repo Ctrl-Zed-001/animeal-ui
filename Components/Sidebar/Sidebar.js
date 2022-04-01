@@ -7,13 +7,17 @@ import Link from 'next/link'
 
 const Sidebar = () => {
 
-    const { userDetails } = useContext(AuthContext)
+    const { userDetails, isLoggedIn } = useContext(AuthContext)
 
     return (
         <div className="sidebar">
             <div className="text-center">
                 <div className="figure-menu shadow">
-                    <figure><img src={`${userDetails && userDetails.proimg ? userDetails.proimg : '/img/user.png'}`} alt="" /></figure>
+                    {
+                        isLoggedIn ?
+                            <Link href='/profile'><figure><img src={`${userDetails && userDetails.proimg ? userDetails.proimg : '/img/user.png'}`} alt="" /></figure></Link> :
+                            <figure><img src={`${userDetails && userDetails.proimg ? userDetails.proimg : '/img/user.png'}`} alt="" /></figure>
+                    }
                 </div>
                 <h5 className="mb-1 text-lg font-semibold">{
                     userDetails && userDetails.name ?

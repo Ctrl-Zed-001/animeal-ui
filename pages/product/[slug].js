@@ -28,7 +28,6 @@ import "swiper/css/thumbs";
 
 
 const Product = (props) => {
-    console.log("🚀 ~ file: [slug].js ~ line 31 ~ Product ~ props", props)
     const [inWishlist, setInWishlist] = useState(false)
     const [inCart, setInCart] = useState(false)
     const [productImages, setProductImages] = useState([...props.product.productimages])
@@ -236,19 +235,20 @@ const Product = (props) => {
                 {/* DATA */}
                 <div className="product-data flex-1 mt-6 lg:mt-0">
                     {/* <Breadcrumb className="hidden lg:block" /> */}
-                    <h3 className="text-xs lg:text-sm text-theme font-semibold">{props.product.products.subcategory}</h3>
+                    <Link href={`/shop/?slug=${props.product.products.subcategory}`}><h3 className="text-xs lg:text-sm text-theme font-semibold cursor-pointer">{props.product.products.subcategory}</h3></Link>
                     <h1 className="text-base lg:text-3xl font-semibold text-slate-900">
                         {props.product.products.website_pro_name}
                     </h1>
+
+                    <Link href={`/shop/?slug=${props.product.products.brand}`}><p className='text text-slate-600 font-medium my-2 cursor-pointer'>by : {props.product.products.brand}</p></Link>
                     {
                         props.product.products.category.toLowerCase() == 'medicine' ?
-                            <div className="flex items-center gap-2">
+                            <div className="flex items-center gap-2 my-2">
                                 <img src="/img/icons/rx.png" className='h-8' alt="" />
-                                <p className='text-xs font-semibold text-theme'>Prescription required</p>
+                                <p className='text-sm font-semibold text-theme'>Prescription required</p>
                             </div> :
                             <></>
                     }
-                    <p className='text text-slate-600 font-medium my-2'>by : {props.product.products.brand}</p>
                     <div className="flex items-center">
                         <Rating value={0} />
                         <p className='text-xs lg:text-base text-slate-600 ml-3 font-medium'>{props.product.ratinglist.length} customer reviews</p>
@@ -380,13 +380,10 @@ const Product = (props) => {
                     </div> */}
                     {
                         props.product.products.shortdescription ?
-                            <Collapse title={props.product.products.shortdescription.substr(0, 90)} arrowIcon={<HiDotsHorizontal />}>
-                                <Text>
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                                    eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-                                    minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                                    aliquip ex ea commodo consequat.
-                                </Text>
+                            <Collapse title={props.product.products.shortdescription.substr(0, 90)} >
+                                <p className='text-justify'>
+                                    {props.product.products.shortdescription}
+                                </p>
                             </Collapse> :
                             <></>
                     }

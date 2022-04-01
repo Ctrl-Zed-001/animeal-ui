@@ -67,7 +67,7 @@ const Shop = () => {
     }
 
     const sortResults = (e) => {
-
+        setSort(e.target.value)
         if (router.query.animal) {
             axios.post(`${process.env.NEXT_PUBLIC_API_URI}/alllevelwiseproducts/post/data?page=${page}`, {
                 category1: router.query.animal,

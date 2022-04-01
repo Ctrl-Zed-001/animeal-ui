@@ -34,7 +34,7 @@ const Footer = () => {
                         <a href="tel:+919004485093" className='hidden text-xs lg:text-base lg:flex items-center gap-2 border-2 text-yellow-500 border-yellow-500 px-4 py-2 rounded-lg'><MdCall />9004485093</a>
                     </div>
                 </div>
-                <hr className='w-full bg-gray-500 my-8' />
+                <hr className='w-full bg-gray-500 my-4 xl:my-8' />
                 <div className="lg:flex justify-between items-center lg:px-28 lg:gap-10">
                     <div className="flex justify-between items-start lg:gap-6 text-xs lg:text-sm">
                         <div className="icon-text text-center">
@@ -60,13 +60,15 @@ const Footer = () => {
                             <img src="/img/icons/shield.png" alt="" />
                             <p className="font-semibold text-sm text-green-500">100% payment protection, easy return policy</p>
                         </div>
-                        <div className="grid grid-cols-4 gap-4 mt-4">
+                        <div className="grid grid-cols-5 gap-4 mt-4">
                             <img src="/img/icons/visa_footer.png" alt="" className='mx-auto h-4' />
                             <img src="/img/icons/googlePay_footer.png" alt="" className='mx-auto h-4' />
                             <img src="/img/icons/mastercard_footer.png" alt="" className='mx-auto h-4' />
+                            <img src="/img/icons/rupay.png" alt="" className='mx-auto h-4' />
+                            <img src="/img/icons/upi.png" alt="" className='mx-auto h-4' />
                         </div>
                     </div>
-                    <hr className='lg:hidden w-full bg-gray-500 my-8' />
+                    <hr className='lg:hidden w-full bg-gray-500 my-4 xl:my-8' />
                     <div className="social-media-section my-6 lg:my-0">
                         <div className="flex mb-2 gap-2 lg:gap-0 items-center lg:items-start justify-center">
                             <h1 className="font-semibold text-xs lg:text-sm">Show us some love on social media.</h1>
@@ -79,14 +81,16 @@ const Footer = () => {
                             <a href="https://wa.me/+919004485093"><img src="/img/icons/whatsapp.png" alt="" className='h-8' /></a>
                         </div>
                     </div>
-                    <hr className='lg:hidden w-full bg-gray-500 my-8' />
+                    <hr className='lg:hidden w-full bg-gray-500 my-4 xl:my-8' />
                     <div className="flex lg:hidden mt-4 gap-4">
                         <img src="/img/icons/visa_footer.png" alt="" className='mx-auto h-4' />
                         <img src="/img/icons/googlePay_footer.png" alt="" className='mx-auto h-4' />
                         <img src="/img/icons/mastercard_footer.png" alt="" className='mx-auto h-4' />
+                        <img src="/img/icons/rupay.png" alt="" className='mx-auto h-4' />
+                        <img src="/img/icons/upi.png" alt="" className='mx-auto h-4' />
                     </div>
                 </div>
-                <hr className='w-full bg-gray-500 my-8' />
+                <hr className='w-full bg-gray-500 my-4 xl:my-8' />
                 <div className="lg:flex justify-between items-center lg:px-28">
                     <div className="lg:flex items-center gap-4 px-10">
                         <img src="/img/logo.png" alt="" className='h-10 mx-auto' />

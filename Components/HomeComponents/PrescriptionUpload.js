@@ -23,12 +23,12 @@ const PrescriptionUpload = (props) => {
         form.append('drname', data.drname)
         form.append('name', data.name)
         form.append('email', data.email)
-        form.append('phone', data.phone)
-        form.append('altphone', data.altphone)
+        form.append('number', data.number)
+        form.append('altnumber', data.altnumber)
         form.append('address', data.address)
 
         files.forEach((file, index) => {
-            form.append(`file${index}`, file, file.name)
+            form.append(`prescription`, file, file.name)
         })
 
         axios.post(
@@ -74,7 +74,7 @@ const PrescriptionUpload = (props) => {
         >
             <Modal.Header>
                 <div>
-                    <h1 className="text-lg font-semibold">Don't want the hassle to search for the product?</h1>
+                    <h1 className="text-lg font-semibold text-theme ">Don't want the hassle to search for the product?</h1>
                     <p className="text-center text-slate-500 text-sm">Just upload your prescription here and get it delivered</p>
                 </div>
             </Modal.Header>
@@ -105,13 +105,13 @@ const PrescriptionUpload = (props) => {
                         <Input
                             label="Pet's Name"
                             fullWidth
-                            {...register("petname", { required: true })}
+                            {...register("petname")}
                             color={errors.petname ? "error" : 'default'}
                         />
                         <Input
                             label="Type Of Pet"
                             fullWidth
-                            {...register("pettype", { required: true })}
+                            {...register("pettype")}
                             color={errors.pettype ? "error" : 'default'}
                         />
                         <Input
@@ -133,7 +133,7 @@ const PrescriptionUpload = (props) => {
                             label="email"
                             fullWidth
                             type='email'
-                            {...register("email", { required: true })}
+                            {...register("email")}
                             color={errors.email ? "error" : 'default'}
                         />
                     </div>
@@ -142,22 +142,22 @@ const PrescriptionUpload = (props) => {
                             label="Phone Number"
                             fullWidth
                             type='number'
-                            {...register("phone", { required: true })}
-                            color={errors.phone ? "error" : 'default'}
+                            {...register("number", { required: true })}
+                            color={errors.number ? "error" : 'default'}
                         />
                         <Input
                             label="Alternate Phone Number"
                             fullWidth
                             type='number'
-                            {...register("altphone", { required: true })}
-                            color={errors.altphone ? "error" : 'default'}
+                            {...register("altnumber")}
+                            color={errors.altnumber ? "error" : 'default'}
                         />
                     </div>
                     <div className="flex justify-between gap-8 items-center mt-4">
                         <Textarea
                             label="Full Address"
                             fullWidth
-                            {...register("address", { required: true })}
+                            {...register("address")}
                             color={errors.address ? "error" : 'default'}
                         />
                     </div>

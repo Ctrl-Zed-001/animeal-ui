@@ -56,13 +56,14 @@ const CartContextProvider = (props) => {
 
 
     const checkLocalCartAndUpdate = (data) => {
-        let localCart = JSON.parse(localStorage.getItem('unauthcart'))
+        let localCart = [...cartItems]
 
         if (localCart && data === null) {
             console.log("sirf local mei hai")
             // LOCAL MEI HAI BUT RES MEI NAI
-            setCartItems([...localCart]);
-            validateAndUpdateCart([...localCart])
+            // TO LOCAL SE NIKAL K DB MEI DAAL
+            pushLocalToDb(localCart)
+
         } else if (!localCart && data != null) {
             console.log("sirf db mei hai")
             // RES MEI HAI BUT LOCAL MEI NAI
@@ -78,36 +79,39 @@ const CartContextProvider = (props) => {
             })
 
             // abi ye local cart ko db mei push karne ka
-            localCart.forEach((item) => {
-                axios.post(`${process.env.NEXT_PUBLIC_API_URI}/user/addtocart/post/data`,
-                    {
-                        product_id: item[0].product_id,
-                        quantity: 2
-                    },
-                    {
-                        headers: {
-                            Authorization: token
-                        }
-                    })
-                    .then(res => {
-                        // RES AAYA TO LOCAL STORAGE CLEAR KARNE KA
-                        if (res && res.status == 200) {
-                            localStorage.removeItem('unauthcart')
-                        }
-
-                    })
-                    .catch(err => console.log('Add to cart Error', err))
-            })
-
-
-
-            // finally state update
-            let newList = [...data, ...localCart]
-
+            let newList;
+            if (localCart.length > 0) {
+                pushLocalToDb(localCart)
+                newList = [...data, ...localCart]
+            } else {
+                newList = [...data]
+            }
             setCartItems([...newList])
             validateAndUpdateCart([...newList])
         }
+        localStorage.removeItem('unauthcart')
 
+    }
+
+    const pushLocalToDb = (localCart) => {
+        localCart.forEach((item) => {
+            axios.post(`${process.env.NEXT_PUBLIC_API_URI}/user/addtocart/post/data`,
+                {
+                    product_id: item[0].product_id,
+                    quantity: item[0].quantity
+                },
+                {
+                    headers: {
+                        Authorization: token
+                    }
+                })
+                .then(res => {
+                    // RES AAYA TO LOCAL STORAGE CLEAR KARNE KA
+                    console.log(res)
+
+                })
+                .catch(err => console.log('Add to cart Error', err))
+        })
     }
 
     const updateCartQuantity = (action, id, quantity) => {

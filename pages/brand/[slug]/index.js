@@ -1,81 +1,113 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import AnimalBanner from '../../../Components/AnimalPageComponents/AnimalBanner'
-import { Swiper, SwiperSlide } from 'swiper/react';
-import ProductRow from '../../../Components/HomeComponents/ProductRow';
-
+import axios from 'axios';
 import 'swiper/css';
 import 'swiper/css/autoplay';
-import axios from 'axios';
+import ShopByPet from '../../../Components/HomeComponents/ShopByPet'
+import { useRouter } from 'next/router';
+import ProductRow from '../../../Components/HomeComponents/ProductRow'
+
 
 const Brand = (props) => {
+
+    const router = useRouter()
+
+    const [food, setFood] = useState()
+    const [supplements, setSupplements] = useState()
+    const [supplies, setSupplies] = useState()
+    const [treats, setTreats] = useState()
+    const [medicine, setMedicine] = useState()
+    const [banner, setBanner] = useState()
+
+    useEffect(() => {
+        if (router) {
+            let endpoints = [
+                `${process.env.NEXT_PUBLIC_API_URI}/brand/branddetails/get/data/${router.query.slug}/food`,
+                `${process.env.NEXT_PUBLIC_API_URI}/brand/branddetails/get/data/${router.query.slug}/supplements`,
+                `${process.env.NEXT_PUBLIC_API_URI}/brand/branddetails/get/data/${router.query.slug}/supplies`,
+                `${process.env.NEXT_PUBLIC_API_URI}/brand/branddetails/get/data/${router.query.slug}/treats`,
+                `${process.env.NEXT_PUBLIC_API_URI}/brand/branddetails/get/data/${router.query.slug}/medicine`
+            ];
+            axios.all(endpoints.map((endpoint) => axios.get(endpoint)))
+                .then(res => {
+                    console.log("called")
+                    res.forEach(arr => {
+                        if (arr.data.brandBanner !== null) {
+                            setBanner(arr.data.brandBanner)
+                            return;
+                        }
+                    });
+                    setFood(res[0].data.brandDetails);
+                    setSupplements(res[1].data.brandDetails)
+                    setSupplies(res[2].data.brandDetails)
+                    setTreats(res[3].data.brandDetails)
+                    setMedicine(res[4].data.brandDetails)
+                })
+                .catch(err => console.log(err))
+        }
+    }, [router])
+
     return (
         <div className='main-brand-page mt-4'>
             {/* Banner */}
-            <AnimalBanner image={props.banner} />
+            {
+                router ?
+                    <AnimalBanner image={`/brand-banner/${banner}`} title='' /> :
+                    <></>
+            }
 
-            <div className="container my-10">
-                {/* <Swiper
-                    modules={[Autoplay]}
-                    breakpoints={{
-                        320: {
-                            slidesPerView: 2,
-                            spaceBetween: 20,
-                        },
-                        768: {
-                            slidesPerView: 4,
-                            spaceBetween: 40,
-                        },
-                        1024: {
-                            slidesPerView: 5,
-                            spaceBetween: 50,
-                        },
-                    }}
-                    autoplay={{ delay: 2000 }}
-                >
-                    {
-                        props.categorylevels && props.categorylevels.map((category, index) => {
-                            return <SwiperSlide key={index}><CategoryBox animal={props.slug} category={category} /></SwiperSlide>
-                        })
+            <ShopByPet animals={props.categories.category_level1} />
 
-                    }
-                </Swiper> */}
+            {/* FOOD */}
+            {
+                food && food.length > 0 ?
+                    <ProductRow title="Customer Favorites" products={food} /> :
+                    <></>
+            }
 
-            </div>
+            {/* Supplements */}
+            {
+                supplements && supplements.length > 0 ?
+                    <ProductRow title="Customer Favorites" products={supplements} /> :
+                    <></>
+            }
 
-            {/* CATEGORY */}
-            {/* {
-                categoryWiseProducts && categoryWiseProducts.map((products, index) => {
-                    if (products.products.categoryLevel2WiseProduct && products.products.categoryLevel2WiseProduct.length !== null) {
-                        return <ProductRow key={index} title={products.category} products={products.products.categoryLevel2WiseProduct} />
-                    }
-                })
+            {/* Supplies */}
+            {
+                supplies && supplies.length > 0 ?
+                    <ProductRow title="Customer Favorites" products={supplies} /> :
+                    <></>
+            }
 
-            } */}
+            {/* Treats */}
+            {
+                treats && treats.length > 0 ?
+                    <ProductRow title="Customer Favorites" products={treats} /> :
+                    <></>
+            }
+
+            {/* Medicine */}
+            {
+                medicine && medicine.length > 0 ?
+                    <ProductRow title="Customer Favorites" products={medicine} /> :
+                    <></>
+            }
+
 
 
         </div>
     )
 }
 
+
+
 export async function getServerSideProps({ query }) {
 
-    let endpoints = [
-        `${process.env.NEXT_PUBLIC_API_URI}/brand/branddetails/post/data`, { brand_slug: query.slug, category: 'food' },
-        `${process.env.NEXT_PUBLIC_API_URI}/brand/branddetails/post/data`, { brand_slug: query.slug, category: 'food' },
-        `${process.env.NEXT_PUBLIC_API_URI}/brand/branddetails/post/data`, { brand_slug: query.slug, category: 'food' },
-        `${process.env.NEXT_PUBLIC_API_URI}/brand/branddetails/post/data`, { brand_slug: query.slug, category: 'food' },
-        `${process.env.NEXT_PUBLIC_API_URI}/brand/branddetails/post/data`, { brand_slug: query.slug, category: 'food' }
-    ];
-
-    let allResponse = await axios.all(endpoints.map((endpoint) => axios.get(endpoint)))
-    console.log("🚀 ~ file: index.js ~ line 71 ~ getServerSideProps ~ allResponse", allResponse)
-
-
-
+    let categories = await axios.get(`${process.env.NEXT_PUBLIC_API_URI}/getcategories`)
 
     return {
         props: {
-            brands: []
+            categories: categories.data,
         }
     }
 }

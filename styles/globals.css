@@ -210,6 +210,10 @@ body.sidemenu-open .sidebar {
   -ms-box-shadow: 0px -3px 10px rgba(0, 0, 0, 0.1);
 }
 
+.nextui-pagination {
+  z-index: 0 !important;
+}
+
 .bottom-navigation .btn {
   padding: 0;
   text-align: center;

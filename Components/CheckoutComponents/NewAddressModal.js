@@ -116,7 +116,7 @@ const NewAddressModal = (props) => {
                                 fullWidth
                                 clearable
                                 underlined
-                                label="ZipCode"
+                                label="Pincode"
                                 initialValue=""
                                 type="number"
                                 {...register("addpincode", { required: true, minLength: 6, maxLength: 6 })}

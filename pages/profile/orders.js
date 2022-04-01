@@ -1,9 +1,22 @@
-import React from 'react'
+import React, { useContext, useEffect } from 'react'
 import { BiRupee } from 'react-icons/bi'
 import Link from 'next/link'
+import { AuthContext } from '../../Context/AuthContext'
+import { useRouter } from 'next/router'
 
 
 const Orders = () => {
+
+    const { isLoggedIn } = useContext(AuthContext)
+    const router = useRouter()
+
+    useEffect(() => {
+        if (!isLoggedIn) {
+            router.replace('/')
+        }
+    })
+
+
     return (
         <div className='my-orders-page my-10'>
             <div className="container">

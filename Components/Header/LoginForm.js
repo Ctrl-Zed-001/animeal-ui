@@ -16,7 +16,7 @@ const LoginForm = (props) => {
             axios.post(
                 `${process.env.NEXT_PUBLIC_API_URI}/user/newpassword/post/data`,
                 {
-                    email: email
+                    email_id: email
                 }
             )
                 .then(res => {

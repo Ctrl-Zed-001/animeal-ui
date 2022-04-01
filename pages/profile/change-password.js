@@ -1,10 +1,11 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import ProfileInfoBox from '../../Components/ProfilePageComponents/ProfileInfoBox'
 import { Input, Spacer } from '@nextui-org/react';
 import toast, { Toaster } from 'react-hot-toast';
 import axios from 'axios';
 import { AuthContext } from '../../Context/AuthContext'
 import LogoutPopup from '../../Components/ProfilePageComponents/LogoutPopup';
+import { useRouter } from 'next/router'
 
 const ChangePassword = () => {
 
@@ -13,7 +14,15 @@ const ChangePassword = () => {
     const [checkPassword, setCheckPassword] = useState('')
     const [logoutModal, setLogoutModal] = useState(false)
 
-    const { token, logout } = useContext(AuthContext)
+    const { token, logout, isLoggedIn } = useContext(AuthContext)
+
+    const router = useRouter()
+
+    useEffect(() => {
+        if (!isLoggedIn) {
+            router.replace('/')
+        }
+    })
 
     const changePassword = (e) => {
         e.preventDefault()

@@ -5,6 +5,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay } from 'swiper';
 import axios from 'axios'
 import ProductRow from '../../Components/HomeComponents/ProductRow'
+import Brands from '../../Components/HomeComponents/Brands'
 
 import 'swiper/css';
 import 'swiper/css/autoplay';
@@ -34,7 +35,7 @@ const index = (props) => {
     return (
         <div className='main-animal-page mt-4'>
             {/* Banner */}
-            <AnimalBanner image={props.banner} title={`The ${props.slug} Shop`} />
+            <AnimalBanner image={`/category-banner/${props.banner}`} title={`The ${props.slug} Shop`} />
 
             <div className="container my-10">
                 <Swiper
@@ -74,6 +75,10 @@ const index = (props) => {
                 })
 
             }
+
+            {/* BRANDS */}
+
+            <Brands title={`Popular Brands for ${props.slug}`} />
         </div>
     )
 }

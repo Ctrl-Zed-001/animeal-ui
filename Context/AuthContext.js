@@ -24,10 +24,10 @@ const AuthContextProvider = (props) => {
         } else {
             setIsMobile(false)
         }
-        console.log(session, status)
+
         let token = localStorage.getItem('token')
         if (token) {
-            console.log("got the token")
+
             setToken(token)
             axios.post(
                 `${process.env.NEXT_PUBLIC_API_URI}/user/getauthenticateuser/post/data`,
@@ -47,7 +47,7 @@ const AuthContextProvider = (props) => {
                     setUserDetails()
                 })
         } else if (!token && status == 'authenticated') {
-            console.log("checking session")
+
             axios.post(
                 `${process.env.NEXT_PUBLIC_API_URI}/user/sociallogin/post/data`,
                 {
@@ -67,7 +67,7 @@ const AuthContextProvider = (props) => {
                     setToken('')
                 })
         } else {
-            console.log("not logged in")
+
             localStorage.removeItem('token');
             setIsLoggedIn(false)
             setUserDetails()

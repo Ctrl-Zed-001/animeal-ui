@@ -58,7 +58,7 @@ export default function Home(props) {
       {/* CTA */}
 
       {/* BRANDS */}
-      <Brands brands={brands} />
+      <Brands brands={brands} title={"Popular Brands"} />
 
     </div>
 

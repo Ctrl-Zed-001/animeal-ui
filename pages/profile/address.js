@@ -1,7 +1,18 @@
-import React from 'react'
+import React, { useContext, useEffect } from 'react'
 import ProfileInfoBox from '../../Components/ProfilePageComponents/ProfileInfoBox'
+import { AuthContext } from '../../Context/AuthContext'
+import { useRouter } from 'next/router'
 
 const address = () => {
+  const { isLoggedIn } = useContext(AuthContext)
+  const router = useRouter()
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      router.replace('/')
+    }
+  })
+
   return (
     <div className="change-password">
       <div className="container">

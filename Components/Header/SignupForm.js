@@ -26,13 +26,15 @@ const SignupForm = (props) => {
             <h1 className='text-center my-4 text-gray-500 font-semibold'>- OR -</h1>
 
             <div className="form-box mx-auto md:w-7/12">
-                <Input name='fullName' labelPlaceholder="Full Name" color='default' fullWidth size='lg' onChange={(e) => setName(e.target.value)} />
-                <Spacer y={1.6} />
-                <Input type='email' labelPlaceholder="Email" color='default' fullWidth size='lg' onChange={(e) => setEmail(e.target.value)} />
-                <Spacer y={1.6} />
-                <Input.Password labelPlaceholder="Password" color='default' fullWidth size='lg' onChange={(e) => setPassword(e.target.value)} />
-                <Spacer y={1.6} />
-                <button className="bg-theme px-2 py-4 w-full shadow rounded-lg" onClick={() => props.signup(name, email, password)}>Create Account</button>
+                <form onSubmit={(e) => { e.preventDefault(); props.signup(name, email, password) }}>
+                    <Input name='fullName' labelPlaceholder="Full Name" color='default' fullWidth size='lg' onChange={(e) => setName(e.target.value)} />
+                    <Spacer y={1.6} />
+                    <Input type='email' labelPlaceholder="Email" color='default' fullWidth size='lg' onChange={(e) => setEmail(e.target.value)} />
+                    <Spacer y={1.6} />
+                    <Input.Password labelPlaceholder="Password" color='default' fullWidth size='lg' onChange={(e) => setPassword(e.target.value)} />
+                    <Spacer y={1.6} />
+                    <button className="bg-theme px-2 py-4 w-full shadow rounded-lg">Create Account</button>
+                </form>
             </div>
             <p className="text-center mt-4 font-medium">Already have an account? <span onClick={() => swiper.slidePrev()} className="text-theme">click to Login.</span></p>
             <Toaster

@@ -58,7 +58,7 @@ const Cart = () => {
 
                         </div>
 
-                        <CartSummary setShowPrescriptionModal={setShowPrescriptionModal} prescriptionUploaded={prescriptionUploaded} showAuthModal={setShowAuthModal} isLoggedIn={isLoggedIn} cartTotal={cartTotal} qty={qty} cartDiscount={cartDiscount} subTotal={subTotal} />
+                        <CartSummary setShowPrescriptionModal={setShowPrescriptionModal} hasMedicine={hasMedicine} prescriptionUploaded={prescriptionUploaded} showAuthModal={setShowAuthModal} isLoggedIn={isLoggedIn} cartTotal={cartTotal} qty={qty} cartDiscount={cartDiscount} subTotal={subTotal} />
                     </div> :
                     <div className='mt-28'>
                         <img src='/img/empty-cart.png' className=' w-full xl:w-5/12 mx-auto' />

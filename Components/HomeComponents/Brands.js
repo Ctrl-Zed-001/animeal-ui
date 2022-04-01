@@ -4,14 +4,13 @@ import Link from 'next/link'
 const Brands = (props) => {
     return (
         <div className='container brand-section'>
-            <h1 className='text-xl font-medium'>Popular brands</h1>
+            <h1 className='text-xl font-medium'>{props.title}</h1>
             <div className="grid grid-cols-2 lg:grid-cols-6 my-6 gap-4 lg:gap-10">
 
                 {
                     props.brands ?
                         props.brands.map((brand, index) => {
-                            console.log("🚀 ~ file: Brands.js ~ line 19 ~ props.brands.map ~ brand", brand)
-                            return (<Link href={`/brand/${brand.brand_url.toString()}`}>
+                            return (<Link href={`/brand/${brand.brand_url}`}>
                                 <div key={index} className="brand-box rounded-lg cursor-pointer">
                                     <img src={`${process.env.NEXT_PUBLIC_IMAGE_URI}/brand-icon/${brand.brand_icon}`} alt="" className='rounded-lg' />
                                 </div>

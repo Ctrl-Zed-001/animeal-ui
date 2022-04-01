@@ -30,8 +30,8 @@ const Checkout = () => {
     const router = useRouter()
     const form = new FormData();
 
-    const { token, userDetails } = useContext(AuthContext)
-    const { cartTotal, clearCart, cartDiscount, doctorName, prescriptionFiles, prescriptionUploaded } = useContext(CartContext)
+    const { token, userDetails, isLoggedIn } = useContext(AuthContext)
+    const { cartTotal, clearCart, cartDiscount, doctorName, prescriptionFiles, prescriptionUploaded, hasMedicine } = useContext(CartContext)
 
     const [showAddressModal, setShowAddressModal] = useState(false)
     const [address, setAddress] = useState()
@@ -59,12 +59,17 @@ const Checkout = () => {
                     let defaultAddress = res.data.savedAddresses.filter(addr => addr.defaultaddress === 'Yes')
                     setAddress(defaultAddress[0])
                 })
-                .catch(err => console.log(err))
+                .catch(err => {
+                    router.replace('/');
+                    console.log(err)
+                })
+        } else {
+            router.replace('/')
         }
     }, [token])
 
     useEffect(() => {
-        if (!prescriptionUploaded) {
+        if (hasMedicine && !prescriptionUploaded) {
             router.replace('/cart')
         }
     }, [prescriptionUploaded])
@@ -100,6 +105,7 @@ const Checkout = () => {
                 ])
             })
             .catch(err => console.log(err.response))
+        ToggleNewAddressModal(false)
     }
 
     const saveAddress = (paymentType) => {
@@ -351,7 +357,7 @@ const Checkout = () => {
                         <p className='my-1 text-sm'>{address.addaddress1} {address.addaddress2} {address.addcity} {address.addstate} {address.addpincode}</p>
                         <p className='font-medium text-sm'>{address.addnumber}</p>
                     </div> :
-                    <></>
+                    <button className='bg-slate-100 p-2 rounded-lg shadow font-semibold text-center w-full lg:hidden' onClick={() => setShowAddressModal(true)}>select from saved addresses</button>
             }
 
 
@@ -364,7 +370,6 @@ const Checkout = () => {
                         <Swiper
                             modules={[Virtual]}
                             slidesPerView={3}
-                            navigation={true}
                             className='w-full'
                             spaceBetween={10}
                             virtual
@@ -407,7 +412,7 @@ const Checkout = () => {
                 {/* EDIT ADDRESS FORM */}
                 <div className="address-form bg-slate-100 p-4 rounded-lg mt-4">
                     <h1 className="font-semibold text-lg">Delivery Address</h1>
-                    <div className="flex justify-between gap-14 my-14 w-full">
+                    <div className="grid grid-cols-2 lg:flex justify-between gap-14 my-14 w-full">
                         <Input
                             fullWidth
                             clearable
