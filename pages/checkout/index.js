@@ -327,7 +327,7 @@ const Checkout = () => {
             form.append('address', fullAddress)
 
             prescriptionFiles.forEach((file, index) => {
-                form.append(`file${index}`, file, file.name)
+                form.append(`prescription`, file, file.name)
             })
 
             axios.post(
@@ -417,7 +417,7 @@ const Checkout = () => {
                             fullWidth
                             clearable
                             underlined
-                            label="Name"
+                            label="Name *"
                             initialValue={address?.addname}
                             required
                             onChange={(e) => setAddress({ ...address, addname: e.target.value })}
@@ -426,7 +426,7 @@ const Checkout = () => {
                             fullWidth
                             clearable
                             underlined
-                            label="Phone Number"
+                            label="Phone Number *"
                             initialValue={address?.addnumber}
                             type="number"
                             required
@@ -448,7 +448,7 @@ const Checkout = () => {
                             fullWidth
                             clearable
                             underlined
-                            label="Roo no. / house no. / street"
+                            label="Roo no. / house no. / street *"
                             initialValue={address?.addaddress1}
                             required
                             onChange={(e) => setAddress({ ...address, addaddress1: e.target.value })}
@@ -457,7 +457,7 @@ const Checkout = () => {
                             fullWidth
                             clearable
                             underlined
-                            label="Area / locality"
+                            label="Area / locality *"
                             initialValue={address?.addaddress2}
                             required
                             onChange={(e) => setAddress({ ...address, addaddress2: e.target.value })}
@@ -482,7 +482,7 @@ const Checkout = () => {
                             fullWidth
                             clearable
                             underlined
-                            label="City / Town"
+                            label="City / Town *"
                             initialValue={address?.addcity}
                             required
                             onChange={(e) => setAddress({ ...address, addcity: e.target.value })}
@@ -491,7 +491,7 @@ const Checkout = () => {
                             fullWidth
                             clearable
                             underlined
-                            label="State"
+                            label="State *"
                             initialValue={address?.addstate}
                             required
                             onChange={(e) => setAddress({ ...address, addstate: e.target.value })}
@@ -500,7 +500,7 @@ const Checkout = () => {
                             fullWidth
                             clearable
                             underlined
-                            label="ZipCode"
+                            label="ZipCode *"
                             initialValue={address?.addpincode}
                             type="number"
                             required

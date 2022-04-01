@@ -3,6 +3,7 @@ import React, { useContext } from 'react'
 import { MdStore, MdAccountCircle, MdFavorite, MdPets } from "react-icons/md";
 import { AuthContext } from '../../Context/AuthContext'
 import { CartContext } from '../../Context/CartContext'
+import { MdManageSearch } from 'react-icons/md'
 
 const BottomNavigation = (props) => {
 
@@ -22,9 +23,9 @@ const BottomNavigation = (props) => {
                         </Link>
                     </div>
                     <div className="p-4">
-                        <Link href="/">
+                        <Link href="/topcategories">
                             <div className="btn btn-link-default cursor-pointer">
-                                <MdPets className='footer-icons' />
+                                <MdManageSearch className='footer-icons' />
                             </div>
                         </Link>
                     </div>

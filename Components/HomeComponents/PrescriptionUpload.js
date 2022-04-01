@@ -10,7 +10,7 @@ import axios from 'axios';
 
 const PrescriptionUpload = (props) => {
 
-    const { register, handleSubmit, formState: { errors } } = useForm();
+    const { register, handleSubmit, reset, formState: { errors } } = useForm();
     const form = new FormData();
     const fileInput = useRef(null);
     const [files, setFiles] = useState([])
@@ -35,8 +35,12 @@ const PrescriptionUpload = (props) => {
             `${process.env.NEXT_PUBLIC_API_URI}/user/prescription/post/data`,
             form
         )
-            .then(res => console.log(res.data))
-            .catch(err => console.log(err))
+            .then(res => {
+                props.submit(true)
+            })
+            .catch(err => {
+                props.sumbit(false)
+            })
     };
 
     const addFiles = (file) => {

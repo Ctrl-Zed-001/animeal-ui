@@ -11,7 +11,7 @@ const Footer = () => {
 
     useEffect(() => {
         if (router) {
-            if (router.pathname == '/checkout' || router.pathname == '/cart') {
+            if (router.pathname == '/checkout' || router.pathname == '/cart' || router.pathname == '/wishlist') {
                 setShow(false)
             } else {
                 setShow(true)

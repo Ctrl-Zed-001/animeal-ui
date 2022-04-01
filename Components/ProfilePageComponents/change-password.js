@@ -1,10 +1,10 @@
 import React, { useState, useContext, useEffect } from 'react'
-import ProfileInfoBox from '../../Components/ProfilePageComponents/ProfileInfoBox'
+import ProfileInfoBox from './ProfileInfoBox'
 import { Input, Spacer } from '@nextui-org/react';
 import toast, { Toaster } from 'react-hot-toast';
 import axios from 'axios';
 import { AuthContext } from '../../Context/AuthContext'
-import LogoutPopup from '../../Components/ProfilePageComponents/LogoutPopup';
+import LogoutPopup from './LogoutPopup';
 import { useRouter } from 'next/router'
 
 const ChangePassword = () => {
@@ -58,26 +58,20 @@ const ChangePassword = () => {
             <div className="container">
                 <h1 className='font-semibold text-2xl mb-4'>Change Password</h1>
 
-                <div className="grid grid-cols-12">
-                    {/* PROFILE INFO */}
-                    <ProfileInfoBox />
+                <div className="">
 
-                    <div className="blank-col"></div>
-
-                    {/* PROFILE ACTIONS */}
-                    <div className="col-span-8">
-                        <div className="bg-white rounded-lg p-4 w-5/12">
-                            <form onSubmit={changePassword}>
-                                <Input.Password onChange={(e) => setOldPassword(e.target.value)} fullWidth label="Old Password" />
-                                <Spacer y={1} />
-                                <Input.Password onChange={(e) => setNewPassword(e.target.value)} fullWidth label="New Password" />
-                                <Spacer y={1} />
-                                <Input.Password onChange={(e) => setCheckPassword(e.target.value)} fullWidth label="Retype New Password" />
-                                <Spacer y={1} />
-                                <button type="submit" className='w-full bg-theme p-3 rounded-lg'>Change Password</button>
-                            </form>
-                        </div>
+                    <div className="bg-white rounded-lg p-4 w-6/12">
+                        <form onSubmit={changePassword}>
+                            <Input.Password onChange={(e) => setOldPassword(e.target.value)} fullWidth label="Old Password" />
+                            <Spacer y={1} />
+                            <Input.Password onChange={(e) => setNewPassword(e.target.value)} fullWidth label="New Password" />
+                            <Spacer y={1} />
+                            <Input.Password onChange={(e) => setCheckPassword(e.target.value)} fullWidth label="Retype New Password" />
+                            <Spacer y={1} />
+                            <button type="submit" className='w-full bg-theme p-3 rounded-lg'>Change Password</button>
+                        </form>
                     </div>
+
                 </div>
                 <Toaster
                     position="top-center"

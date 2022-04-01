@@ -1,9 +1,9 @@
 import React, { useContext, useEffect } from 'react'
-import ProfileInfoBox from '../../Components/ProfilePageComponents/ProfileInfoBox'
+import ProfileInfoBox from './ProfileInfoBox'
 import { AuthContext } from '../../Context/AuthContext'
 import { useRouter } from 'next/router'
 
-const address = () => {
+const EditProfile = () => {
   const { isLoggedIn } = useContext(AuthContext)
   const router = useRouter()
 
@@ -16,7 +16,7 @@ const address = () => {
   return (
     <div className="change-password">
       <div className="container">
-        <h1 className='font-semibold text-2xl mb-4'>Change Password</h1>
+        <h1 className='font-semibold text-2xl mb-4'>Edit Profile</h1>
 
         <div className="grid grid-cols-12">
           {/* PROFILE INFO */}
@@ -24,10 +24,12 @@ const address = () => {
 
           <div className="blank-col"></div>
 
-          {/* PROFILE ACTIONS */}
+          {/* EDIT PROFILE */}
           <div className="profile-action-section col-span-8">
-
+            <form></form>
           </div>
+
+
         </div>
 
       </div>
@@ -35,4 +37,4 @@ const address = () => {
   )
 }
 
-export default address
+export default EditProfile
