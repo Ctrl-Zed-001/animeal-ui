@@ -10,7 +10,7 @@ import { AuthContext } from '../../Context/AuthContext'
 const Cart = () => {
 
     const { cartItems, cartTotal, qty, removeAllItems, removeCartItem, updateCartQuantity, cartDiscount, subTotal, hasMedicine, prescriptionUploaded, setPrescriptionUploaded, setPrescriptionFiles, setDoctorName, doctorName } = useContext(CartContext)
-    const { isLoggedIn, setShowAuthModal } = useContext(AuthContext)
+    const { isLoggedIn, setShowAuthModal, isMobile } = useContext(AuthContext)
 
     const [showPrescriptionModal, setShowPrescriptionModal] = useState(false)
 
@@ -66,7 +66,7 @@ const Cart = () => {
                     </div>
             }
             {/* PRESCRIPTION MODAL */}
-            <PrescriptionModal doctorName={doctorName} setDoctorName={setDoctorName} setPrescriptionUploaded={setPrescriptionUploaded} setPrescriptionFiles={setPrescriptionFiles} visible={showPrescriptionModal} close={() => setShowPrescriptionModal(false)} />
+            <PrescriptionModal isMobile={isMobile} doctorName={doctorName} setDoctorName={setDoctorName} setPrescriptionUploaded={setPrescriptionUploaded} setPrescriptionFiles={setPrescriptionFiles} visible={showPrescriptionModal} close={() => setShowPrescriptionModal(false)} />
         </div>
     )
 }

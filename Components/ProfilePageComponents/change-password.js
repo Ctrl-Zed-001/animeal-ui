@@ -60,7 +60,7 @@ const ChangePassword = () => {
 
                 <div className="">
 
-                    <div className="bg-white rounded-lg p-4 w-6/12">
+                    <div className="bg-white rounded-lg p-4 xl:w-6/12">
                         <form onSubmit={changePassword}>
                             <Input.Password onChange={(e) => setOldPassword(e.target.value)} fullWidth label="Old Password" />
                             <Spacer y={1} />

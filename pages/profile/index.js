@@ -5,16 +5,17 @@ import { AuthContext } from '../../Context/AuthContext'
 import { useRouter } from 'next/router'
 import { FiChevronRight } from 'react-icons/fi'
 import ChangePassword from '../../Components/ProfilePageComponents/change-password'
-import Orders from '../../Components/ProfilePageComponents/orders'
+import Link from 'next/link'
 import EditProfile from '../../Components/ProfilePageComponents/edit'
+import Addresses from '../../Components/ProfilePageComponents/Addresses'
 
 
 const Profile = () => {
 
-    const { isLoggedIn } = useContext(AuthContext)
+    const { isLoggedIn, token } = useContext(AuthContext)
     const router = useRouter()
 
-    const [activeSection, setActiveSection] = useState(1)
+    const [activeSection, setActiveSection] = useState()
 
     useEffect(() => {
         if (!isLoggedIn) {
@@ -41,27 +42,35 @@ const Profile = () => {
                         <ActionBox title="Change Password" icon="change-password" link='/profile/change-password' />
                     </div> */}
 
-                    <div className="grid grid-cols-12">
+                    <div className="xl:grid grid-cols-12">
 
                         <div className="empty-col"></div>
 
                         <div className="left-part col-span-3 items-center">
 
-                            <div className="action-box flex justify-between bg-slate-100 p-4 rounded-lg my-2 font-semibold">
-                                <img src="/img/icons/myorders.png" alt="" />
-                                <h1>My Orders</h1>
-                                <FiChevronRight />
-                            </div>
-                            <div className="action-box flex justify-between bg-slate-100 p-4 rounded-lg my-2 font-semibold">
+
+                            <div onClick={() => setActiveSection(1)} className="action-box flex justify-between bg-slate-100 p-4 rounded-lg my-2 font-semibold cursor-pointer">
                                 <img src="/img/icons/addresses.png" alt="" />
                                 <h1>Saved Addresses</h1>
                                 <FiChevronRight />
                             </div>
-                            <div className="action-box flex justify-between bg-slate-100 p-4 rounded-lg my-2 font-semibold">
+                            <div onClick={() => setActiveSection(2)} className="action-box flex justify-between bg-slate-100 p-4 rounded-lg my-2 font-semibold cursor-pointer">
                                 <img src="/img/icons/changepassword.png" alt="" />
                                 <h1>Change Password</h1>
                                 <FiChevronRight />
                             </div>
+                            <div onClick={() => setActiveSection(3)} className="action-box flex justify-between bg-slate-100 p-4 rounded-lg my-2 font-semibold cursor-pointer">
+                                <img src="/img/icons/edit-profile.png" alt="" />
+                                <h1>Edit Profile</h1>
+                                <FiChevronRight />
+                            </div>
+                            <Link href='/profile/orders'>
+                                <div className="action-box flex justify-between bg-slate-100 p-4 rounded-lg my-2 font-semibold">
+                                    <img src="/img/icons/myorders.png" alt="" />
+                                    <h1>My Orders</h1>
+                                    <FiChevronRight />
+                                </div>
+                            </Link>
 
                         </div>
 
@@ -70,10 +79,13 @@ const Profile = () => {
                         <div className="right-part col-span-7">
                             {
                                 activeSection === 1 ?
-                                    <ChangePassword /> :
+                                    <Addresses token={token} /> :
                                     activeSection === 2 ?
-                                        <Orders /> :
-                                        <EditProfile />
+                                        <ChangePassword /> :
+                                        activeSection === 3 ?
+                                            <EditProfile /> :
+                                            <></>
+
                             }
                         </div>
 

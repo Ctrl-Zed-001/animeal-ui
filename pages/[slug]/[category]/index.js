@@ -38,7 +38,7 @@ const index = (props) => {
         <div className='subcategory-page mt-4'>
 
             {/* Banner */}
-            <AnimalBanner image={`/category-banner/${props.banner}`} title={`${props.animal} ${props.category}`} />
+            <AnimalBanner hasImage={props.banner !== null ? true : false} image={`/category-banner/${props.banner}`} title={`${props.animal} ${props.category}`} />
 
             <div className="subcategory-row container my-10">
                 <Swiper

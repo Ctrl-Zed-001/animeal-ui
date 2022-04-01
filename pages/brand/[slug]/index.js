@@ -52,7 +52,7 @@ const Brand = (props) => {
             {/* Banner */}
             {
                 router ?
-                    <AnimalBanner image={`/brand-banner/${banner}`} title='' /> :
+                    <AnimalBanner hasImage={props.banner !== null ? true : false} image={`/brand-banner/${banner}`} title='Whiskas' /> :
                     <></>
             }
 
@@ -61,35 +61,35 @@ const Brand = (props) => {
             {/* FOOD */}
             {
                 food && food.length > 0 ?
-                    <ProductRow title="Customer Favorites" products={food} /> :
+                    <ProductRow title={`Top ${router.query.slug} Foods`} products={food} /> :
                     <></>
             }
 
             {/* Supplements */}
             {
                 supplements && supplements.length > 0 ?
-                    <ProductRow title="Customer Favorites" products={supplements} /> :
+                    <ProductRow title={`Top ${router.query.slug} Supplements`} products={supplements} /> :
                     <></>
             }
 
             {/* Supplies */}
             {
                 supplies && supplies.length > 0 ?
-                    <ProductRow title="Customer Favorites" products={supplies} /> :
+                    <ProductRow title={`Top ${router.query.slug} Supplies`} products={supplies} /> :
                     <></>
             }
 
             {/* Treats */}
             {
                 treats && treats.length > 0 ?
-                    <ProductRow title="Customer Favorites" products={treats} /> :
+                    <ProductRow title={`Top ${router.query.slug} Treats`} products={treats} /> :
                     <></>
             }
 
             {/* Medicine */}
             {
                 medicine && medicine.length > 0 ?
-                    <ProductRow title="Customer Favorites" products={medicine} /> :
+                    <ProductRow title={`Top ${router.query.slug} Medicine`} products={medicine} /> :
                     <></>
             }
 

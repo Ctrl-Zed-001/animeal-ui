@@ -25,7 +25,7 @@ const BottomNavigation = (props) => {
                     <div className="p-4">
                         <Link href="/topcategories">
                             <div className="btn btn-link-default cursor-pointer">
-                                <MdManageSearch className='footer-icons' />
+                                <MdManageSearch className='footer-icons text-3xl' />
                             </div>
                         </Link>
                     </div>

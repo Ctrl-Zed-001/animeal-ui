@@ -103,9 +103,14 @@ const Header = (props) => {
                     <Link href='/'>
                         <img src="/img/logo.png" alt="" className="header-logo h-10 cursor-pointer mx-auto" />
                     </Link>
-                    <span onClick={logout} className='block md:hidden text-sm rounded-lg p-3 px-3 bg-red-400 text-white justify-between items-center mx-2 cursor-pointer'>
-                        <HiOutlineLogout className='text-lg  mr-1' />
-                    </span>
+                    {
+                        isLoggedIn ?
+                            <span onClick={logout} className='block md:hidden text-sm rounded-lg p-3 px-3 bg-red-400 text-white justify-between items-center mx-2 cursor-pointer'>
+                                <HiOutlineLogout className='text-lg  mr-1' />
+                            </span> :
+                            <></>
+                    }
+
                 </div>
 
 

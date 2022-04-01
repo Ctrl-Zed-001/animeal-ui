@@ -306,11 +306,11 @@ const Product = (props) => {
                                 props.product.similarproduct ?
                                     <div className="variations">
                                         <p className="mb-3 text-sm lg:text-base font-medium">Variations</p>
-                                        <div className="flex">
+                                        <div className="grid grid-cols-3 lg:grid-cols-5 gap-4">
                                             {
                                                 props.product.similarproduct.map((prod, index) => {
                                                     return (<Link key={index} href={`/product/${prod.website_slug_name}`}>
-                                                        <div className="size cursor-pointer bg-slate-100 p-2 text-sm lg:text-base text-center font-medium shadow rounded mr-4">
+                                                        <div className="size cursor-pointer bg-slate-100 p-2 text-sm lg:text-base text-center font-medium shadow rounded">
                                                             {prod.product_weight}
                                                             <br />
                                                             {

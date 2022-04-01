@@ -52,7 +52,7 @@ const PrescriptionModal = (props) => {
             aria-describedby="modal-description"
             open={props.visible}
             onClose={props.close}
-            width='60%'
+            width={props.isMobile ? 'fullscreen' : '60%'}
         >
             <Modal.Header>
                 <h1 className="text-base font-semibold">Upload Prescriptions</h1>

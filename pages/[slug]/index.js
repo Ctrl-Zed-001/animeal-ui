@@ -13,9 +13,11 @@ import 'swiper/css/autoplay';
 const index = (props) => {
 
     const [categoryWiseProducts, setCategoryWiseProducts] = useState()
+    const [brands, setBrands] = useState([])
 
     useEffect(() => {
         getProductsByCategory()
+        getBrandsfOrAnimals()
     }, [props])
 
     const getProductsByCategory = async () => {
@@ -32,10 +34,17 @@ const index = (props) => {
         }
         setCategoryWiseProducts(allFetchedProducts)
     }
+
+    const getBrandsfOrAnimals = () => {
+        axios.get(`${process.env.NEXT_PUBLIC_API_URI}/brand/categorybrand/get/${props.slug}`)
+            .then(res => setBrands(res.data.homePageBrand))
+            .catch(err => console.log(err))
+    }
+
     return (
         <div className='main-animal-page mt-4'>
             {/* Banner */}
-            <AnimalBanner image={`/category-banner/${props.banner}`} title={`The ${props.slug} Shop`} />
+            <AnimalBanner hasImage={props.banner !== null ? true : false} image={`/category-banner/${props.banner}`} title={`The ${props.slug} Shop`} />
 
             <div className="container my-10">
                 <Swiper
@@ -78,7 +87,8 @@ const index = (props) => {
 
             {/* BRANDS */}
 
-            <Brands title={`Popular Brands for ${props.slug}`} />
+            <Brands title={`Popular Brands for ${props.slug}`} brands={brands} />
+
         </div>
     )
 }

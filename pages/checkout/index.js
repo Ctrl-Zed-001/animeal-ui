@@ -341,7 +341,7 @@ const Checkout = () => {
 
 
     return (
-        <div className='block lg:flex lg:gap-12 checkout-page container my-5'>
+        <div className='block lg:flex lg:gap-12 checkout-page container xl:my-5'>
             <Toaster
                 position='top-center'
             />
@@ -357,7 +357,7 @@ const Checkout = () => {
                         <p className='my-1 text-sm'>{address.addaddress1} {address.addaddress2} {address.addcity} {address.addstate} {address.addpincode}</p>
                         <p className='font-medium text-sm'>{address.addnumber}</p>
                     </div> :
-                    <button className='bg-slate-100 p-2 rounded-lg shadow font-semibold text-center w-full lg:hidden' onClick={() => setShowAddressModal(true)}>select from saved addresses</button>
+                    <button className='bg-slate-100 p-2 rounded-lg shadow font-semibold text-center w-full lg:hidden capitalize' onClick={() => setShowAddressModal(true)}>select from saved addresses</button>
             }
 
 
@@ -556,12 +556,13 @@ const Checkout = () => {
                             <HiShieldCheck />
                             <p className='text-xs ml-1'>100% payment protection and easy refunds.</p>
                         </div>
-                        <div className="flex justify-evenly items-center mt-3 ml-5">
+                        <div className="flex justify-start gap-6 xl:gap-4 items-center mt-3 ml-5">
                             <img src="/img/icons/visa.png" alt="" className='h-6' />
                             <img src="/img/icons/mastercard.png" alt="" className='h-6' />
                             <img src="/img/icons/google-pay.png" alt="" className='h-6' />
                             <img src="/img/icons/phone-pay.png" alt="" className='h-6' />
-                            <img src="/img/icons/apple-pay.png" alt="" className='h-6' />
+                            <img src="/img/icons/upi.png" className='h-3' />
+                            <img src="/img/icons/rupay.png" className='h-3' />
                         </div>
                     </div>
 
