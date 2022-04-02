@@ -38,7 +38,7 @@ export default function Home(props) {
 
   return (
 
-    <div className="homepage">
+    <div className="homepage mt-16 lg:mt-0">
 
       {/* BANNER SECTION */}
       <BannerSection />

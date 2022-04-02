@@ -32,7 +32,7 @@ const ProductRow = (props) => {
                     className='mx-auto h-full main-img-container drop-shadow'
                     spaceBetween={26}
                     autoplay={{
-                        delay: 2500,
+                        delay: 3000,
                         disableOnInteraction: false,
                     }}
                     modules={[Autoplay]}

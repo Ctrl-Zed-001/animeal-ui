@@ -36,28 +36,40 @@ const BannerSection = () => {
                         Cat Food
                     </div>
                 </Link>
-                <Link href='/shop?slug=medicine'>
+                <Link href='/dog/medicine'>
                     <div className="popular-category-item flex items-center mt-6 gap-2  font-medium cursor-pointer">
                         <img src="/img/icons/medicines.png" alt="" className='h-6' />
-                        Pharmacy
+                        Dog Medicine
                     </div>
                 </Link>
-                <Link href='/shop?slug=supplements'>
-                    <div className="popular-category-item flex items-center mt-6 gap-2  font-medium cursor-pointer">
-                        <img src="/img/icons/supplements.png" alt="" className='h-6' />
-                        Supplements
-                    </div>
-                </Link>
-                <Link href='/shop?slug=treats'>
+                <Link href='/dog/treats'>
                     <div className="popular-category-item flex items-center mt-6 gap-2  font-medium cursor-pointer">
                         <img src="/img/icons/treats.png" alt="" className='h-6' />
-                        Treats
+                        Dog Treats
                     </div>
                 </Link>
-                <Link href='/shop?slug=supplies'>
+                <Link href='/cat/supplies'>
                     <div className="popular-category-item flex items-center mt-6 gap-2  font-medium cursor-pointer">
                         <img src="/img/icons/toys.png" alt="" className='h-6' />
-                        Supplies
+                        Cat Supplies
+                    </div>
+                </Link>
+                <Link href='/dog/supplements'>
+                    <div className="popular-category-item flex items-center mt-6 gap-2  font-medium cursor-pointer">
+                        <img src="/img/icons/supplements.png" alt="" className='h-6' />
+                        Dog Supplements
+                    </div>
+                </Link>
+                <Link href='/cat/treats'>
+                    <div className="popular-category-item flex items-center mt-6 gap-2  font-medium cursor-pointer">
+                        <img src="/img/icons/premium-food.png" alt="" className='h-6' />
+                        Cat Treats
+                    </div>
+                </Link>
+                <Link href='/dog/supplies'>
+                    <div className="popular-category-item flex items-center mt-6 gap-2  font-medium cursor-pointer">
+                        <img src="/img/icons/cat-wet-food.png" alt="" className='h-6' />
+                        Dog Supplies
                     </div>
                 </Link>
             </div>

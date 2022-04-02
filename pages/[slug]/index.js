@@ -37,12 +37,12 @@ const index = (props) => {
 
     const getBrandsfOrAnimals = () => {
         axios.get(`${process.env.NEXT_PUBLIC_API_URI}/brand/categorybrand/get/${props.slug}`)
-            .then(res => setBrands(res.data.homePageBrand))
+            .then(res => setBrands(res.data.categoryWiseBrand))
             .catch(err => console.log(err))
     }
 
     return (
-        <div className='main-animal-page mt-4'>
+        <div className='main-animal-page mt-16'>
             {/* Banner */}
             <AnimalBanner hasImage={props.banner !== null ? true : false} image={`/category-banner/${props.banner}`} title={`The ${props.slug} Shop`} />
 

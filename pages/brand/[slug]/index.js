@@ -9,6 +9,7 @@ import ProductRow from '../../../Components/HomeComponents/ProductRow'
 
 
 const Brand = (props) => {
+    console.log("🚀 ~ file: index.js ~ line 12 ~ Brand ~ props", props)
 
     const router = useRouter()
 
@@ -52,7 +53,7 @@ const Brand = (props) => {
             {/* Banner */}
             {
                 router ?
-                    <AnimalBanner hasImage={props.banner !== null ? true : false} image={`/brand-banner/${banner}`} title='Whiskas' /> :
+                    <AnimalBanner hasImage={banner ? true : false} image={`/brand-banner/${banner}`} title={router.query.slug} /> :
                     <></>
             }
 

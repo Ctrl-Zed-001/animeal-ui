@@ -91,7 +91,7 @@ const Shop = () => {
 
 
     return (
-        <div className='shop-page my-10'>
+        <div className='shop-page lg:my-10 my-16'>
 
 
             <div className="container flex justify-between gap-10">

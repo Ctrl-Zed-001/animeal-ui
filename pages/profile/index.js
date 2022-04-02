@@ -24,7 +24,7 @@ const Profile = () => {
     })
 
     return (
-        <div className="profile-page my-10">
+        <div className="profile-page my-16 lg:my-0">
             <div className="container">
                 <h1 className='font-semibold text-2xl mb-4'>My Profile</h1>
 

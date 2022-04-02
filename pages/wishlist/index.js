@@ -46,7 +46,7 @@ const Wishlist = () => {
     }
 
     return (
-        <div className="container wishlist-page my-10">
+        <div className="container wishlist-page my-16 lg:my-10">
             <h1 className="font-medium text-2xl">My Wishlist</h1>
             <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mt-6">
                 {

@@ -35,7 +35,7 @@ const index = (props) => {
     }
 
     return (
-        <div className='subcategory-page mt-4'>
+        <div className='subcategory-page mt-16'>
 
             {/* Banner */}
             <AnimalBanner hasImage={props.banner !== null ? true : false} image={`/category-banner/${props.banner}`} title={`${props.animal} ${props.category}`} />

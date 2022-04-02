@@ -7,9 +7,9 @@ const ProfileInfoBox = () => {
     return (
         <div className="profile info-section bg-theme p-4 rounded-lg col-span-3 pb-10">
 
-            <div className="grid grid-cols-12">
+            <div className="xl:grid grid-cols-12">
 
-                <div className="left-part flex col-span-5 items-center">
+                <div className="left-part xl:flex col-span-5 items-center text-center lg:text-left">
                     <img src="/img/user.png" alt="" className="mx-auto h-40" />
                     <div className="name">
                         <h1 className="text-2xl font-bold">
@@ -22,7 +22,7 @@ const ProfileInfoBox = () => {
                 </div>
                 <div className="col-span-3"></div>
 
-                <div className="right-part col-span-4 flex items-center">
+                <div className="right-part col-span-4 flex items-center mt-4 lg:mt-0">
                     <table className='w-full'>
                         <tbody>
                             <tr>

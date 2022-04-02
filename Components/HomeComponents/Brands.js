@@ -2,6 +2,7 @@ import React from 'react'
 import Link from 'next/link'
 
 const Brands = (props) => {
+    console.log("🚀 ~ file: Brands.js ~ line 5 ~ Brands ~ props", props)
     return (
         <div className='container brand-section'>
             <h1 className='text-xl font-medium'>{props.title}</h1>

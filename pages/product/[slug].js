@@ -182,7 +182,7 @@ const Product = (props) => {
 
     return (
 
-        <div className='product-page xl:my-10'>
+        <div className='product-page my-16 xl:my-10'>
 
             <div className="lg:flex container gap-20 mb-20">
                 {/* PRODUCT IMAGE SLIDER */}
