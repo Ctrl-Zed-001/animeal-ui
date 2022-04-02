@@ -356,10 +356,9 @@ const Checkout = () => {
             form.append('phone', address.addnumber)
             form.append('altphone', address.addaltphone)
             form.append('address', fullAddress)
+            form.append(`prescription[]`, prescriptionFiles[0])
+            form.append(`prescription[]`, prescriptionFiles[1])
 
-            prescriptionFiles.forEach((file, index) => {
-                form.append(`prescription`, file, file.name)
-            })
 
             axios.post(
                 `${process.env.NEXT_PUBLIC_API_URI}/user/prescription/post/data`,

@@ -26,20 +26,21 @@ const PrescriptionUpload = (props) => {
         form.append('number', data.number)
         form.append('altnumber', data.altnumber)
         form.append('address', data.address)
+        form.append(`prescription[]`, files[0])
+        form.append(`prescription[]`, files[1])
 
-        files.forEach((file, index) => {
-            form.append(`prescription`, file, file.name)
-        })
 
         axios.post(
             `${process.env.NEXT_PUBLIC_API_URI}/user/prescription/post/data`,
             form
         )
             .then(res => {
-                props.submit(true)
+                console.log(res)
+                props.showStatus(true)
             })
             .catch(err => {
-                props.sumbit(false)
+                console.log(err)
+                props.showStatus(false)
             })
     };
 

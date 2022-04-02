@@ -8,7 +8,7 @@ const BannerSection = () => {
     const { isMobile } = useContext(AuthContext)
     const [isUploadModalOpen, setIsUploadModalOpen] = useState(false)
     const [isStatusModalOpen, setIsStatusModalOpen] = useState(false)
-    const [status, setStatus] = useState(false)
+    const [status, setStatus] = useState()
 
     const handleClose = (status) => {
         console.log("🚀 ~ file: BannerSection.js ~ line 14 ~ handleClose ~ status", status)
@@ -106,7 +106,7 @@ const BannerSection = () => {
                     <h1 className="text-white text-xl font-bold absolute bottom-10 left-0 w-full px-2">Pathology <br /> <span className='text-3xl'>Coming Soon</span> </h1>
                 </div>
             </div>
-            <PrescriptionUpload isOpen={isUploadModalOpen} isMobile={isMobile} close={() => setIsUploadModalOpen(false)} sumbit={(type) => handleClose(type)} />
+            <PrescriptionUpload isOpen={isUploadModalOpen} isMobile={isMobile} close={() => setIsUploadModalOpen(false)} showStatus={handleClose} />
             <UploadStatusModal isOpen={isStatusModalOpen} close={() => setIsStatusModalOpen(false)} status={status} />
         </div>
     )
