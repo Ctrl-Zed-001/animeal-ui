@@ -15,7 +15,7 @@ import { AuthContext } from '../../Context/AuthContext'
 import { CartContext } from '../../Context/CartContext'
 import axios from 'axios';
 import NewAddressModal from '../../Components/CheckoutComponents/NewAddressModal';
-import OrderStatusPopup from '../../Components/CheckoutComponents/OrderStatusPopup';
+import StatusPopup from '../../Components/CheckoutComponents/StatusPopup';
 import { useRouter } from 'next/router'
 import OtpPopup from '../../Components/CheckoutComponents/OtpPopup'
 import toast, { Toaster } from 'react-hot-toast'
@@ -38,9 +38,11 @@ const Checkout = () => {
     const [savedAddresses, setSavedAddresses] = useState()
     const [newAddressModal, ToggleNewAddressModal] = useState(false)
     const [statusModal, setStatusModal] = useState()
+    const [deliveryModal, setDeliveryModal] = useState()
     const [otpModal, setOtpModal] = useState()
     const [orderStatus, setOrderStatus] = useState(false)
     const [isOnlinePayment, setIsOnlinePayment] = useState(true)
+    const [isDeliverable, setIsDeliverable] = useState()
 
 
     useEffect(() => {
@@ -55,9 +57,7 @@ const Checkout = () => {
                 }
             )
                 .then(res => {
-                    setSavedAddresses(res.data.savedAddresses)
-                    let defaultAddress = res.data.savedAddresses.filter(addr => addr.defaultaddress === 'Yes')
-                    setAddress(defaultAddress[0])
+                    modifyAddresses(res.data.savedAddresses)
                 })
                 .catch(err => {
                     router.replace('/');
@@ -73,6 +73,37 @@ const Checkout = () => {
             router.replace('/cart')
         }
     }, [prescriptionUploaded])
+
+    const modifyAddresses = (addresses) => {
+        setSavedAddresses(addresses)
+        let defaultAddress = addresses.filter(addr => addr.defaultaddress === 'Yes')
+        setAddress(defaultAddress[0])
+    }
+
+    const checkForDelivery = (type) => {
+        if (address.addname == '' || address.addnumber == '' || address.addaltnumber == '' || address.addaddress1 == '' || address.addaddress2 == '' || address.addcity == '' || address.addpincode == '' || address.addstate == '' || address.addresstype == '') {
+            toast.error("Please fill in all the fields")
+        } else if (address.addpincode.length > 6 || address.addpincode.length < 6) {
+            toast.error("Please check your pincode")
+        } else {
+            axios.post(
+                `${process.env.NEXT_PUBLIC_API_URI}/valid/pincode/post/data`,
+                {
+                    pincode: address.addpincode
+                }
+            )
+                .then(res => {
+                    if (res.data.pincode == 'Pincode Found') {
+                        saveAddress(type)
+                    } else {
+                        setDeliveryModal(true)
+                        setIsDeliverable(false)
+                    }
+
+                })
+                .catch(err => { setDeliveryModal(true); setIsDeliverable(false) })
+        }
+    }
 
     const addNewAddress = (newData) => {
         let body = {
@@ -103,6 +134,10 @@ const Checkout = () => {
                     body,
                     ...savedAddresses
                 ])
+                modifyAddresses([
+                    body,
+                    ...savedAddresses
+                ])
             })
             .catch(err => console.log(err.response))
         ToggleNewAddressModal(false)
@@ -110,47 +145,43 @@ const Checkout = () => {
 
     const saveAddress = (paymentType) => {
 
-        if (address.addname == '' || address.addnumber == '' || address.addaltnumber == '' || address.addaddress1 == '' || address.addaddress2 == '' || address.addcity == '' || address.addpincode == '' || address.addstate == '' || address.addresstype == '') {
-            toast.error("Please fill in all the fields")
-        } else if (address.addpincode.length > 6 || address.addpincode.length < 6) {
-            toast.error("Please check your pincode")
-        } else {
-            if (!address.id) {
-                addNewAddress(address)
-            } else {
-                axios.post(
-                    `${process.env.NEXT_PUBLIC_API_URI}/user/updatesaveddaddress/post/data`,
-                    {
-                        addressid: address.id,
-                        addname: address.addname,
-                        addemail: userDetails.email,
-                        addnumber: address.addnumber,
-                        addaltnumber: address.addaltnumber,
-                        addaddress1: address.addaddress1,
-                        addaddress2: address.addaddress2,
-                        addcity: address.addcity,
-                        addpincode: address.addpincode,
-                        addstate: address.addstate,
-                        addresstype: address.addresstype,
-                        defaultaddress: address.defaultAddress ? 'Yes' : 'No',
-                        drname: doctorName ? doctorName : null
-                    },
-                    {
-                        headers: {
-                            Authorization: token
-                        }
-                    }
-                )
-                    .then(res => console.log(res.data))
-                    .catch(err => console.log(err))
-            }
 
-            if (paymentType === 'online') {
-                callRazorPay()
-            } else {
-                callOtp()
-            }
+        if (!address.id) {
+            addNewAddress(address)
+        } else {
+            axios.post(
+                `${process.env.NEXT_PUBLIC_API_URI}/user/updatesaveddaddress/post/data`,
+                {
+                    addressid: address.id,
+                    addname: address.addname,
+                    addemail: userDetails.email,
+                    addnumber: address.addnumber,
+                    addaltnumber: address.addaltnumber,
+                    addaddress1: address.addaddress1,
+                    addaddress2: address.addaddress2,
+                    addcity: address.addcity,
+                    addpincode: address.addpincode,
+                    addstate: address.addstate,
+                    addresstype: address.addresstype,
+                    defaultaddress: 'Yes',
+                    drname: doctorName ? doctorName : null
+                },
+                {
+                    headers: {
+                        Authorization: token
+                    }
+                }
+            )
+                .then(res => console.log(res.data))
+                .catch(err => console.log(err))
         }
+
+        if (paymentType === 'online') {
+            callRazorPay()
+        } else {
+            callOtp()
+        }
+
     }
 
     const changeAddress = (index) => {
@@ -507,7 +538,13 @@ const Checkout = () => {
                             onChange={(e) => setAddress({ ...address, addpincode: e.target.value })}
                         />
                     </div>
-                    <div className="flex justify-end items-center gap-6">Set as default address <Switch checked={address?.defaultaddress == "Yes" ? true : false} onChange={(e) => setAddress({ ...address, defaultAddress: e.target.checked })} color='success' /> </div>
+                    <div className="flex justify-end items-center gap-6">
+                        Set as default address
+                        <Switch
+                            checked={true}
+                            initialChecked={true}
+                            onChange={(e) => setAddress({ ...address, defaultAddress: e.target.checked })} color='success' />
+                    </div>
                 </div>
 
             </div>
@@ -556,7 +593,7 @@ const Checkout = () => {
                             <HiShieldCheck />
                             <p className='text-xs ml-1'>100% payment protection and easy refunds.</p>
                         </div>
-                        <div className="flex justify-start gap-6 xl:gap-4 items-center mt-3 ml-5">
+                        <div className="flex justify-start gap-6 xl:gap-4 items-center mt-3">
                             <img src="/img/icons/visa.png" alt="" className='h-6' />
                             <img src="/img/icons/mastercard.png" alt="" className='h-6' />
                             <img src="/img/icons/google-pay.png" alt="" className='h-6' />
@@ -576,11 +613,11 @@ const Checkout = () => {
 
                 {
                     isOnlinePayment ?
-                        <button onClick={() => saveAddress('online')} className="w-full text-center bg-theme p-2 rounded-lg py-4 mt-8 shadow font-semibold">
+                        <button onClick={() => checkForDelivery('online')} className="w-full text-center bg-theme p-2 rounded-lg py-4 mt-8 shadow font-semibold">
                             Pay Online
                         </button>
                         :
-                        <button onClick={() => saveAddress('cod')} className="w-full text-center bg-theme p-2 rounded-lg py-4 mt-8 shadow font-semibold">
+                        <button onClick={() => checkForDelivery('cod')} className="w-full text-center bg-theme p-2 rounded-lg py-4 mt-8 shadow font-semibold">
                             Place Order
                         </button>
                 }
@@ -595,7 +632,26 @@ const Checkout = () => {
             {/* ORDER STATUS MODAL */}
             {
                 statusModal !== undefined ?
-                    <OrderStatusPopup isOpen={statusModal} status={orderStatus} close={() => { setStatusModal(false); router.replace('/') }} /> :
+                    <StatusPopup
+                        isOpen={statusModal}
+                        image={orderStatus ? "/img/order-success.png" : "/img/order-fail.png"}
+                        close={() => { setStatusModal(false); router.replace('/') }}
+                        heading={orderStatus ? "Your Order has been accepted" : "Oops! Order Failed"}
+                        subheading={orderStatus ? "Your items has been placcd and is on it’s way to being processed" : "Looks like something went wrong while placing your order. Please try again after some time."}
+                        class={orderStatus ? "bg-cyan-200" : "bg-red-300"}
+                    /> :
+                    <></>
+            }
+
+            {/* Delivery MODAL */}
+            {
+                deliveryModal !== undefined ?
+                    <StatusPopup
+                        isOpen={deliveryModal}
+                        image={isDeliverable ? "/img/icons/tick.png" : "/img/icons/delete.png"}
+                        close={() => { setDeliveryModal(false) }}
+                        heading={isDeliverable ? "Pincode eligible for delivery" : "Oops! Cannot Deliver to this location. :("}
+                    /> :
                     <></>
             }
 

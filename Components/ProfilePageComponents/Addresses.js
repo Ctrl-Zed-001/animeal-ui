@@ -29,6 +29,7 @@ const Addresses = (props) => {
     }, [])
 
     const deleteAddress = (id) => {
+        console.log("🚀 ~ file: Addresses.js ~ line 32 ~ deleteAddress ~ id", id)
         axios.post(
             `${process.env.NEXT_PUBLIC_API_URI}/user/addressremoved/post/data`,
             {
@@ -42,10 +43,8 @@ const Addresses = (props) => {
         )
             .then(res => {
                 if (res.status === 200) {
-                    let newList = [...savedAddresses]
-                    newList.filter(addr => addr.id !== id)
-                    console.log("🚀 ~ file: Addresses.js ~ line 47 ~ deleteAddress ~ newList", newList)
-
+                    let oldList = [...savedAddresses]
+                    let newList = oldList.filter(addr => addr.id != id)
 
                     setSavedAddresses([...newList])
 
@@ -67,7 +66,7 @@ const Addresses = (props) => {
 
                     {
                         savedAddresses && savedAddresses.map((address, index) => {
-                            return <AddressBox deleteAddress={deleteAddress} className={address.defaultaddress == "Yes" ? 'bg-green-200' : ''} address={address} />
+                            return <AddressBox key={index} deleteAddress={deleteAddress} address={address} />
                         })
                     }
 

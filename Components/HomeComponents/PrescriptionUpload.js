@@ -105,7 +105,7 @@ const PrescriptionUpload = (props) => {
 
                 <h1 className="my-6 text-lg text-left">Basic Info</h1>
                 <form onSubmit={handleSubmit(onSubmit)}>
-                    <div className="flex-col xl:flex justify-between gap-8 items-center">
+                    <div className="grid grid-cols-1 lg:flex justify-between gap-8 items-center">
                         <Input
                             label="Pet's Name"
                             fullWidth
@@ -126,7 +126,7 @@ const PrescriptionUpload = (props) => {
                         />
                     </div>
 
-                    <div className="x:flex justify-between gap-8 items-center mt-4">
+                    <div className="grid grid-cols-1 xl:flex justify-between gap-8 items-center mt-4">
                         <Input
                             label="Your Name"
                             fullWidth
@@ -141,7 +141,7 @@ const PrescriptionUpload = (props) => {
                             color={errors.email ? "error" : 'default'}
                         />
                     </div>
-                    <div className="xl:flex justify-between gap-8 items-center mt-4">
+                    <div className="grid grid-cols-1 xl:flex justify-between gap-8 items-center mt-4">
                         <Input
                             label="Phone Number"
                             fullWidth

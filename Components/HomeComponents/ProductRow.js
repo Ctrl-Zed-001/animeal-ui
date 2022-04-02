@@ -39,7 +39,7 @@ const ProductRow = (props) => {
                 >
                     {
                         props.products && props.products.map((product, index) => {
-                            return <SwiperSlide><ProductBox key={index} product={product} /></SwiperSlide>
+                            return <SwiperSlide key={index}><ProductBox product={product} /></SwiperSlide>
                         })
 
                     }
