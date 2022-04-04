@@ -64,13 +64,13 @@ const Profile = () => {
                                 <h1>Edit Profile</h1>
                                 <FiChevronRight />
                             </div>
-                            <Link href='/profile/orders'>
+                            {/* <Link href='/profile/orders'>
                                 <div className="action-box flex justify-between bg-slate-100 p-4 rounded-lg my-2 font-semibold">
                                     <img src="/img/icons/myorders.png" alt="" />
                                     <h1>My Orders</h1>
                                     <FiChevronRight />
                                 </div>
-                            </Link>
+                            </Link> */}
 
                         </div>
 
