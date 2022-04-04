@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useSwiper } from 'swiper/react';
 import { Input, Spacer } from '@nextui-org/react';
 import { Toaster } from 'react-hot-toast';
+import { getProviders, signIn } from "next-auth/react"
 
 
 const SignupForm = (props) => {
@@ -9,16 +10,26 @@ const SignupForm = (props) => {
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [authProviders, setProviders] = useState()
+
+    useEffect(() => {
+        getProv()
+    })
+
+    const getProv = async () => {
+        const providers = await getProviders()
+        setProviders(providers)
+    }
 
     return (
         <div className='text-gray-900 signup-form'>
             <h1 className="text-xl font-medium md:text-center">Create an account</h1>
             <div className="flex justify-between gap-4 md:gap-0 md:justify-around items-center mt-6 text-xs md:text-base">
-                <div onClick={props.loginSocial} className="with-social-button flex items-center border rounded-lg py-2 px-4 border-yellow-500 font-semibold">
+                <div onClick={() => signIn(authProviders.google.id)} className="with-social-button flex items-center border rounded-lg py-2 px-4 border-yellow-500 font-semibold">
                     <img src="/img/icons/google.png" alt="" className='h-6 mr-2' />
                     Login with Google
                 </div>
-                <div onClick={props.loginSocial} className="with-social-button flex items-center border rounded-lg py-2 px-4 border-yellow-500 font-semibold">
+                <div onClick={() => signIn(authProviders.google.id)} className="with-social-button flex items-center border rounded-lg py-2 px-4 border-yellow-500 font-semibold">
                     <img src="/img/icons/fb.png" alt="" className='h-6 mr-2' />
                     Login with Facebook
                 </div>

@@ -9,7 +9,7 @@ import { getProviders, signIn } from "next-auth/react"
 
 const LoginForm = (props) => {
 
-    let [authProviders, setProviders] = useState()
+    const [authProviders, setProviders] = useState()
 
     useEffect(() => {
         getProv()
