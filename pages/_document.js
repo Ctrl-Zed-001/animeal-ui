@@ -16,7 +16,7 @@ class MyDocument extends Document {
                 <Head>{CssBaseline.flush()}</Head>
                 <script src='/js/jquery-3.3.1.min.js' />
                 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-                <script type="application/javascript" crossorigin="anonymous" src=" https://securegw-stage.paytm.in/merchantpgpui/checkoutjs/merchants/MFnAiE15203301692155.js"> </script>
+                <script type="application/javascript" crossorigin="anonymous" src={`https://securegw-stage.paytm.in/merchantpgpui/checkoutjs/merchants/${process.env.NEXT_PUBLIC_MID}.js`}> </script>
                 <body>
                     <Main />
                     <NextScript />
