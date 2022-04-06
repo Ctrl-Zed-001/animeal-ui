@@ -198,8 +198,11 @@ const Checkout = () => {
     }
 
 
-    const callPaytm = () => {
+    const callPaytm = async () => {
+
+
         console.log("paytm called")
+
         axios.post(
             `${process.env.NEXT_PUBLIC_API_URI}/paytm/checksum/post/data`,
             {
@@ -218,14 +221,12 @@ const Checkout = () => {
                 amount: cartTotal
             },
             {
-                headers:
-                {
+                headers: {
                     Authorization: token
                 }
             }
         )
             .then(res => {
-                console.log(res.data.success.body.txnToken)
                 var config = {
                     "root": "",
                     "flow": "DEFAULT",
@@ -248,17 +249,16 @@ const Checkout = () => {
                 window.Paytm.CheckoutJS.init(config).then(function onSuccess() {
                     // after successfully updating configuration, invoke JS Checkout
                     window.Paytm.CheckoutJS.invoke();
-                    // uploadPrescription()
+                    uploadPrescription()
                     //     setOrderStatus(true)
                     //     setStatusModal(true)
-                    //     clearCart()
+                    clearCart()
                 }).catch(function onError(error) {
                     console.log("error => ", error);
                     // OPEN PAYMENT FAIL POPUP HERE
                     setOrderStatus(false)
                     setStatusModal(true)
                 });
-
             })
             .catch(err => console.log(err))
 
@@ -418,36 +418,36 @@ const Checkout = () => {
             })
     }
 
-    const placeOnlineOrder = () => {
-        axios.post(
-            `${process.env.NEXT_PUBLIC_API_URI}/user/onlinePayment/post/data`,
-            {
-                name: address.addname,
-                drname: doctorName ? doctorName : '',
-                email: address.addemail,
-                number: address.addnumber,
-                altnumber: address.addaltnumber,
-                address1: address.addaddress1,
-                address2: address.addaddress2,
-                city: address.addcity,
-                pincode: address.addpincode,
-                state: address.addstate,
-                razorpay_payment_id: payment_id
-            },
-            {
-                headers: {
-                    Authorization: token
-                }
-            }
-        )
-            .then(res => {
-                uploadPrescription()
-                setOrderStatus(true)
-                setStatusModal(true)
-                clearCart()
-            })
-            .catch(err => console.log(err))
-    }
+    // const placeOnlineOrder = () => {
+    //     axios.post(
+    //         `${process.env.NEXT_PUBLIC_API_URI}/user/onlinePayment/post/data`,
+    //         {
+    //             name: address.addname,
+    //             drname: doctorName ? doctorName : '',
+    //             email: address.addemail,
+    //             number: address.addnumber,
+    //             altnumber: address.addaltnumber,
+    //             address1: address.addaddress1,
+    //             address2: address.addaddress2,
+    //             city: address.addcity,
+    //             pincode: address.addpincode,
+    //             state: address.addstate,
+    //             razorpay_payment_id: payment_id
+    //         },
+    //         {
+    //             headers: {
+    //                 Authorization: token
+    //             }
+    //         }
+    //     )
+    //         .then(res => {
+    //             uploadPrescription()
+    //             setOrderStatus(true)
+    //             setStatusModal(true)
+    //             clearCart()
+    //         })
+    //         .catch(err => console.log(err))
+    // }
 
     // UPLOAD PRESCRIPTION
     const uploadPrescription = () => {

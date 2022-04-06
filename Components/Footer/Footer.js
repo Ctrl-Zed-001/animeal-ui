@@ -76,8 +76,8 @@ const Footer = () => {
                         </div>
                         <div className="flex justify-center gap-4 lg:gap-4 text-center lg:mt-4">
                             <a href="https://www.facebook.com/animeal.in"><img src="/img/icons/fb.webp" alt="" className='h-8' /></a>
-                            <a href="https://www.instagram.com/animeal.in/"><img src="/img/icons/twitter.webp" alt="" className='h-8' /></a>
-                            <a href="https://twitter.com/animeal_in"><img src="/img/icons/insta.webp" alt="" className='h-8' /></a>
+                            <a href="https://twitter.com/animeal_in/"><img src="/img/icons/twitter.webp" alt="" className='h-8' /></a>
+                            <a href="https://www.instagram.com/animeal.in/"><img src="/img/icons/insta.webp" alt="" className='h-8' /></a>
                             <a href="https://wa.me/+919004485093"><img src="/img/icons/whatsapp.webp" alt="" className='h-8' /></a>
                         </div>
                     </div>
