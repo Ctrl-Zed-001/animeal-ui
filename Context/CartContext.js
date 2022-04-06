@@ -227,6 +227,7 @@ const CartContextProvider = (props) => {
 
     const clearCart = () => {
         setCartItems([])
+        localStorage.removeItem('unauthcart')
     }
 
     const validateAndUpdateCart = (data) => {

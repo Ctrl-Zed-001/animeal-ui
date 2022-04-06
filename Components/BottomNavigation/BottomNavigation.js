@@ -37,7 +37,7 @@ const BottomNavigation = (props) => {
                         }
                         <Link href="/cart">
                             <div className="btn btn-default shadow centerbutton bg-theme cursor-pointer">
-                                <img src="/img/icons/cart.png" alt="" />
+                                <img src="/img/icons/cart.webp" alt="" />
                             </div>
                         </Link>
                     </div>

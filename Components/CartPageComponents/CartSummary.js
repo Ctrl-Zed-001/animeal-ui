@@ -6,7 +6,7 @@ const CartSummary = (props) => {
     return (
         <div className="cart-summary bg-slate-100 p-4 rounded-xl flex-1 h-fit">
             <div className="flex gap-4 items-center w-full">
-                <img src="/img/icons/cart-delivery.png" alt="" />
+                <img src="/img/icons/cart-delivery.webp" alt="" />
                 <h1 className='font-semibold'>Free shipping in 24hr.</h1>
             </div>
             <div className="flex w-full items-center justify-between my-6">

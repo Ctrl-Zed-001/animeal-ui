@@ -11,7 +11,7 @@ const WishlistBox = (props) => {
         <div className='relative'>
             <a target="__blank" rel="noopener noreferrer" href={`/product/${props.product.product_slugname}`}>
                 <div className="productbox rounded-xl border-2 border-white shadow cursor-pointer">
-                    <img src={props.product.product_featured_image ? `${process.env.NEXT_PUBLIC_IMAGE_URI}/${props.product.product_id}/${props.product.product_featured_image}` : "/img/product-placeholder.png"} alt="" className='rounded-lg lg:h-48 mx-auto transform z-10' />
+                    <img src={props.product.product_featured_image ? `${process.env.NEXT_PUBLIC_IMAGE_URI}/${props.product.product_id}/${props.product.product_featured_image}` : "/img/product-placeholder.webp"} alt="" className='rounded-lg lg:h-48 mx-auto transform z-10' />
 
                     <div className="product-info rounded-b-xl p-4 relative bg-white pt-14 -mt-12 -z-10">
 

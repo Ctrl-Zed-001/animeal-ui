@@ -98,10 +98,10 @@ const Header = (props) => {
             <div className="container lg:flex justify-between items-center">
 
                 <div className={`flex lg-block gap-10 ${showSearch ? '' : 'flex-1'}`}>
-                    <button className="btn btn-link text-dark menu-btn"><img src="/img/icons/menu.png" alt="" /></button>
+                    <button className="btn btn-link text-dark menu-btn"><img src="/img/icons/menu.webp" alt="" /></button>
 
                     <Link href='/'>
-                        <img src="/img/logo.png" alt="" className="header-logo h-10 cursor-pointer mx-auto" />
+                        <img src="/img/logo.webp" alt="" className="header-logo h-10 cursor-pointer mx-auto" />
                     </Link>
                     {
                         isLoggedIn ?
@@ -123,7 +123,7 @@ const Header = (props) => {
                                     <input onChange={autoSuggest} type="text" className="p-3 w-full rounded-lg pl-10" placeholder="Search store" onClick={() => props.setIsAutoSuggestOpen(!props.isAutoSuggestOpen)} />
                                 </div>
                                 <button type="submit" className='bg-theme p-3 text-xl rounded-lg'>
-                                    <img src="/img/icons/search.png" alt="" className='' />
+                                    <img src="/img/icons/search.webp" alt="" className='' />
                                 </button>
                             </form>
 
@@ -161,7 +161,7 @@ const Header = (props) => {
                                 Logout
                             </span> :
                             <span onClick={() => setShowAuthModal(true)} className='text-sm rounded-lg p-3 px-3 bg-white flex justify-between items-center text-gray-600 mx-2 cursor-pointer'>
-                                <img src="/img/icons/profile-header.png" alt="" className='h-4 mr-2' />
+                                <img src="/img/icons/profile-header.webp" alt="" className='h-4 mr-2' />
                                 Signup / Login
                             </span>
                     }

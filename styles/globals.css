@@ -301,7 +301,7 @@ body.sidemenu-open .sidebar {
 }
 
 .footer .bg {
-  background-image: url('/img/footer-bg.png');
+  background-image: url('/img/footer-bg.webp');
   background-size: cover;
   background-repeat: no-repeat;
   background-position: top;

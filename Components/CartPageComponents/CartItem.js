@@ -7,7 +7,7 @@ const CartItem = (props) => {
     return (
         <div className="cart-item bg-slate-100 p-3 rounded-lg grid grid-cols-6 my-4 relative gap-3">
             <div className='flex items-start col-span-5 md:col-span-3'>
-                <img src={props.item.product_image ? `${process.env.NEXT_PUBLIC_IMAGE_URI}/${props.item.product_id}/${props.item.product_image}` : "/img/product-placeholder.png"} alt="" className='h-20 md:h-32' />
+                <img src={props.item.product_image ? `${process.env.NEXT_PUBLIC_IMAGE_URI}/${props.item.product_id}/${props.item.product_image}` : "/img/product-placeholder.webp"} alt="" className='h-20 md:h-32' />
 
                 <div className="description ml-6 md:pt-4">
                     <h1 className='text-xs md:text-base font-semibold'>{props.item.product_name}</h1>

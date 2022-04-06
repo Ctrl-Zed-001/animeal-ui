@@ -8,7 +8,7 @@ const AnimalBanner = (props) => {
             {
                 props.hasImage ?
                     <img src={`${process.env.NEXT_PUBLIC_IMAGE_URI}${props.image}`} alt="" className='w-full rounded-xl' /> :
-                    <img src='/img/common_banner.png' alt="" className='w-full rounded-xl' />
+                    <img src='/img/common_banner.webp' alt="" className='w-full rounded-xl' />
             }
 
         </div>

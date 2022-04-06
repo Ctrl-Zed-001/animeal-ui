@@ -50,7 +50,7 @@ const Orders = () => {
                                         <div className="left-side">
                                             <h1 className=" font-semibold mb-4 ">Order Id: 2365sd2548as1d32a1s5d4a56</h1>
                                             <div className="bg-slate-200 rounded-lg p-4 flex justify-between gap-8 lg:gap-16">
-                                                <img src="/img/product-placeholder.png" alt="" className='h-20' />
+                                                <img src="/img/product-placeholder.webp" alt="" className='h-20' />
                                                 <div className="flex-1 font-medium">
                                                     <h1>ardern grange product name wagera wagera..</h1>
                                                     <p className='text-slate-500 text-xs my-1'>1kg</p>
@@ -124,7 +124,7 @@ const Orders = () => {
                                 <h1 className='font-semibold mb-4'>Previous orders</h1>
 
                                 <div className="past-order bg-slate-100 py-2 rounded-lg grid grid-cols-12 my-4 gap-4 lg:gap-0 text-xs">
-                                    <img src="/img/product-placeholder.png" alt="" className='h-20 col-span-3 lg:col-span-1' />
+                                    <img src="/img/product-placeholder.webp" alt="" className='h-20 col-span-3 lg:col-span-1' />
                                     <div className="col col-span-9 lg:col-span-7">
                                         <h1 className='font-semibold'>product name wagera wager..</h1>
                                         <p className="text-xs text-slate-600 my-1">1 Kg</p>

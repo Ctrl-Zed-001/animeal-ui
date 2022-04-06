@@ -12,8 +12,8 @@ const UploadStatusModal = (props) => {
             <Modal.Body>
                 {
                     props.status ?
-                        <img src="/img/icons/tick.png" alt="" className='h-40 w-40 mx-auto rounded-full' /> :
-                        <img src="/img/icons/delete.png" alt="" className='h-40 w-40 mx-auto rounded-full' />
+                        <img src="/img/icons/tick.webp" alt="" className='h-40 w-40 mx-auto rounded-full' /> :
+                        <img src="/img/icons/delete.webp" alt="" className='h-40 w-40 mx-auto rounded-full' />
                 }
                 {
                     props.status ?

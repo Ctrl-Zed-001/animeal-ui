@@ -104,7 +104,7 @@ $(document).ready(function () {
 
             var getCursor = function () {
                 if (settings.cursor) return settings.cursor;
-                if (settings.scrollVertical && settings.scrollHorizontal) return 'url(img/touch.png), move';
+                if (settings.scrollVertical && settings.scrollHorizontal) return 'url(img/touch.webp), move';
                 if (settings.scrollVertical) return 'row-resize';
                 if (settings.scrollHorizontal) return 'col-resize';
             }
@@ -127,7 +127,7 @@ $(document).ready(function () {
                 },
                 'mouseup': function () {
                     clicked = false;
-                    $('html').css('cursor', 'url(img/logo-cursor.png), auto');
+                    $('html').css('cursor', 'url(img/logo-cursor.webp), auto');
                 }
             });
         }

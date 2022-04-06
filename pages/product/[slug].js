@@ -190,7 +190,7 @@ const Product = (props) => {
                     {/* MAIN SLIDER */}
                     {
                         !productImages || productImages.length === 0 ?
-                            <div className='mx-auto bg-white rounded-lg p-4'><img src='/img/product-placeholder.png' className='h-96 mx-auto' /></div> :
+                            <div className='mx-auto bg-white rounded-lg p-4'><img src='/img/product-placeholder.webp' className='h-96 mx-auto' /></div> :
                             <Swiper
                                 slidesPerView={1}
                                 className='mx-auto h-full main-img-container drop-shadow'
@@ -244,7 +244,7 @@ const Product = (props) => {
                     {
                         props.product.products.category.toLowerCase() == 'medicine' ?
                             <div className="flex items-center gap-2 my-2">
-                                <img src="/img/icons/rx.png" className='h-8' alt="" />
+                                <img src="/img/icons/rx.webp" className='h-8' alt="" />
                                 <p className='text-sm font-semibold text-theme'>Prescription required</p>
                             </div> :
                             <></>

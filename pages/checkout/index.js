@@ -60,19 +60,19 @@ const Checkout = () => {
                     modifyAddresses(res.data.savedAddresses)
                 })
                 .catch(err => {
-                    router.replace('/');
+                    // router.replace('/');
                     console.log(err)
                 })
         } else {
-            router.replace('/')
+            // router.replace('/')
         }
     }, [token])
 
-    useEffect(() => {
-        if (hasMedicine && !prescriptionUploaded) {
-            router.replace('/cart')
-        }
-    }, [prescriptionUploaded])
+    // useEffect(() => {
+    //     if (hasMedicine && !prescriptionUploaded) {
+    //         router.replace('/cart')
+    //     }
+    // }, [prescriptionUploaded])
 
     const modifyAddresses = (addresses) => {
         setSavedAddresses(addresses)
@@ -81,27 +81,31 @@ const Checkout = () => {
     }
 
     const checkForDelivery = (type) => {
-        if (address.addname == '' || address.addnumber == '' || address.addaltnumber == '' || address.addaddress1 == '' || address.addaddress2 == '' || address.addcity == '' || address.addpincode == '' || address.addstate == '' || address.addresstype == '') {
-            toast.error("Please fill in all the fields")
-        } else if (address.addpincode.length > 6 || address.addpincode.length < 6) {
-            toast.error("Please check your pincode")
-        } else {
-            axios.post(
-                `${process.env.NEXT_PUBLIC_API_URI}/valid/pincode/post/data`,
-                {
-                    pincode: address.addpincode
-                }
-            )
-                .then(res => {
-                    if (res.data.pincode == 'Pincode Found') {
-                        saveAddress(type)
-                    } else {
-                        setDeliveryModal(true)
-                        setIsDeliverable(false)
+        if (address) {
+            if (address.addname == '' || address.addnumber == '' || address.addaltnumber == '' || address.addaddress1 == '' || address.addaddress2 == '' || address.addcity == '' || address.addpincode == '' || address.addstate == '' || address.addresstype == '') {
+                toast.error("Please fill in all the fields.")
+            } else if (address.addpincode.length > 6 || address.addpincode.length < 6) {
+                toast.error("Please check your pincode")
+            } else {
+                axios.post(
+                    `${process.env.NEXT_PUBLIC_API_URI}/valid/pincode/post/data`,
+                    {
+                        pincode: address.addpincode
                     }
+                )
+                    .then(res => {
+                        if (res.data.pincode == 'Pincode Found') {
+                            saveAddress(type)
+                        } else {
+                            setDeliveryModal(true)
+                            setIsDeliverable(false)
+                        }
 
-                })
-                .catch(err => { setDeliveryModal(true); setIsDeliverable(false) })
+                    })
+                    .catch(err => { setDeliveryModal(true); setIsDeliverable(false) })
+            }
+        } else {
+            toast.error("Please fill in all the fields")
         }
     }
 
@@ -177,7 +181,7 @@ const Checkout = () => {
         }
 
         if (paymentType === 'online') {
-            callRazorPay()
+            callPaytm()
         } else {
             callOtp()
         }
@@ -193,99 +197,169 @@ const Checkout = () => {
         setShowAddressModal(false)
     }
 
-    const callRazorPay = () => {
+
+    const callPaytm = () => {
+        console.log("paytm called")
         axios.post(
-            `${process.env.NEXT_PUBLIC_API_URI}/user/razorpayordercreate/post/data`,
+            `${process.env.NEXT_PUBLIC_API_URI}/paytm/checksum/post/data`,
             {
-                "amount": cartTotal * 100
+                user_id: userDetails.id,
+                name: address.addname,
+                drname: doctorName ? doctorName : '',
+                email: address.addemail,
+                number: address.addnumber,
+                altnumber: address.addaltnumber,
+                address1: address.addaddress1,
+                address2: address.addaddress2,
+                city: address.addcity,
+                pincode: address.addpincode,
+                state: address.addstate,
+                mid: process.env.NEXT_PUBLIC_MID,
+                amount: cartTotal
             },
             {
-                headers: {
+                headers:
+                {
                     Authorization: token
                 }
             }
         )
             .then(res => {
-                if (res.data.razorpayOrderDetails.id) {
-                    makePayment(res.data.razorpayOrderDetails.id)
-                }
-            })
-            .catch(err => console.log(err))
-    }
-
-    const makePayment = (orderId) => {
-        let rzp1;
-        var options = {
-            "key": process.env.NEXT_PUBLIC_RAZOR_PAY_KEY, // Enter the Key ID generated from the Dashboard
-            "amount": cartTotal * 100, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
-            "currency": "INR",
-            "name": "Animeal",
-            "description": "Test Transaction",
-            "order_id": orderId,
-            "image": "/img/logo.png",
-            "handler": function (response) {
-                let payment_id = response.razorpay_payment_id
-                let order_id = response.razorpay_order_id;
-                let signature = response.razorpay_signature;
-                axios.post(
-                    `${process.env.NEXT_PUBLIC_API_URI}/user/onlinePayment/post/data`,
-                    {
-                        name: address.addname,
-                        drname: "zed",
-                        email: address.addemail,
-                        number: address.addnumber,
-                        altnumber: address.addaltnumber,
-                        address1: address.addaddress1,
-                        address2: address.addaddress2,
-                        city: address.addcity,
-                        pincode: address.addpincode,
-                        state: address.addstate,
-                        razorpay_payment_id: payment_id
+                console.log(res.data.success.body.txnToken)
+                var config = {
+                    "root": "",
+                    "flow": "DEFAULT",
+                    "data": {
+                        "orderId": res.data.orderId, /* update order id */
+                        "token": res.data.success.body.txnToken, /* update token value */
+                        "tokenType": "TXN_TOKEN",
+                        "amount": cartTotal /* update amount */
                     },
-                    {
-                        headers: {
-                            Authorization: token
+                    "handler": {
+                        "notifyMerchant": function (eventName, data) {
+                            console.log("notifyMerchant handler function called");
+                            console.log("eventName => ", eventName);
+                            console.log("data => ", data);
                         }
                     }
-                )
-                    .then(res => {
-                        uploadPrescription()
-                        setOrderStatus(true)
-                        setStatusModal(true)
-                        clearCart()
-                    })
-                    .catch(err => console.log(err))
-            },
-            "prefill": {
-                "name": "Gaurav Kumar",
-                "email": "gaurav.kumar@example.com",
-                "contact": "9999999999"
-            },
-            "notes": {
-                "address": "Razorpay Corporate Office"
-            },
-            "theme": {
-                "color": "#3399cc"
-            }
-        };
-        rzp1 = new window.Razorpay(options)
-        rzp1.open()
+                };
 
-        rzp1.on('payment.failed', function (response) {
-            // alert('payment fail')
-            // alert(response.error.code);
-            // alert(response.error.description);
-            // alert(response.error.source);
-            // alert(response.error.step);
-            // alert(response.error.reason);
-            // alert(response.error.metadata.order_id);
-            // alert(response.error.metadata.payment_id);
+                // initialze configuration using init method 
+                window.Paytm.CheckoutJS.init(config).then(function onSuccess() {
+                    // after successfully updating configuration, invoke JS Checkout
+                    window.Paytm.CheckoutJS.invoke();
+                    // uploadPrescription()
+                    //     setOrderStatus(true)
+                    //     setStatusModal(true)
+                    //     clearCart()
+                }).catch(function onError(error) {
+                    console.log("error => ", error);
+                    // OPEN PAYMENT FAIL POPUP HERE
+                    setOrderStatus(false)
+                    setStatusModal(true)
+                });
 
-            // OPEN PAYMENT FAIL POPUP HERE
-            setOrderStatus(false)
-            setStatusModal(true)
-        });
+            })
+            .catch(err => console.log(err))
+
+
+
     }
+
+    // RAZOR PAY CODE
+    // const callRazorPay = () => {
+    //     axios.post(
+    //         `${process.env.NEXT_PUBLIC_API_URI}/user/razorpayordercreate/post/data`,
+    //         {
+    //             "amount": cartTotal * 100
+    //         },
+    //         {
+    //             headers: {
+    //                 Authorization: token
+    //             }
+    //         }
+    //     )
+    //         .then(res => {
+    //             if (res.data.razorpayOrderDetails.id) {
+    //                 makePayment(res.data.razorpayOrderDetails.id)
+    //             }
+    //         })
+    //         .catch(err => console.log(err))
+    // }
+
+    // const makePayment = (orderId) => {
+    //     let rzp1;
+    //     var options = {
+    //         "key": process.env.NEXT_PUBLIC_RAZOR_PAY_KEY, // Enter the Key ID generated from the Dashboard
+    //         "amount": cartTotal * 100, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+    //         "currency": "INR",
+    //         "name": "Animeal",
+    //         "description": "Test Transaction",
+    //         "order_id": orderId,
+    //         "image": "/img/logo.webp",
+    //         "handler": function (response) {
+    //             let payment_id = response.razorpay_payment_id
+    //             let order_id = response.razorpay_order_id;
+    //             let signature = response.razorpay_signature;
+    //             axios.post(
+    //                 `${process.env.NEXT_PUBLIC_API_URI}/user/onlinePayment/post/data`,
+    //                 {
+    //                     name: address.addname,
+    //                     drname: "zed",
+    //                     email: address.addemail,
+    //                     number: address.addnumber,
+    //                     altnumber: address.addaltnumber,
+    //                     address1: address.addaddress1,
+    //                     address2: address.addaddress2,
+    //                     city: address.addcity,
+    //                     pincode: address.addpincode,
+    //                     state: address.addstate,
+    //                     razorpay_payment_id: payment_id
+    //                 },
+    //                 {
+    //                     headers: {
+    //                         Authorization: token
+    //                     }
+    //                 }
+    //             )
+    //                 .then(res => {
+    //                     uploadPrescription()
+    //                     setOrderStatus(true)
+    //                     setStatusModal(true)
+    //                     clearCart()
+    //                 })
+    //                 .catch(err => console.log(err))
+    //         },
+    //         "prefill": {
+    //             "name": "Gaurav Kumar",
+    //             "email": "gaurav.kumar@example.com",
+    //             "contact": "9999999999"
+    //         },
+    //         "notes": {
+    //             "address": "Razorpay Corporate Office"
+    //         },
+    //         "theme": {
+    //             "color": "#3399cc"
+    //         }
+    //     };
+    //     rzp1 = new window.Razorpay(options)
+    //     rzp1.open()
+
+    //     rzp1.on('payment.failed', function (response) {
+    //         // alert('payment fail')
+    //         // alert(response.error.code);
+    //         // alert(response.error.description);
+    //         // alert(response.error.source);
+    //         // alert(response.error.step);
+    //         // alert(response.error.reason);
+    //         // alert(response.error.metadata.order_id);
+    //         // alert(response.error.metadata.payment_id);
+
+    //         // OPEN PAYMENT FAIL POPUP HERE
+    //         setOrderStatus(false)
+    //         setStatusModal(true)
+    //     });
+    // }
 
     const callOtp = () => {
         setOtpModal(true)
@@ -306,7 +380,7 @@ const Checkout = () => {
             .catch(err => console.log(err))
     }
 
-    const placeOrder = (value) => {
+    const placeCodOrder = (value) => {
         setOtpModal(false)
         // VALIDATE OTP API
         axios.post(
@@ -314,7 +388,7 @@ const Checkout = () => {
             {
                 otp: value,
                 name: address.addname,
-                drname: "zed",
+                drname: doctorName ? doctorName : "",
                 email: address.addemail,
                 number: address.addnumber,
                 altnumber: address.addaltnumber,
@@ -342,6 +416,37 @@ const Checkout = () => {
                 setStatusModal(true)
                 console.log(err)
             })
+    }
+
+    const placeOnlineOrder = () => {
+        axios.post(
+            `${process.env.NEXT_PUBLIC_API_URI}/user/onlinePayment/post/data`,
+            {
+                name: address.addname,
+                drname: doctorName ? doctorName : '',
+                email: address.addemail,
+                number: address.addnumber,
+                altnumber: address.addaltnumber,
+                address1: address.addaddress1,
+                address2: address.addaddress2,
+                city: address.addcity,
+                pincode: address.addpincode,
+                state: address.addstate,
+                razorpay_payment_id: payment_id
+            },
+            {
+                headers: {
+                    Authorization: token
+                }
+            }
+        )
+            .then(res => {
+                uploadPrescription()
+                setOrderStatus(true)
+                setStatusModal(true)
+                clearCart()
+            })
+            .catch(err => console.log(err))
     }
 
     // UPLOAD PRESCRIPTION
@@ -492,9 +597,9 @@ const Checkout = () => {
                             required
                             onChange={(e) => setAddress({ ...address, addaddress2: e.target.value })}
                         />
-                        <select onChange={(e) => setAddress({ ...address, addresstype: e.target.value })} name='addtype' value={address?.addresstype} className='bg-transparent border-b-2 border-gray-200 w-full lg:w-12/12'>
-                            <option value="Office">Office</option>
+                        <select onChange={(e) => setAddress({ ...address, addresstype: e.target.value })} name='addtype' value={address?.addresstype ? address?.addresstype : "Home"} className='bg-transparent border-b-2 border-gray-200 w-full lg:w-12/12'>
                             <option value="Home">Home</option>
+                            <option value="Office">Office</option>
                         </select>
                     </div>
                     {/* <div className="flex justify-between gap-14 my-8 w-full">
@@ -593,12 +698,12 @@ const Checkout = () => {
                             <p className='text-xs ml-1'>100% payment protection and easy refunds.</p>
                         </div>
                         <div className="flex justify-start gap-6 xl:gap-4 items-center mt-3">
-                            <img src="/img/icons/visa.png" alt="" className='h-6' />
-                            <img src="/img/icons/mastercard.png" alt="" className='h-6' />
-                            <img src="/img/icons/google-pay.png" alt="" className='h-6' />
-                            <img src="/img/icons/phone-pay.png" alt="" className='h-6' />
-                            <img src="/img/icons/upi.png" className='h-3' />
-                            <img src="/img/icons/rupay.png" className='h-3' />
+                            <img src="/img/icons/visa.webp" alt="" className='h-6' />
+                            <img src="/img/icons/mastercard.webp" alt="" className='h-6' />
+                            <img src="/img/icons/google-pay.webp" alt="" className='h-6' />
+                            <img src="/img/icons/phone-pay.webp" alt="" className='h-6' />
+                            <img src="/img/icons/upi.webp" className='h-3' />
+                            <img src="/img/icons/rupay.webp" className='h-3' />
                         </div>
                     </div>
 
@@ -633,7 +738,7 @@ const Checkout = () => {
                 statusModal !== undefined ?
                     <StatusPopup
                         isOpen={statusModal}
-                        image={orderStatus ? "/img/order-success.png" : "/img/order-fail.png"}
+                        image={orderStatus ? "/img/order-success.webp" : "/img/order-fail.webp"}
                         close={() => { setStatusModal(false); router.replace('/') }}
                         heading={orderStatus ? "Your Order has been accepted" : "Oops! Order Failed"}
                         subheading={orderStatus ? "Your items has been placcd and is on it’s way to being processed" : "Looks like something went wrong while placing your order. Please try again after some time."}
@@ -647,7 +752,7 @@ const Checkout = () => {
                 deliveryModal !== undefined ?
                     <StatusPopup
                         isOpen={deliveryModal}
-                        image={isDeliverable ? "/img/icons/tick.png" : "/img/icons/delete.png"}
+                        image={isDeliverable ? "/img/icons/tick.webp" : "/img/icons/delete.webp"}
                         close={() => { setDeliveryModal(false) }}
                         heading={isDeliverable ? "Pincode eligible for delivery" : "Oops! Cannot Deliver to this location. :("}
                     /> :
@@ -657,7 +762,7 @@ const Checkout = () => {
             {/* OTP MODAL */}
             {
                 otpModal !== undefined ?
-                    <OtpPopup isOpen={otpModal} close={() => setOtpModal(false)} placeOrder={placeOrder} /> :
+                    <OtpPopup isOpen={otpModal} close={() => setOtpModal(false)} placeOrder={placeCodOrder} /> :
                     <></>
             }
 

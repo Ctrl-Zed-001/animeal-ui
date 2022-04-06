@@ -50,23 +50,23 @@ const Profile = () => {
 
 
                             <div onClick={() => setActiveSection(1)} className="action-box flex justify-between bg-slate-100 p-4 rounded-lg my-2 font-semibold cursor-pointer">
-                                <img src="/img/icons/addresses.png" alt="" />
+                                <img src="/img/icons/addresses.webp" alt="" />
                                 <h1>Saved Addresses</h1>
                                 <FiChevronRight />
                             </div>
                             <div onClick={() => setActiveSection(2)} className="action-box flex justify-between bg-slate-100 p-4 rounded-lg my-2 font-semibold cursor-pointer">
-                                <img src="/img/icons/changepassword.png" alt="" />
+                                <img src="/img/icons/changepassword.webp" alt="" />
                                 <h1>Change Password</h1>
                                 <FiChevronRight />
                             </div>
                             <div onClick={() => setActiveSection(3)} className="action-box flex justify-between bg-slate-100 p-4 rounded-lg my-2 font-semibold cursor-pointer">
-                                <img src="/img/icons/edit-profile.png" alt="" />
+                                <img src="/img/icons/edit-profile.webp" alt="" />
                                 <h1>Edit Profile</h1>
                                 <FiChevronRight />
                             </div>
                             {/* <Link href='/profile/orders'>
                                 <div className="action-box flex justify-between bg-slate-100 p-4 rounded-lg my-2 font-semibold">
-                                    <img src="/img/icons/myorders.png" alt="" />
+                                    <img src="/img/icons/myorders.webp" alt="" />
                                     <h1>My Orders</h1>
                                     <FiChevronRight />
                                 </div>

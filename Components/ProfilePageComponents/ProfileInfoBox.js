@@ -10,7 +10,7 @@ const ProfileInfoBox = () => {
             <div className="xl:grid grid-cols-12">
 
                 <div className="left-part xl:flex col-span-5 items-center text-center lg:text-left">
-                    <img src="/img/user.png" alt="" className="mx-auto h-40" />
+                    <img src="/img/user.webp" alt="" className="mx-auto h-40" />
                     <div className="name">
                         <h1 className="text-2xl font-bold">
                             {userDetails?.name}

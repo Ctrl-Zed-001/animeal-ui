@@ -15,8 +15,8 @@ const Sidebar = () => {
                 <div className="figure-menu shadow">
                     {
                         isLoggedIn ?
-                            <Link href='/profile'><figure><img src={`${userDetails && userDetails.proimg ? userDetails.proimg : '/img/user.png'}`} alt="" /></figure></Link> :
-                            <figure><img src={`${userDetails && userDetails.proimg ? userDetails.proimg : '/img/user.png'}`} alt="" /></figure>
+                            <Link href='/profile'><figure><img src={`${userDetails && userDetails.proimg ? userDetails.proimg : '/img/user.webp'}`} alt="" /></figure></Link> :
+                            <figure><img src={`${userDetails && userDetails.proimg ? userDetails.proimg : '/img/user.webp'}`} alt="" /></figure>
                     }
                 </div>
                 <h5 className="mb-1 text-lg font-semibold">{

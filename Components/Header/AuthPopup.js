@@ -73,7 +73,7 @@ const AuthPopup = (props) => {
         >
             <Modal.Body className='p-0 overflow-hidden'>
                 <div className="md:flex justify-end items-center">
-                    <img src="/img/authbanner.png" alt="" className='h-44 md:h-80 mx-auto' />
+                    <img src="/img/authbanner.webp" alt="" className='h-44 md:h-80 mx-auto' />
                     <div className="form-section p-6 rounded-l-xl bg-slate-200 h-full md:w-8/12">
                         <Swiper className="mySwiper">
                             <SwiperSlide><LoginForm login={login} loginSocial={loginSocial} close={() => setShowAuthModal(false)} /></SwiperSlide>
