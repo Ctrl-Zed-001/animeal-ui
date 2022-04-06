@@ -241,10 +241,10 @@ const CartContextProvider = (props) => {
             discount = parseInt(discount) + parseInt(item[0].product_discount_total)
             subtotal = parseInt(total) + parseInt(discount)
         })
-        setCartTotal(total)
+        setCartTotal(Math.round(parseInt(total)))
         setQty(quantity)
         setCartDiscount(discount)
-        setSubtotal(subtotal)
+        setSubtotal(Math.round(parseInt(subtotal)))
         checkMedicine(data)
     }
 
