@@ -81,12 +81,16 @@ const Checkout = () => {
     }
 
     const validateAddress = (type) => {
-        if (!address.addaddress1 || !address.addaddress2 || !address.addcity || !address.addname || !address.addnumber || !address.addpincode || !address.addstate) {
+        if (!address) {
             toast.error("Please fill in all the fields")
-        } else if (address.addnumber.length < 10 || address.addnumber.length > 10) {
-            toast.error("Please check your mobile number.")
         } else {
-            checkForDelivery(type)
+            if (!address.addaddress1 || !address.addaddress2 || !address.addcity || !address.addname || !address.addnumber || !address.addpincode || !address.addstate) {
+                toast.error("Please fill in all the fields")
+            } else if (address.addnumber.length < 10 || address.addnumber.length > 10) {
+                toast.error("Please check your mobile number.")
+            } else {
+                checkForDelivery(type)
+            }
         }
     }
 

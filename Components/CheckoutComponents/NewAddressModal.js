@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 
 const NewAddressModal = (props) => {
 
-    const [defaultAddress, setDefaultAddress] = useState(true)
+    const [defaultAddress, setDefaultAddress] = useState("Yes")
     const { register, handleSubmit, formState: { errors } } = useForm();
 
     const onSubmit = data => {
@@ -123,7 +123,7 @@ const NewAddressModal = (props) => {
                                 color={errors?.addpincode ? "error" : "default"}
                             />
                         </div>
-                        <div className="flex justify-end items-center gap-6">Set as default address <Switch checked={true} initialChecked={true} onChange={(e) => setDefaultAddress(e.target.checked)} color='success' /> </div>
+                        <div className="flex justify-end items-center gap-6">Set as default address <Switch checked={true} initialChecked={true} onChange={(e) => setDefaultAddress(e.target.checked ? "Yes" : "No")} color='success' /> </div>
                     </div>
                     <div className="flex justify-end gap-6 mt-6">
                         <button type="submit" className='px-4 py-2 bg-theme text-white rounded-lg'>

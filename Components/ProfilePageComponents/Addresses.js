@@ -62,7 +62,7 @@ const Addresses = (props) => {
             <div className="container">
                 <h1 className='font-semibold text-2xl mb-4'>My Addresses</h1>
 
-                <div className="grid grid-cols-3 gap-4">
+                <div className="grid grid-cols-2 gap-4">
 
                     {
                         savedAddresses && savedAddresses.map((address, index) => {
