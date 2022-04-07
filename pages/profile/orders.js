@@ -4,18 +4,30 @@ import Link from 'next/link'
 import { AuthContext } from '../../Context/AuthContext'
 import { useRouter } from 'next/router'
 import ProfileInfoBox from '../../Components/ProfilePageComponents/ProfileInfoBox'
+import axios from 'axios'
 
 
 const Orders = () => {
 
-    const { isLoggedIn } = useContext(AuthContext)
+    const { isLoggedIn, token } = useContext(AuthContext)
     const router = useRouter()
 
     useEffect(() => {
         if (!isLoggedIn) {
             router.replace('/')
+        } else {
+            axios.get(
+                `${process.env.NEXT_PUBLIC_API_URI}/user/orders/get/data`,
+                {
+                    headers: {
+                        Authorization: token
+                    }
+                }
+            )
+                .then(res => console.log(res.data))
+                .catch(err => console.log(err))
         }
-    })
+    }, [])
 
 
     return (

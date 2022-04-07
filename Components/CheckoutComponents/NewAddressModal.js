@@ -55,7 +55,7 @@ const NewAddressModal = (props) => {
                                 label="Alternate Number"
                                 initialValue=""
                                 type="number"
-                                {...register("addaltnumber", { required: true, minLength: 10, maxLength: 10 })}
+                                {...register("addaltnumber", { minLength: 10, maxLength: 10 })}
                                 color={errors?.addaltnumber ? "error" : "default"}
                             />
                         </div>

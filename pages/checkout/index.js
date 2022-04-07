@@ -80,11 +80,19 @@ const Checkout = () => {
         setAddress(defaultAddress[0])
     }
 
+    const validateAddress = (type) => {
+        if (!address.addaddress1 || !address.addaddress2 || !address.addcity || !address.addname || !address.addnumber || !address.addpincode || !address.addstate) {
+            toast.error("Please fill in all the fields")
+        } else if (address.addnumber.length < 10 || address.addnumber.length > 10) {
+            toast.error("Please check your mobile number.")
+        } else {
+            checkForDelivery(type)
+        }
+    }
+
     const checkForDelivery = (type) => {
-        if (address) {
-            if (address.addname == '' || address.addnumber == '' || address.addaltnumber == '' || address.addaddress1 == '' || address.addaddress2 == '' || address.addcity == '' || address.addpincode == '' || address.addstate == '' || address.addresstype == '') {
-                toast.error("Please fill in all the fields.")
-            } else if (address.addpincode.length > 6 || address.addpincode.length < 6) {
+        if (address.addpincode) {
+            if (address.addpincode.length > 6 || address.addpincode.length < 6) {
                 toast.error("Please check your pincode")
             } else {
                 axios.post(
@@ -120,8 +128,8 @@ const Checkout = () => {
             addcity: newData.addcity,
             addpincode: newData.addpincode,
             addstate: newData.addstate,
-            addresstype: newData.addresstype,
-            defaultaddress: newData.defaultAddress ? 'Yes' : 'No',
+            addresstype: newData.addresstype ? newData.addresstype : 'Home',
+            defaultaddress: newData.defaultAddress ? newData.defaultAddress : 'Yes',
             drname: doctorName ? doctorName : ''
         }
         axios.post(
@@ -134,12 +142,8 @@ const Checkout = () => {
             }
         )
             .then(res => {
-                setSavedAddresses([
-                    body,
-                    ...savedAddresses
-                ])
                 modifyAddresses([
-                    body,
+                    res.data.newAddressAdded,
                     ...savedAddresses
                 ])
             })
@@ -148,8 +152,6 @@ const Checkout = () => {
     }
 
     const saveAddress = (paymentType) => {
-
-
         if (!address.id) {
             addNewAddress(address)
         } else {
@@ -166,8 +168,8 @@ const Checkout = () => {
                     addcity: address.addcity,
                     addpincode: address.addpincode,
                     addstate: address.addstate,
-                    addresstype: address.addresstype,
-                    defaultaddress: 'Yes',
+                    addresstype: address.addresstype ? address.addresstype : 'Home',
+                    defaultaddress: address.defaultAddress ? address.defaultAddress : 'Yes',
                     drname: doctorName ? doctorName : null
                 },
                 {
@@ -375,7 +377,6 @@ const Checkout = () => {
         )
             .then(res => {
                 let genOtp = res.data.OTPGenerated.substr(res.data.OTPGenerated.length - 6);
-                setOtp(genOtp)
             })
             .catch(err => console.log(err))
     }
@@ -717,11 +718,11 @@ const Checkout = () => {
 
                 {
                     isOnlinePayment ?
-                        <button onClick={() => checkForDelivery('online')} className="w-full text-center bg-theme p-2 rounded-lg py-4 mt-8 shadow font-semibold">
+                        <button onClick={() => validateAddress('online')} className="w-full text-center bg-theme p-2 rounded-lg py-4 mt-8 shadow font-semibold">
                             Pay Online
                         </button>
                         :
-                        <button onClick={() => checkForDelivery('cod')} className="w-full text-center bg-theme p-2 rounded-lg py-4 mt-8 shadow font-semibold">
+                        <button onClick={() => validateAddress('cod')} className="w-full text-center bg-theme p-2 rounded-lg py-4 mt-8 shadow font-semibold">
                             Place Order
                         </button>
                 }
