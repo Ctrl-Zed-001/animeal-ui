@@ -30,10 +30,19 @@ const Orders = () => {
                 }
             )
                 .then(res => {
-                    console.log("🚀 ~ file: orders.js ~ line 32 ~ useEffect ~ res", res)
-                    let currentOrder = res.data.backendData.filter(order => order.order_status == "In Process")
-                    setPendingOrder(currentOrder[0])
-                    let previousOrders = res.data.backendData.filter(order => order.order_status != "In Process")
+
+                    let currentOrder = res.data.backendData.filter((order) => {
+                        if (order[0].order_status !== "Customer Cancelled" && order[0].order_status !== "Delivered" && order[0].order_status !== "Refunded") {
+                            return order[0]
+                        }
+                    })
+                    setPendingOrder(currentOrder)
+
+                    let previousOrders = res.data.backendData.filter((order) => {
+                        if (order[0].order_status == "Delivered" || order[0].order_status == "Customer Cancelled" || order[0].order_status == "Refunded") {
+                            return order[0]
+                        }
+                    })
                     setPastOrders(previousOrders)
 
                 })
@@ -65,12 +74,14 @@ const Orders = () => {
 
                         {/* CURRENT ORDER */}
                         {
-                            pendingOrder && <CurrentOrderBox order={pendingOrder} />
+                            pendingOrder && pendingOrder.map((order, index) => {
+                                return <CurrentOrderBox key={index} order={order} />
+                            })
                         }
 
                         {/* PAST OREDERS */}
                         {
-                            pastOrders && <h1 className='font-semibold mb-4'>Previous orders</h1>
+                            pastOrders && <h1 className='font-semibold mb-4 mt-16'>Previous orders</h1>
                         }
 
                         {
