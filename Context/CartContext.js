@@ -59,18 +59,15 @@ const CartContextProvider = (props) => {
         let localCart = [...cartItems]
 
         if (localCart && data === null) {
-            console.log("sirf local mei hai")
             // LOCAL MEI HAI BUT RES MEI NAI
             // TO LOCAL SE NIKAL K DB MEI DAAL
             pushLocalToDb(localCart)
 
         } else if (!localCart && data != null) {
-            console.log("sirf db mei hai")
             // RES MEI HAI BUT LOCAL MEI NAI
             setCartItems(data)
             validateAndUpdateCart(data)
         } else {
-            console.log("Dono mei hai")
             // DONO MEI HAI
             // CHECK K SAME PRODUCT WAPS TO NAI DALA
 
@@ -227,6 +224,11 @@ const CartContextProvider = (props) => {
 
     const clearCart = () => {
         setCartItems([])
+        setCartTotal(0)
+        setQty(0)
+        setCartDiscount(0)
+        setSubtotal(0)
+        setHasMedicine(false)
         localStorage.removeItem('unauthcart')
     }
 

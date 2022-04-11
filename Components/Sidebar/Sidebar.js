@@ -15,7 +15,7 @@ const Sidebar = () => {
                 <div className="figure-menu shadow">
                     {
                         isLoggedIn ?
-                            <Link href='/profile'><figure><img src={`${userDetails && userDetails.proimg ? userDetails.proimg : '/img/user.webp'}`} alt="" /></figure></Link> :
+                            <figure><img src={`${userDetails && userDetails.proimg ? userDetails.proimg : '/img/user.webp'}`} alt="" /></figure> :
                             <figure><img src={`${userDetails && userDetails.proimg ? userDetails.proimg : '/img/user.webp'}`} alt="" /></figure>
                     }
                 </div>
@@ -28,12 +28,12 @@ const Sidebar = () => {
             <br />
 
             <ul className='pl-5'>
-                <Link href='/about'><li className='flex items-center font-medium text-white gap-2 p-2 my-3 cursor-pointer'><MdPets /> About Us</li></Link>
-                <Link href='/privacy-policy'><li className='flex items-center font-medium text-white gap-2 p-2 my-3 cursor-pointer'><BsUnlockFill /> Privacy Policy</li></Link>
-                <Link href='refund-cancelation'><li className='flex items-center font-medium text-white gap-2 p-2 my-3 cursor-pointer'><MdLoop /> Refund & Cancelation</li></Link>
-                <Link href='/terms-conditions'><li className='flex items-center font-medium text-white gap-2 p-2 my-3 cursor-pointer'><FaFileContract /> Terms & Conditions</li></Link>
-                <Link href='/faq'><li className='flex items-center font-medium text-white gap-2 p-2 my-3 cursor-pointer'><BsFillPatchQuestionFill /> FAQ</li></Link>
-                <Link href='/'><li className='flex items-center font-medium text-white gap-2 p-2 my-3 cursor-pointer'><BsFileRichtextFill /> Blogs</li></Link>
+                <a href='/about'><li className='flex items-center font-medium text-white gap-2 p-2 my-3 cursor-pointer'><MdPets /> About Us</li></a>
+                <a href='/privacy-policy'><li className='flex items-center font-medium text-white gap-2 p-2 my-3 cursor-pointer'><BsUnlockFill /> Privacy Policy</li></a>
+                <a href='refund-cancelation'><li className='flex items-center font-medium text-white gap-2 p-2 my-3 cursor-pointer'><MdLoop /> Refund & Cancelation</li></a>
+                <a href='/terms-conditions'><li className='flex items-center font-medium text-white gap-2 p-2 my-3 cursor-pointer'><FaFileContract /> Terms & Conditions</li></a>
+                <a href='/faq'><li className='flex items-center font-medium text-white gap-2 p-2 my-3 cursor-pointer'><BsFillPatchQuestionFill /> FAQ</li></a>
+                <a href='/'><li className='flex items-center font-medium text-white gap-2 p-2 my-3 cursor-pointer'><BsFileRichtextFill /> Blogs</li></a>
             </ul>
 
         </div>

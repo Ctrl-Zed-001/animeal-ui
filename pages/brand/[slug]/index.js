@@ -31,7 +31,7 @@ const Brand = (props) => {
             ];
             axios.all(endpoints.map((endpoint) => axios.get(endpoint)))
                 .then(res => {
-                    console.log("called")
+                    console.log(res)
                     res.forEach(arr => {
                         if (arr.data.brandBanner !== null) {
                             setBanner(arr.data.brandBanner)

@@ -15,7 +15,7 @@ const ProductBox = (props) => {
                         {props.product[0].product_offer}% off
                     </div>
 
-                    <h2 className="animal text-slate-700 text-xs">{props.product[0].product_subcategory}</h2>
+                    <h2 className="animal text-slate-700 text-xs product-box-name">{props.product[0].product_subcategory}</h2>
                     <h1 className='text-sm font-medium product-box-name'>{props.product[0].product_name}</h1>
                     <h1 className="text-xs text-slate-700">{props.product[0].product_size}</h1>
                     <Rating value={props.product[0].rating_average} />

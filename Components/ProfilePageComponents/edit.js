@@ -24,7 +24,9 @@ const EditProfile = () => {
         altnumber: data.altnumber
       },
       {
-        Authorization: token
+        headers: {
+          Authorization: token
+        }
       }
     )
       .then(res => {
@@ -55,10 +57,10 @@ const EditProfile = () => {
         <div className="profile-action-section col-span-8">
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="grid grid-cols-2 gap-10">
-              <Input placeholder={userDetails.email} disabled label='Email' />
-              <Input color={errors && errors.name ? "error" : "default"} initialValue={userDetails.name} {...register("name", { required: true })} label='Name' />
-              <Input color={errors && errors.name ? "error" : "default"} initialValue={userDetails.number} {...register("number", { required: true })} label='Number' />
-              <Input initialValue={userDetails.altnumber} {...register("altnumber")} label='Alt Number' />
+              <Input placeholder={userDetails?.email} disabled label='Email' />
+              <Input color={errors && errors.name ? "error" : "default"} initialValue={userDetails?.name} {...register("name", { required: true })} label='Name' />
+              <Input color={errors && errors.name ? "error" : "default"} initialValue={userDetails?.number} {...register("number", { required: true })} label='Number' />
+              <Input initialValue={userDetails?.altnumber} {...register("altnumber")} label='Alt Number' />
             </div>
             <div className="flex justify-end">
               <button className='px-6 bg-theme p-2 rounded-xl mt-6'>Save</button>

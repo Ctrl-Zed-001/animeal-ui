@@ -15,7 +15,7 @@ const Cart = () => {
     const [showPrescriptionModal, setShowPrescriptionModal] = useState(false)
 
     return (
-        <div className='cart-page container mt-0 mb-4'>
+        <div className='cart-page container mt-0 mb-10 xl:mb-4'>
 
             {
                 cartItems && cartItems.length > 0 ?

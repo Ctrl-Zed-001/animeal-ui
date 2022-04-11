@@ -29,23 +29,8 @@ const AuthContextProvider = (props) => {
         if (token) {
 
             setToken(token)
-            axios.post(
-                `${process.env.NEXT_PUBLIC_API_URI}/user/getauthenticateuser/post/data`,
-                {},
-                {
-                    headers: {
-                        "Authorization": token
-                    }
-                }
-            )
-                .then(res => {
-                    setUserDetails(res.data.user)
-                    setIsLoggedIn(true)
-                })
-                .catch(err => {
-                    setIsLoggedIn(false)
-                    setUserDetails()
-                })
+            getUserDetails(token)
+
         } else if (!token && status == 'authenticated') {
 
             axios.post(
@@ -91,7 +76,10 @@ const AuthContextProvider = (props) => {
                 setIsLoggedIn(true)
             })
             .catch(err => {
-                console.log(err)
+                localStorage.removeItem('token');
+                setIsLoggedIn(false)
+                setUserDetails()
+                setToken('')
             })
     }
 
@@ -108,9 +96,6 @@ const AuthContextProvider = (props) => {
 
     const loginSocial = async () => {
         signIn()
-        // let crfToken = await axios.get('/api/auth/csrf')
-        // let auth = await axios.post('/api/auth/signin/google', { data: crfToken.data.csrfToken })
-        // console.log(auth.data)
     }
 
     return (

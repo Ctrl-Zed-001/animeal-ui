@@ -15,7 +15,7 @@ class MyDocument extends Document {
             <Html lang="en">
                 <Head>{CssBaseline.flush()}</Head>
                 <script src='/js/jquery-3.3.1.min.js' />
-                <script type="application/javascript" crossorigin="anonymous" src={`https://securegw.paytm.in/merchantpgpui/checkoutjs/merchants/${process.env.NEXT_PUBLIC_MID}.js`}> </script>
+                <script type="application/javascript" crossOrigin="anonymous" src={`https://securegw.paytm.in/merchantpgpui/checkoutjs/merchants/${process.env.NEXT_PUBLIC_MID}.js`}> </script>
                 <body>
                     <Main />
                     <NextScript />

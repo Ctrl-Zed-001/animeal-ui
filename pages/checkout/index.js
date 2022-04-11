@@ -60,19 +60,19 @@ const Checkout = () => {
                     modifyAddresses(res.data.savedAddresses)
                 })
                 .catch(err => {
-                    // router.replace('/');
+                    router.replace('/');
                     console.log(err)
                 })
         } else {
-            // router.replace('/')
+            router.replace('/')
         }
     }, [token])
 
-    // useEffect(() => {
-    //     if (hasMedicine && !prescriptionUploaded) {
-    //         router.replace('/cart')
-    //     }
-    // }, [prescriptionUploaded])
+    useEffect(() => {
+        if (hasMedicine && !prescriptionUploaded) {
+            router.replace('/cart')
+        }
+    }, [prescriptionUploaded])
 
     const modifyAddresses = (addresses) => {
         setSavedAddresses(addresses)
@@ -256,8 +256,6 @@ const Checkout = () => {
                     // after successfully updating configuration, invoke JS Checkout
                     window.Paytm.CheckoutJS.invoke();
                     uploadPrescription()
-                    //     setOrderStatus(true)
-                    //     setStatusModal(true)
                     clearCart()
                 }).catch(function onError(error) {
                     console.log("error => ", error);
@@ -456,7 +454,7 @@ const Checkout = () => {
 
     // UPLOAD PRESCRIPTION
     const uploadPrescription = () => {
-        if (prescriptionUploaded) {
+        if (hasMedicine && prescriptionUploaded) {
             let fullAddress = address.addaddress1 + ' ' + address.addaddress2 + ' ' + address.addcity + ' ' + address.addpincode + ' ' + address.addstate;
             form.append('petname', '')
             form.append('pettype', '')
@@ -481,7 +479,7 @@ const Checkout = () => {
 
 
     return (
-        <div className='block lg:flex lg:gap-12 checkout-page container xl:my-5'>
+        <div className='block lg:flex lg:gap-12 checkout-page container mb-10 xl:my-10'>
             <Toaster
                 position='top-center'
             />

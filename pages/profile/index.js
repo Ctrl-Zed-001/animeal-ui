@@ -12,7 +12,7 @@ import Addresses from '../../Components/ProfilePageComponents/Addresses'
 
 const Profile = () => {
 
-    const { isLoggedIn, token } = useContext(AuthContext)
+    const { isLoggedIn, token, userDetails } = useContext(AuthContext)
     const router = useRouter()
 
     const [activeSection, setActiveSection] = useState()
@@ -54,23 +54,28 @@ const Profile = () => {
                                 <h1>Saved Addresses</h1>
                                 <FiChevronRight />
                             </div>
-                            <div onClick={() => setActiveSection(2)} className="action-box flex justify-between bg-slate-100 p-4 rounded-lg my-2 font-semibold cursor-pointer">
-                                <img src="/img/icons/changepassword.webp" alt="" />
-                                <h1>Change Password</h1>
-                                <FiChevronRight />
-                            </div>
+                            {
+                                userDetails && userDetails.google_id === null ?
+                                    <div onClick={() => setActiveSection(2)} className="action-box flex justify-between bg-slate-100 p-4 rounded-lg my-2 font-semibold cursor-pointer">
+                                        <img src="/img/icons/changepassword.webp" alt="" />
+                                        <h1>Change Password</h1>
+                                        <FiChevronRight />
+                                    </div> :
+                                    <></>
+                            }
+
                             <div onClick={() => setActiveSection(3)} className="action-box flex justify-between bg-slate-100 p-4 rounded-lg my-2 font-semibold cursor-pointer">
                                 <img src="/img/icons/edit-profile.webp" alt="" />
                                 <h1>Edit Profile</h1>
                                 <FiChevronRight />
                             </div>
-                            {/* <Link href='/profile/orders'>
+                            <Link href='/profile/orders'>
                                 <div className="action-box flex justify-between bg-slate-100 p-4 rounded-lg my-2 font-semibold">
                                     <img src="/img/icons/myorders.webp" alt="" />
                                     <h1>My Orders</h1>
                                     <FiChevronRight />
                                 </div>
-                            </Link> */}
+                            </Link>
 
                         </div>
 

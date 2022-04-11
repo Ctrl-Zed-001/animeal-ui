@@ -22,7 +22,7 @@ const Footer = () => {
     return (
         <div className={`${show ? 'block' : 'hidden'} footer mt-32 pb-10 lg:pb-24 relative px-4 lg:px-0`}>
             <img src="/img/footer-bg.webp" alt="" className='hidden lg:block -z-10 lg:absolute lg:bottom-0 left-0' />
-            <img src="/img/footer-mobile-bg.webp" alt="" className='lg:hidden -z-10 absolute -bottom-10 left-0' />
+            <img src="/img/footer-mobile-bg.webp" alt="" className='lg:hidden -z-10 absolute -bottom-10 left-0 w-full' />
             <div className="container py-6 bg-white rounded-3xl ">
                 <div className="top-row flex justify-between items-center lg:px-28">
                     <div className="flex items-center gap-8">
