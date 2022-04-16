@@ -20,6 +20,7 @@ import { useRouter } from 'next/router'
 import OtpPopup from '../../Components/CheckoutComponents/OtpPopup'
 import toast, { Toaster } from 'react-hot-toast'
 import FormData from 'form-data';
+import Loader from '../../Components/Loader/Loader';
 
 
 
@@ -43,6 +44,7 @@ const Checkout = () => {
     const [orderStatus, setOrderStatus] = useState(false)
     const [isOnlinePayment, setIsOnlinePayment] = useState(true)
     const [isDeliverable, setIsDeliverable] = useState()
+    const [loading, setIsLoading] = useState(false)
 
 
     useEffect(() => {
@@ -206,7 +208,7 @@ const Checkout = () => {
 
     const callPaytm = async () => {
 
-
+        setIsLoading(true)
         console.log("paytm called")
 
         axios.post(
@@ -233,6 +235,7 @@ const Checkout = () => {
             }
         )
             .then(res => {
+                setIsLoading(false)
                 var config = {
                     "root": "",
                     "flow": "DEFAULT",
@@ -264,7 +267,10 @@ const Checkout = () => {
                     setStatusModal(true)
                 });
             })
-            .catch(err => console.log(err))
+            .catch(err => {
+                setIsLoading(false)
+                console.log(err)
+            })
 
 
 
@@ -480,6 +486,7 @@ const Checkout = () => {
 
     return (
         <div className='block lg:flex lg:gap-12 checkout-page container mb-10 xl:my-10'>
+
             <Toaster
                 position='top-center'
             />
@@ -553,7 +560,7 @@ const Checkout = () => {
                     <div className="grid grid-cols-2 lg:flex justify-between gap-14 my-14 w-full">
                         <Input
                             fullWidth
-                            clearable
+
                             underlined
                             label="Name *"
                             initialValue={address?.addname}
@@ -562,7 +569,7 @@ const Checkout = () => {
                         />
                         <Input
                             fullWidth
-                            clearable
+
                             underlined
                             label="Phone Number *"
                             initialValue={address?.addnumber}
@@ -572,7 +579,7 @@ const Checkout = () => {
                         />
                         <Input
                             fullWidth
-                            clearable
+
                             underlined
                             label="Alternate Number"
                             initialValue={address?.addaltnumber}
@@ -584,16 +591,16 @@ const Checkout = () => {
                     <div className="grid grid-cols-1 lg:flex justify-between gap-14 my-14 w-full">
                         <Input
                             fullWidth
-                            clearable
+
                             underlined
-                            label="Roo no. / house no. / street *"
+                            label="Address line 1 *"
                             initialValue={address?.addaddress1}
                             required
                             onChange={(e) => setAddress({ ...address, addaddress1: e.target.value })}
                         />
                         <Input
                             fullWidth
-                            clearable
+
                             underlined
                             label="Area / locality *"
                             initialValue={address?.addaddress2}
@@ -608,7 +615,7 @@ const Checkout = () => {
                     {/* <div className="flex justify-between gap-14 my-8 w-full">
                         <Input
                             fullWidth
-                            clearable
+                            
                             underlined
                             label="Address Type"
                             initialValue={address?.addresstype}
@@ -618,7 +625,7 @@ const Checkout = () => {
                     <div className="grid grid-cols-1 lg:flex justify-between gap-14 my-14 w-full">
                         <Input
                             fullWidth
-                            clearable
+
                             underlined
                             label="City / Town *"
                             initialValue={address?.addcity}
@@ -627,7 +634,7 @@ const Checkout = () => {
                         />
                         <Input
                             fullWidth
-                            clearable
+
                             underlined
                             label="State *"
                             initialValue={address?.addstate}
@@ -636,7 +643,7 @@ const Checkout = () => {
                         />
                         <Input
                             fullWidth
-                            clearable
+
                             underlined
                             label="ZipCode *"
                             initialValue={address?.addpincode}
@@ -664,7 +671,7 @@ const Checkout = () => {
                     <h1 className='font-semibold mb-4'>Coupon Code</h1>
                     <div className='flex justify-between gap-2 items-center'>
                         <IoMdPricetag className='text-theme h-8 w-10' />
-                        <Input clearable underlined className='w-11/12' />
+                        <Input underlined className='w-11/12' />
                         <HiChevronRight onClick={() => toast.error("oops! that didn't work.")} className='bg-theme rounded-full h-8 w-8' />
                     </div>
                 </div>
@@ -720,11 +727,11 @@ const Checkout = () => {
 
                 {
                     isOnlinePayment ?
-                        <button onClick={() => validateAddress('online')} className="w-full text-center bg-theme p-2 rounded-lg py-4 mt-8 shadow font-semibold">
+                        <button disabled={loading ? true : false} onClick={() => validateAddress('online')} className={`w-full text-center ${loading ? 'bg-slate-100' : 'bg-theme'} p-2 rounded-lg py-4 mt-8 shadow font-semibold`}>
                             Pay Online
                         </button>
                         :
-                        <button onClick={() => validateAddress('cod')} className="w-full text-center bg-theme p-2 rounded-lg py-4 mt-8 shadow font-semibold">
+                        <button disabled={loading ? true : false} onClick={() => validateAddress('cod')} className={`w-full text-center ${loading ? 'bg-slate-100' : 'bg-theme'} p-2 rounded-lg py-4 mt-8 shadow font-semibold`}>
                             Place Order
                         </button>
                 }

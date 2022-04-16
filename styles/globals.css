@@ -27,7 +27,8 @@ body {
   background: linear-gradient(21.93deg, #F58E10 -11.7%, #FCB62D 82.12%);
 }
 
-.header {
+.header,
+.loader {
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   background: hsl(0deg 0% 100% / 0%);

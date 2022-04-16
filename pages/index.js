@@ -4,6 +4,7 @@ import BannerSection from "../Components/HomeComponents/BannerSection";
 import Brands from "../Components/HomeComponents/Brands";
 import ProductRow from "../Components/HomeComponents/ProductRow";
 import ShopByPet from "../Components/HomeComponents/ShopByPet";
+import Head from 'next/head'
 
 
 
@@ -40,6 +41,11 @@ export default function Home(props) {
 
     <div className="homepage mt-16 lg:mt-0">
 
+      <Head>
+        <title>{props.title}</title>
+        <meta name="description" content={props.description} />
+      </Head>
+
       {/* BANNER SECTION */}
       <BannerSection />
 
@@ -63,4 +69,21 @@ export default function Home(props) {
     </div>
 
   )
+
+}
+
+export async function getServerSideProps(context) {
+
+  let metaData = await axios.post(
+    `${process.env.NEXT_PUBLIC_API_URI}/metaurl/post/data`,
+    {
+      slug: "https://animeal.in/"
+    }
+  )
+  return {
+    props: {
+      title: metaData.data.success.meta_title,
+      description: metaData.data.success.meta_description
+    }
+  }
 }

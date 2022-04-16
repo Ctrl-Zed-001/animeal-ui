@@ -6,6 +6,7 @@ import { Autoplay } from 'swiper';
 import axios from 'axios'
 import ProductRow from '../../Components/HomeComponents/ProductRow'
 import Brands from '../../Components/HomeComponents/Brands'
+import Head from 'next/head';
 
 import 'swiper/css';
 import 'swiper/css/autoplay';
@@ -43,6 +44,15 @@ const index = (props) => {
 
     return (
         <div className='main-animal-page mt-16'>
+            {
+                props.metaData ?
+                    <Head>
+                        <title>{props.metaData.meta_title}</title>
+                        <meta name="description" content={props.metaData.meta_description} />
+                    </Head> :
+                    <></>
+            }
+
             {/* Banner */}
             <AnimalBanner hasImage={props.banner !== null ? true : false} image={`/category-banner/${props.banner}`} title={`The ${props.slug} Shop`} />
 
@@ -97,13 +107,19 @@ export async function getServerSideProps({ query }) {
 
     let res = await axios.get(`${process.env.NEXT_PUBLIC_API_URI}/category/${query.slug}`)
     let bannerRes = await axios.get(`${process.env.NEXT_PUBLIC_API_URI}/banners/getcategorybanner/${query.slug}`)
+    let metaData = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URI}/metaurl/post/data`,
+        {
+            slug: "https://animeal.in/" + query.slug
+        }
+    )
     let categoryLevels = res.data.categorylevels
     let banner = bannerRes.data.categoryBanner
 
 
     return {
         props: {
-            // categoryWiseProducts: categoryWiseProducts,
+            metaData: metaData.data.success,
             categorylevels: categoryLevels,
             slug: query.slug,
             banner: banner

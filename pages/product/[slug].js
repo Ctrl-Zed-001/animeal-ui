@@ -15,9 +15,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { FreeMode, Navigation, Thumbs } from "swiper";
 import toast, { Toaster } from 'react-hot-toast';
 import getWeight from '../../Helpers/GetWeight'
-
-
-
+import Head from 'next/head'
 import axios from 'axios';
 
 
@@ -184,6 +182,11 @@ const Product = (props) => {
 
         <div className='product-page my-16 xl:my-10'>
 
+            <Head>
+                <title>{props.product.meta_title}</title>
+                <meta name="description" content={props.product.meta_description} />
+            </Head>
+
             <div className="lg:flex container gap-20 mb-20">
                 {/* PRODUCT IMAGE SLIDER */}
                 <div className='rounded-lg lg:w-5/12 single-product-slider'>
@@ -270,16 +273,16 @@ const Product = (props) => {
                                     <p className='text-green-700 text-sm lg:text-base font-semibold mb-4'>In stock</p>
                         }
 
-                        <div className="lg:flex items-center xl:w-full 2xl:w-5/6 gap-6">
+                        <div className="xl:flex items-center xl:w-full 2xl:w-5/6 gap-6">
                             <div className='flex items-center gap-3'>
-                                <p className="text-sm lg:text-base font-semibold">Deliver to : </p>
+                                <p className="text-xs lg:text-base font-semibold">Deliver to : </p>
                                 <form onSubmit={checkAvailability}>
                                     <Input onClearClick={() => { setCheckPinCode(); setIsDeliverable() }} onChange={(e) => setCheckPinCode(e.target.value)} clearable placeholder='check for delivery' type={'number'} />
                                 </form>
                             </div>
                             {
                                 isDeliverable !== undefined ?
-                                    <p className={`text-xs lg:text-base font-semibold ${isDeliverable ? 'text-green-600' : 'text-red-400'} mt-3 lg:mt-0 ml-2 lg:ml-0`}>
+                                    <p className={`text-xs lg:text-base font-semibold ${isDeliverable ? 'text-green-600' : 'text-red-400'} mt-3 ml-2 lg:ml-0`}>
                                         {
                                             isDeliverable ?
                                                 "will reach you in 24hrs" :
@@ -414,6 +417,7 @@ export async function getServerSideProps({ query }) {
     let res = await axios.get(`${process.env.NEXT_PUBLIC_API_URI}/singleproduct/${slug}`)
     let relatedRes = await axios.get(`${process.env.NEXT_PUBLIC_API_URI}/similarproducts/${slug}`)
     let product = await res.data
+    console.log("🚀 ~ file: [slug].js ~ line 417 ~ getServerSideProps ~ product", product)
     let relatedProducts = await relatedRes.data
 
     return {

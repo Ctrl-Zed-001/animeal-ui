@@ -7,7 +7,6 @@ import { getProviders, signIn } from "next-auth/react"
 import StatusPopup from '../CheckoutComponents/StatusPopup';
 
 
-
 const LoginForm = (props) => {
 
     const [authProviders, setProviders] = useState()

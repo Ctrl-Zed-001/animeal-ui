@@ -6,10 +6,11 @@ import 'swiper/css/autoplay';
 import ShopByPet from '../../../Components/HomeComponents/ShopByPet'
 import { useRouter } from 'next/router';
 import ProductRow from '../../../Components/HomeComponents/ProductRow'
+import Head from 'next/head';
+import Capitalize from '../../../Helpers/Capitalize';
 
 
 const Brand = (props) => {
-    console.log("🚀 ~ file: index.js ~ line 12 ~ Brand ~ props", props)
 
     const router = useRouter()
 
@@ -49,7 +50,14 @@ const Brand = (props) => {
     }, [router])
 
     return (
-        <div className='main-brand-page mt-4'>
+        <div className='main-brand-page mt-16 xl:mt-4'>
+            {
+                router ?
+                    <Head>
+                        <title>{Capitalize(router.query.slug)}</title>
+                    </Head>
+                    : <></>
+            }
             {/* Banner */}
             {
                 router ?
@@ -105,7 +113,6 @@ const Brand = (props) => {
 export async function getServerSideProps({ query }) {
 
     let categories = await axios.get(`${process.env.NEXT_PUBLIC_API_URI}/getcategories`)
-
     return {
         props: {
             categories: categories.data,

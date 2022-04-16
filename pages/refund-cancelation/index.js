@@ -1,8 +1,14 @@
 import React from 'react'
+import axios from 'axios'
+import Head from 'next/head'
 
-const Refund = () => {
+const Refund = (props) => {
     return (
         <div className='refund-page'>
+            <Head>
+                <title>{props.title}</title>
+                <meta name="description" content={props.description} />
+            </Head>
             <div className="container">
                 <div className="bg-white rounded-lg w-full p-4">
                     <h1 className='font-semibold text-2xl'>Refund & Cancelation</h1>
@@ -83,6 +89,21 @@ const Refund = () => {
             </div>
         </div>
     )
+}
+export async function getServerSideProps(context) {
+
+    let metaData = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URI}/metaurl/post/data`,
+        {
+            slug: "https://animeal.in" + context.resolvedUrl
+        }
+    )
+    return {
+        props: {
+            title: metaData.data.success.meta_title,
+            description: metaData.data.success.meta_description
+        }
+    }
 }
 
 export default Refund

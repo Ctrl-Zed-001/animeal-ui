@@ -29,7 +29,7 @@ const SignupForm = (props) => {
                     <img src="/img/icons/google.webp" alt="" className='h-6 mr-2' />
                     Login with Google
                 </div>
-                <div onClick={() => signIn(authProviders.google.id)} className="with-social-button flex items-center border rounded-lg py-2 px-4 border-yellow-500 font-semibold">
+                <div onClick={() => signIn(authProviders.facebook.id)} className="with-social-button flex items-center border rounded-lg py-2 px-4 border-yellow-500 font-semibold">
                     <img src="/img/icons/fb.webp" alt="" className='h-6 mr-2' />
                     Login with Facebook
                 </div>
