@@ -9,7 +9,7 @@ const SubCategoryBox = (props) => {
             query: {
                 animal: props.animal,
                 category: props.category,
-                subcategory: props.subcategory.category_name
+                subcategory: props.subcategory.category_url
             }
         }}>
             <div className='subcategory-box flex items-center p-3 rounded-lg cursor-pointer'>

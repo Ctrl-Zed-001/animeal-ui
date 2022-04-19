@@ -19,7 +19,7 @@ const index = (props) => {
     useEffect(() => {
         getProductsByCategory()
         getBrandsfOrAnimals()
-    }, [props])
+    }, [])
 
     const getProductsByCategory = async () => {
         let allFetchedProducts = []
@@ -43,7 +43,7 @@ const index = (props) => {
     }
 
     return (
-        <div className='main-animal-page mt-16'>
+        <div className='main-animal-page mt-16 lg:mt-0'>
             {
                 props.metaData ?
                     <Head>
@@ -77,7 +77,7 @@ const index = (props) => {
                 >
                     {
                         props.categorylevels && props.categorylevels.map((category, index) => {
-                            return <SwiperSlide key={index}><CategoryBox animal={props.slug} category={category} /></SwiperSlide>
+                            return <SwiperSlide key={index}><CategoryBox placeholder='/img/category-placeholder.webp' animal={props.slug} category={category} /></SwiperSlide>
                         })
 
                     }
@@ -97,7 +97,11 @@ const index = (props) => {
 
             {/* BRANDS */}
 
-            <Brands title={`Popular Brands for ${props.slug}`} brands={brands} />
+            {
+                brands && brands.length > 0 ?
+                    <Brands title={`Popular Brands for ${props.slug}`} brands={brands} /> :
+                    <></>
+            }
 
         </div>
     )

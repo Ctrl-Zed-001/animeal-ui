@@ -50,7 +50,7 @@ const Brand = (props) => {
     }, [router])
 
     return (
-        <div className='main-brand-page mt-16 xl:mt-4'>
+        <div className='main-brand-page mt-16 lg:mt-0'>
             {
                 router ?
                     <Head>

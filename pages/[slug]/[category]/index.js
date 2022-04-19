@@ -25,7 +25,7 @@ const index = (props) => {
             let fetchedProducts = await axios.post(`${process.env.NEXT_PUBLIC_API_URI}/category/level3products/categoryonetwothreewise`, {
                 category1: props.animal,
                 category2: props.category,
-                category3: category.category_name
+                category3: category.category_url
             })
             allFetchedProducts.push({
                 category: category.category_name,
