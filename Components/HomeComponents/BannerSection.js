@@ -82,7 +82,7 @@ const BannerSection = () => {
                         <button className='bg-red-500 hover:bg-transparent transition-all font-semibold border-2 border-white px-4 py-2 text-white text-xs xl:text-base absolute bottom-10 left-5 rounded-lg'>Shop Now</button>
                     </div>
                 </Link>
-                <Link href='/shop?slug=veterinary supplements medicine'>
+                <Link href='/shop?slug=veterinary'>
                     <div className="relative">
                         <img src="/img/banner-2.webp" alt="" className='h-52 xl:h-60 mt-3 xl:mt-4 rounded-lg w-full object-cover shadow' />
                         <h1 className="text-white xl:text-3xl font-bold absolute top-10 left-5 w-7/12">Veterinary <br /> Products <br />10% OFF</h1>
