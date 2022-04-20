@@ -16,6 +16,7 @@ class MyDocument extends Document {
                 <Head>{CssBaseline.flush()}</Head>
                 <script src='/js/jquery-3.3.1.min.js' />
                 <script type="application/javascript" crossOrigin="anonymous" src={`https://securegw.paytm.in/merchantpgpui/checkoutjs/merchants/${process.env.NEXT_PUBLIC_MID}.js`}> </script>
+                <script src="//code.tidio.co/5zzfp9wo8jthjunqp8zodiz3lw5mqqv4.js" async></script>
                 <body>
                     <Main />
                     <NextScript />
