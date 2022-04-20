@@ -341,7 +341,7 @@ const Product = (props) => {
 
                         <div className="flex gap-4">
                             {
-                                props.product.availableStock == 0 ?
+                                props.product.availableStock == 0 || props.product.productPriceApi == 0 ?
                                     <></> :
                                     inCart ?
                                         <Link href='/cart'>
@@ -417,7 +417,6 @@ export async function getServerSideProps({ query }) {
     let res = await axios.get(`${process.env.NEXT_PUBLIC_API_URI}/singleproduct/${slug}`)
     let relatedRes = await axios.get(`${process.env.NEXT_PUBLIC_API_URI}/similarproducts/${slug}`)
     let product = await res.data
-    console.log("🚀 ~ file: [slug].js ~ line 417 ~ getServerSideProps ~ product", product)
     let relatedProducts = await relatedRes.data
 
     return {
