@@ -89,7 +89,8 @@ const Header = (props) => {
     }
 
     const search = (query) => {
-        router.replace(`/shop?slug=${query}`)
+        setSearchValue(query)
+        router.replace(`/shop?slug=${encodeURIComponent(query)}`)
     }
 
 
@@ -120,7 +121,7 @@ const Header = (props) => {
                             <form className='flex w-full' onSubmit={(e) => { e.preventDefault(); search(searchValue) }}>
                                 <div className="relative w-full mr-1">
                                     <MdSearch className='absolute top-3 left-2 text-2xl text-gray-400' />
-                                    <input onChange={autoSuggest} type="text" className="p-3 w-full rounded-lg pl-10" placeholder="Search store" onClick={() => props.setIsAutoSuggestOpen(!props.isAutoSuggestOpen)} />
+                                    <input value={searchValue} onChange={autoSuggest} type="text" className="p-3 w-full rounded-lg pl-10" placeholder="Search store" onClick={() => props.setIsAutoSuggestOpen(!props.isAutoSuggestOpen)} />
                                 </div>
                                 <button type="submit" className='bg-theme p-3 text-xl rounded-lg'>
                                     <img src="/img/icons/search.webp" alt="" className='' />
