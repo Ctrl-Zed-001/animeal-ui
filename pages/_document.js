@@ -18,11 +18,15 @@ class MyDocument extends Document {
                 <script type="application/javascript" crossOrigin="anonymous" src={`https://securegw.paytm.in/merchantpgpui/checkoutjs/merchants/${process.env.NEXT_PUBLIC_MID}.js`}> </script>
                 <script src="//code.tidio.co/5zzfp9wo8jthjunqp8zodiz3lw5mqqv4.js" async></script>
                 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-179635883-1"></script>
+                <script async src="https://www.googletagmanager.com/gtag/js?id=AW-610455455"></script>
                 <body>
                     <Main />
                     <NextScript />
                 </body>
                 <script src="/js/main.js" />
+                <noscript><img height="1" width="1" style="display:none"
+                    src="https://www.facebook.com/tr?id=495640675103737&ev=PageView&noscript=1"
+                /></noscript>
             </Html>
         );
     }
