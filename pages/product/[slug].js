@@ -60,12 +60,14 @@ const Product = (props) => {
                 let findItem = localCart.filter(item => item[0].product_id == props.product.products.product_id)
                 if (findItem && findItem.length > 0) {
                     setInCart(true)
+                } else {
+                    setInCart(false)
                 }
             }
 
         }
 
-    }, [token])
+    }, [token, props])
 
     useEffect(() => {
         let imagesArray = [...props.product.productimages]
