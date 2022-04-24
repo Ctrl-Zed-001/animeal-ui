@@ -12,6 +12,7 @@ const Shop = () => {
     const [srpData, setSrpData] = useState()
     const [page, setPage] = useState(1)
     const [sort, setSort] = useState('relevent')
+    const [filterData, setFilterData] = useState([])
 
     useEffect(() => {
         if (router) {
@@ -31,7 +32,10 @@ const Shop = () => {
                     query: router.query.slug,
                     sort: sort
                 })
-                    .then(res => setSrpData(res.data.productBySearch))
+                    .then(res => {
+                        setSrpData(res.data.productBySearch)
+                        setFilterData([...filterData, ...res.data.brands])
+                    })
                     .catch(err => console.log(err))
             }
 
@@ -96,9 +100,9 @@ const Shop = () => {
 
             <div className="container flex justify-between gap-10">
                 {/* Filter */}
-                {/* <div className="hidden md:block fliter-container w-1/5">
+                <div className="hidden md:block fliter-container w-1/5">
                     <Filters />
-                </div> */}
+                </div>
 
                 {/* PRODUCT LIST CONTAINER */}
                 <div className="right-section flex-1">
@@ -121,7 +125,7 @@ const Shop = () => {
                         </div>
                     </div>
 
-                    <div className="product-list-container grid grid-cols-2 md:grid-cols-4 gap-8 mt-6 m">
+                    <div className="product-list-container grid grid-cols-2 md:grid-cols-4 gap-4 mt-6 m">
                         {
                             srpData && srpData.data && srpData.data.map((product, index) => {
                                 return <ProductBox product={product} key={index} />
