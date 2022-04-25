@@ -100,9 +100,9 @@ const Shop = () => {
 
             <div className="container flex justify-between gap-10">
                 {/* Filter */}
-                <div className="hidden md:block fliter-container w-1/5">
+                {/* <div className="hidden md:block fliter-container w-1/5">
                     <Filters />
-                </div>
+                </div> */}
 
                 {/* PRODUCT LIST CONTAINER */}
                 <div className="right-section flex-1">
