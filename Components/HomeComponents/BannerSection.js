@@ -3,6 +3,13 @@ import Link from 'next/link'
 import PrescriptionUpload from './PrescriptionUpload'
 import { AuthContext } from '../../Context/AuthContext'
 import UploadStatusModal from './UploadStatusModal'
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay } from "swiper"
+
+import "swiper/css";
+import "swiper/css/free-mode";
+import "swiper/css/navigation";
+import BannerBox from './BannerBox'
 
 const BannerSection = () => {
     const { isMobile } = useContext(AuthContext)
@@ -75,20 +82,47 @@ const BannerSection = () => {
 
             {/* MAIN BANNER */}
             <div className="main-banner col-span-5">
-                <Link href='/shop?slug=food'>
-                    <div className="relative cursor-pointer">
-                        <img src="/img/banner-1.webp" alt="" className='h-52 xl:h-60 mb-3 xl:mb-4 rounded-lg w-full object-cover shadow' />
-                        <h1 className="text-white xl:text-3xl font-bold absolute top-10 left-5 w-7/12">Best Quality <br /> Pet Food <br /> 10% OFF</h1>
-                        <button className='bg-red-500 hover:bg-transparent transition-all font-semibold border-2 border-white px-4 py-2 text-white text-xs xl:text-base absolute bottom-10 left-5 rounded-lg'>Shop Now</button>
-                    </div>
-                </Link>
-                <Link href='/shop?slug=veterinary'>
-                    <div className="relative">
-                        <img src="/img/banner-2.webp" alt="" className='h-52 xl:h-60 mt-3 xl:mt-4 rounded-lg w-full object-cover shadow' />
-                        <h1 className="text-white xl:text-3xl font-bold absolute top-10 left-5 w-7/12">Veterinary <br /> Products <br />10% OFF</h1>
-                        <button className='bg-amber-600 hover:bg-transparent transition-all font-semibold border-2 border-white px-4 py-2 text-white text-xs xl:text-base absolute bottom-10 left-5 rounded-lg'>Shop Now</button>
-                    </div>
-                </Link>
+                <Swiper
+                    slidesPerView={1}
+                    className=''
+                    spaceBetween={0}
+                    autoplay={{
+                        delay: 3000,
+                        disableOnInteraction: false,
+                    }}
+                    modules={[Autoplay]}
+                >
+                    <SwiperSlide>
+                        <BannerBox link="/shop?slug=food" image="/img/banner-1.webp" heading="Best Quality <br /> Pet Food <br /> 10% OFF" button="Shop Now" />
+                    </SwiperSlide>
+                    <SwiperSlide>
+                        <BannerBox link="/shop?slug=pedigree" image="/img/banner-3.webp" />
+                    </SwiperSlide>
+                    <SwiperSlide>
+                        <BannerBox link="/shop?slug=me-o" image="/img/banner-4.webp" />
+                    </SwiperSlide>
+                </Swiper>
+
+                <Swiper
+                    slidesPerView={1}
+                    className=''
+                    spaceBetween={0}
+                    autoplay={{
+                        delay: 3000,
+                        disableOnInteraction: false,
+                    }}
+                    modules={[Autoplay]}
+                >
+                    <SwiperSlide>
+                        <BannerBox link="/shop?slug=veterinary" image="/img/banner-2.webp" heading="Best Quality <br /> Pet Food <br /> 10% OFF" button="Shop Now" />
+                    </SwiperSlide>
+                    <SwiperSlide>
+                        <BannerBox link="/shop?animal=dog&category=medicine&subcategory=fleas-and-ticks" image="/img/banner-5.webp" />
+                    </SwiperSlide>
+                    <SwiperSlide>
+                        <BannerBox link="/shop?slug=supplements" image="/img/banner-6.webp" />
+                    </SwiperSlide>
+                </Swiper>
             </div>
 
             <div className="flex col-span-5 gap-1 lg:gap-4 lg:mt-0 mt-2">
