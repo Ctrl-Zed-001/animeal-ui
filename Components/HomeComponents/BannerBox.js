@@ -5,7 +5,7 @@ const BannerBox = (props) => {
     return (
         <Link href={props.link}>
             <div className="relative cursor-pointer">
-                <img src={props.image} alt="" className='h-52 xl:h-60 my-3 xl:my-2 rounded-lg w-full object-cover shadow' />
+                <img src={props.image} alt="" className=' my-1 xl:my-2 rounded-lg w-full object-cover shadow' />
                 {
                     props.heading && <h1 className="text-white xl:text-3xl font-bold absolute top-10 left-5 w-7/12" dangerouslySetInnerHTML={{ __html: props.heading }} ></h1>
                 }

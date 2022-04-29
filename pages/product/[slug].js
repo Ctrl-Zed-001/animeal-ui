@@ -111,7 +111,7 @@ const Product = (props) => {
                 product_main_id: props.product.products.id,
                 product_id: props.product.products.product_id,
                 product_name: props.product.products.website_pro_name,
-                product_image: props.product.productimages[0].product_image,
+                product_image: props.product.productimages[0] ? props.product.productimages[0].product_image : '',
                 product_description: props.product.products.shortdescription,
                 quantity: 1,
                 product_price: props.product.productPriceApi,

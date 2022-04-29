@@ -95,12 +95,12 @@ const BannerSection = () => {
                     <SwiperSlide>
                         <BannerBox link="/shop?slug=food" image="/img/banner-1.webp" heading="Best Quality <br /> Pet Food <br /> 10% OFF" button="Shop Now" />
                     </SwiperSlide>
-                    <SwiperSlide>
+                    {/* <SwiperSlide>
                         <BannerBox link="/shop?slug=pedigree" image="/img/banner-3.webp" />
                     </SwiperSlide>
                     <SwiperSlide>
                         <BannerBox link="/shop?slug=me-o" image="/img/banner-4.webp" />
-                    </SwiperSlide>
+                    </SwiperSlide> */}
                 </Swiper>
 
                 <Swiper
@@ -116,12 +116,12 @@ const BannerSection = () => {
                     <SwiperSlide>
                         <BannerBox link="/shop?slug=veterinary" image="/img/banner-2.webp" heading="Best Quality <br /> Pet Food <br /> 10% OFF" button="Shop Now" />
                     </SwiperSlide>
-                    <SwiperSlide>
+                    {/* <SwiperSlide>
                         <BannerBox link="/shop?animal=dog&category=medicine&subcategory=fleas-and-ticks" image="/img/banner-5.webp" />
                     </SwiperSlide>
                     <SwiperSlide>
                         <BannerBox link="/shop?slug=supplements" image="/img/banner-6.webp" />
-                    </SwiperSlide>
+                    </SwiperSlide> */}
                 </Swiper>
             </div>
 
