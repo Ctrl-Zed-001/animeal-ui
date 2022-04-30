@@ -115,10 +115,10 @@ const Product = (props) => {
                 product_description: props.product.products.shortdescription,
                 quantity: 1,
                 product_price: props.product.productPriceApi,
-                product_discount: parseInt(props.product.products.mrp) - parseInt(props.product.productPriceApi),
+                product_discount: parseInt(props.product.productMrp) - parseInt(props.product.productPriceApi),
                 product_offer: props.product.products.offer,
                 product_total: props.product.productPriceApi,
-                product_discount_total: parseInt(props.product.products.mrp) - parseInt(props.product.productPriceApi),
+                product_discount_total: parseInt(props.product.productMrp) - parseInt(props.product.productPriceApi),
                 product_weight: props.product.products.size,
                 updated_at: props.product.products.updated_at,
                 created_at: props.product.products.created_at,
@@ -260,10 +260,10 @@ const Product = (props) => {
                     </div>
 
                     <div className="flex mt-4 items-center">
-                        <h3 className="text-sm lg:text-base font-medium text-gray-500 flex items-center mr-2 line-through"><BiRupee />{props.product.products.mrp}</h3>
+                        <h3 className="text-sm lg:text-base font-medium text-gray-500 flex items-center mr-2 line-through"><BiRupee />{props.product.productMrp}</h3>
                         <h1 className="text-2xl flex items-center font-semibold"><BiRupee />{props.product.productPriceApi}</h1>
                     </div>
-                    <p className="text-sm lg:text-base flex items-center mt-2 text-green-700 font-semibold">you save <BiRupee /> {parseInt(props.product.products.mrp) - parseInt(props.product.productPriceApi)} </p>
+                    <p className="text-sm lg:text-base flex items-center mt-2 text-green-700 font-semibold">you save <BiRupee /> {parseInt(props.product.productMrp) - parseInt(props.product.productPriceApi)} </p>
                     {/* <p className='text-sm text-slate-600 mt-3 font-medium'>Free 1-3 day shipping on this item.</p> */}
 
                     <div className="bg-white rounded-lg p-3 mt-3">
