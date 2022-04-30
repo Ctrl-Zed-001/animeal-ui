@@ -86,7 +86,7 @@ const Product = (props) => {
             axios.post(`${process.env.NEXT_PUBLIC_API_URI}/user/addtocart/post/data`,
                 {
                     product_id: props.product.products.product_id,
-                    quantity: 1
+                    quantity: props.product.products.minimum_quantity
                 },
                 {
                     headers: {
@@ -94,12 +94,14 @@ const Product = (props) => {
                     }
                 })
                 .then(res => {
+                    console.log("🚀 ~ file: [slug].js ~ line 97 ~ cartClicked ~ res", res.data)
                     toast.success('Item added to cart');
                     setInCart(true)
                     addToCart([{
                         ...res.data.success,
-                        available_stock: parseInt(props.product.availableStock) - 1,
-                        category: props.product.products.category
+                        available_stock: parseInt(props.product.availableStock) - props.product.products.minimum_quantity,
+                        category: props.product.products.category,
+                        minimum_quantity: props.product.products.minimum_quantity
                     }])
                 })
                 .catch(err => console.log(err))
@@ -113,7 +115,7 @@ const Product = (props) => {
                 product_name: props.product.products.website_pro_name,
                 product_image: props.product.productimages[0] ? props.product.productimages[0].product_image : '',
                 product_description: props.product.products.shortdescription,
-                quantity: 1,
+                quantity: props.product.products.minimum_quantity,
                 product_price: props.product.productPriceApi,
                 product_discount: parseInt(props.product.productMrp) - parseInt(props.product.productPriceApi),
                 product_offer: props.product.products.offer,
@@ -123,7 +125,8 @@ const Product = (props) => {
                 updated_at: props.product.products.updated_at,
                 created_at: props.product.products.created_at,
                 category: props.product.products.category,
-                available_stock: parseInt(props.product.products.stock)
+                available_stock: parseInt(props.product.products.stock),
+                minimum_quantity: parseInt(props.product.products.minimum_quantity)
             }
             let localCartList = JSON.parse(localStorage.getItem('unauthcart'))
             if (localCartList) {

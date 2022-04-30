@@ -4,6 +4,7 @@ import { HiMinusSm, HiPlusSm } from 'react-icons/hi';
 import { FaTrash } from 'react-icons/fa'
 
 const CartItem = (props) => {
+
     return (
         <div className="cart-item bg-slate-100 p-3 rounded-lg grid grid-cols-6 my-4 relative gap-3">
             <div className='flex items-start col-span-5 md:col-span-3'>
@@ -17,11 +18,11 @@ const CartItem = (props) => {
                     </div>
                     <div className="pt-2 block md:hidden">
                         <div className="border-2 rounded-xl flex items-center w-fit py-1 px-2">
-                            <button disabled={parseInt(props.item.quantity) === 1 ? true : false} className='disabled:cursor-not-allowed' onClick={() => props.updateCartQuantity('updatecartminus', props.item.product_id, parseInt(props.item.quantity) - 1)}>
+                            <button disabled={parseInt(props.item.quantity) === parseInt(props.item.minimum_quantity) ? true : false} className='disabled:cursor-not-allowed' onClick={() => props.updateCartQuantity('updatecartminus', props.item.product_id, parseInt(props.item.quantity) - parseInt(props.item.minimum_quantity))}>
                                 <HiMinusSm className='bg-slate-300 text-slate-800 rounded-lg text-base' />
                             </button>
                             <span className='mx-5 text-sm'>{parseInt(props.item.quantity)}</span>
-                            <button disabled={parseInt(props.item.quantity) >= parseInt(props.item.available_stock) ? true : false} className='disabled:cursor-not-allowed' onClick={() => props.updateCartQuantity('updatecartplus', props.item.product_id, parseInt(props.item.quantity) + 1)}>
+                            <button disabled={parseInt(props.item.quantity) >= parseInt(props.item.available_stock) ? true : false} className='disabled:cursor-not-allowed' onClick={() => props.updateCartQuantity('updatecartplus', props.item.product_id, parseInt(props.item.quantity) + parseInt(props.item.minimum_quantity))}>
                                 <HiPlusSm className='bg-slate-300 text-slate-800 rounded-lg text-base' />
                             </button>
                         </div>
@@ -32,11 +33,11 @@ const CartItem = (props) => {
 
             <div className="pt-4 hidden md:block">
                 <div className="border-2 rounded-xl flex items-center w-fit py-2 px-4">
-                    <button disabled={parseInt(props.item.quantity) === 1 ? true : false} className='disabled:cursor-not-allowed' onClick={() => props.updateCartQuantity('updatecartminus', props.item.product_id, parseInt(props.item.quantity) - 1)}>
+                    <button disabled={parseInt(props.item.quantity) === parseInt(props.item.minimum_quantity) ? true : false} className='disabled:cursor-not-allowed' onClick={() => props.updateCartQuantity('updatecartminus', props.item.product_id, parseInt(props.item.quantity) - parseInt(props.item.minimum_quantity))}>
                         <HiMinusSm className='bg-slate-300 text-slate-800 rounded-lg text-2xl' />
                     </button>
                     <span className='mx-5 text-lg'>{parseInt(props.item.quantity)}</span>
-                    <button disabled={parseInt(props.item.quantity) >= parseInt(props.item.available_stock) ? true : false} className='disabled:cursor-not-allowed' onClick={() => props.updateCartQuantity('updatecartplus', props.item.product_id, parseInt(props.item.quantity) + 1)}>
+                    <button disabled={parseInt(props.item.quantity) >= parseInt(props.item.available_stock) ? true : false} className='disabled:cursor-not-allowed' onClick={() => props.updateCartQuantity('updatecartplus', props.item.product_id, parseInt(props.item.quantity) + parseInt(props.item.minimum_quantity))}>
                         <HiPlusSm className='bg-slate-300 text-slate-800 rounded-lg text-2xl' />
                     </button>
                 </div>

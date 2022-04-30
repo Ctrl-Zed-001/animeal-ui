@@ -130,9 +130,9 @@ const CartContextProvider = (props) => {
                     let oldList = [...cartItems];
                     let oldItemIndex = cartItems.findIndex(item => item[0].product_id == id)
                     if (action === 'updatecartplus') {
-                        oldList[oldItemIndex][0] = { ...oldList[oldItemIndex][0], quantity: parseInt(oldList[oldItemIndex][0].quantity) + 1, product_total: res.data.cartUpdatePlus.product_total, product_discount_total: parseInt(res.data.cartUpdatePlus.product_discount_total) }
+                        oldList[oldItemIndex][0] = { ...oldList[oldItemIndex][0], quantity: quantity, product_total: res.data.cartUpdatePlus.product_total, product_discount_total: parseInt(res.data.cartUpdatePlus.product_discount_total) }
                     } else {
-                        oldList[oldItemIndex][0] = { ...oldList[oldItemIndex][0], quantity: parseInt(oldList[oldItemIndex][0].quantity) - 1, product_total: res.data.cartUpdateMinus.product_total, product_discount_total: parseInt(res.data.cartUpdateMinus.product_discount_total) }
+                        oldList[oldItemIndex][0] = { ...oldList[oldItemIndex][0], quantity: quantity, product_total: res.data.cartUpdateMinus.product_total, product_discount_total: parseInt(res.data.cartUpdateMinus.product_discount_total) }
                     }
                     setCartItems([...oldList])
                     validateAndUpdateCart([...oldList])
@@ -143,11 +143,10 @@ const CartContextProvider = (props) => {
             // AGAR LOGGEDIN NAHI HAI TO SIRF STATE UPDATE HOYEGA
             let oldList = [...cartItems];
             let oldItemIndex = cartItems.findIndex(item => item[0].product_id == id)
-            console.log(oldList[oldItemIndex][0])
             if (action === 'updatecartplus') {
-                oldList[oldItemIndex][0] = { ...oldList[oldItemIndex][0], quantity: parseInt(oldList[oldItemIndex][0].quantity) + 1, product_total: parseInt(oldList[oldItemIndex][0].product_total) + parseInt(oldList[oldItemIndex][0].product_price), product_discount_total: parseInt(oldList[oldItemIndex][0].product_discount_total) + parseInt(oldList[oldItemIndex][0].product_discount) }
+                oldList[oldItemIndex][0] = { ...oldList[oldItemIndex][0], quantity: quantity, product_total: parseInt(oldList[oldItemIndex][0].product_total) + parseInt(oldList[oldItemIndex][0].product_price), product_discount_total: parseInt(oldList[oldItemIndex][0].product_discount_total) + parseInt(oldList[oldItemIndex][0].product_discount) }
             } else {
-                oldList[oldItemIndex][0] = { ...oldList[oldItemIndex][0], quantity: parseInt(oldList[oldItemIndex][0].quantity) - 1, product_total: parseInt(oldList[oldItemIndex][0].product_total) - parseInt(oldList[oldItemIndex][0].product_price), product_discount_total: parseInt(oldList[oldItemIndex][0].product_discount_total) - parseInt(oldList[oldItemIndex][0].product_discount) }
+                oldList[oldItemIndex][0] = { ...oldList[oldItemIndex][0], quantity: quantity, product_total: parseInt(oldList[oldItemIndex][0].product_total) - parseInt(oldList[oldItemIndex][0].product_price), product_discount_total: parseInt(oldList[oldItemIndex][0].product_discount_total) - parseInt(oldList[oldItemIndex][0].product_discount) }
             }
             setCartItems([...oldList])
             validateAndUpdateCart([...oldList])
