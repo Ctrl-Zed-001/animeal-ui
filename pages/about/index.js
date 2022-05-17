@@ -10,65 +10,106 @@ const About = (props) => {
                 <meta name="description" content={props.description} />
             </Head>
             <div className="container">
-                <div className="bg-white rounded-lg w-full p-4">
-                    <h1 className='font-semibold text-2xl'>Know us better..  </h1>
-                    <p>
-                        Goodman Chemist embarked its journey in 1989, and since then there has been no looking back.  Based in Parel, Mumbai, we work as an online retailer of pet food and several other pet-products. Our founders - Vishal Patil and Vipul Patil started the store with a vision to create a space for the pet owners across the country which serves every single need of your pet.
-                    </p>
+                <div className="bg-white rounded-lg w-full">
 
-                    <p>
-                        We completely understand the responsibility of being a pet parent and so Goodman Chemist is committed towards achieving maximum quality standards. Along with our dedicated staff, the  company has maintained a strong network by delivering pet supplies all over the city. We are an e-commerce subsidiary of the 31+ years serving veterinary clinic near you.
-                    </p>
+                    <div className="about-sec-bg px-12 py-20 rounded-t-lg">
+                        <div className='w-2/4'>
+                            <h1 className='font-semibold text-4xl my-3 uppercase'>About Us  </h1>
+                            <p className='text-justify leading-7'>Goodman Chemist embarked on its journey in 1989 as the First Pet medicine store in Mumbai and since then there has been no looking back. Based in Parel, Mumbai, we work as an online retailer of pet food and several other pet products. In 1995, pet food and accessories became an addition to medicines because we have constantly dedicated ourselves to bringing out the best for our pet parents. </p>
+                        </div>
+                    </div>
 
-                    <p>
-                        Being a parent to different kinds of pets can demand distinct care and attention, whether you are a dog owner or a cat’s, you own a rabbit or a hamster or even a parrot, we have got everything covered for you by offering a wide range of products, keeping in mind all the requirements of any pet owner.
-                    </p>
+                    <div className="px-12 py-20">
+                        <div className="grid grid-cols-2 gap-8">
+                            <img src="/img/graffiti.png" alt="" className='drop-shadow-xl' />
+                            <div className='pt-12'>
+                                <h1 className='font-semibold text-4xl my-3 uppercase'>Know our founders </h1>
+                                <p className='leading-7'>
+                                    Sometimes, it can be overwhelming to be a pet parent and we understand a lot of responsibilities come along. Our founders started the store with a vision to create a safe space for every pet owner across the country to serve every single need of your pet. Goodman Vetcare is committed to achieving maximum quality standards.
+                                </p>
+                                <p className="leading-7">
+                                    Along with our dedicated staff, the company has maintained a strong network by delivering pet supplies all over the city. Our company has been supplying various pet products to zoos across India. Currently, our company is the biggest retailer of Pet medicines & food.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
 
-                    <p>
-                        At Goodman Chemist, you won’t find any product below standard as our stock includes products of over 1000 well reputed brands like- Royal Canin, Pedigree, Whiskas, Arden Grange,Hills, Farmina, Calibra, Canine Creek and many more.
-                    </p>
-
-                    <p>
-                        Managing work-life schedule can prove to be hectic and going to a store physically for buying essentials can become tough. Goodman Chemist removes this hassle for you by, delivering products at the comfort of your home. You can easily order pet supplies through your smartphone with the touch of a finger.
-                    </p>
-
-                    <p>
-                        In a nutshell, Goodman Chemist,
-                        <ul>
+                    <div className="px-12">
+                        <h1 className='font-semibold text-4xl my-3 uppercase'>Why Should You Choose Us?</h1>
+                        <p className="leading-7">
+                            Being a parent to different kinds of pets can demand distinct care and attention. Whether you are a dog owner or a cat, you own a rabbit or hamster or even a parrot, we have got everything covered for you by offering a wide range of products, keeping in mind all the requirements of any pet owner.
+                        </p>
+                        <br />
+                        <p className="leading-7">
+                            At Goodman Chemist, you won’t find any product below standard as our stock includes products of over 1000 well-reputed brands like- Royal Canin, Pedigree, Whiskas, Arden Grange, Hills, Farmina, Calibra, Canine Creek and many more
+                        </p>
+                        <br />
+                        <p className="leading-7">
+                            Managing work-life schedules can be hectic, and going to a store physically to buy essentials can become tough. Also, the unprecedented covid times, made us realize the value of an online setup.
+                        </p>
+                        <br />
+                        <p className="leading-7">
+                            Goodman Chemist removes the uncalled hassle for you by delivering products at the comfort of your home. You can easily order pet supplies through your smartphone with the touch of a finger. We have been steadily working to make the home delivery process efficient.
+                        </p>
+                        <br />
+                        <p className="leading-7">
+                            In a nutshell, Goodman Chemist,
+                        </p>
+                        <ul className='pl-8 leading-7 list-disc mt-3'>
                             <li>Delivers quality pet food and medicines of top brands</li>
-                            <li>Provides Timely doorstep delivery of products</li>
+                            <li>Provides quicker doorstep delivery of products </li>
                         </ul>
-                    </p>
 
-                    <p>
-                        A pet companion feels like a blessing because of all the perks these adorable beings provide but sometimes it can be overwhelming to decide on what is the best for your pet. Do not worry, we have got your back! Our company-
-                        <ul>
-                            <li>Provides 24*7  assistance to our customers </li>
-                            <li>Helps with necessary vaccinations for pet animals</li>
+                        <br />
+
+                        <p className="leading-7">
+                            A pet companion feels like a blessing because of all the perks these adorable beings provide. But there can be times where you need a helping hand. Do not worry, we have got your back! Goodman Vetcare
+                        </p>
+                        <ul className="pl-8 leading-7 list-disc mt-3">
+                            <li>Provides 24*7 assistance to our customers </li>
+                            <li>Provides 24*7 assistance to our customers </li>
+                            <li>We also set up free vaccination drives for cats & dogs every year</li>
                         </ul>
-                    </p>
 
-                    <p>
-                        Customer satisfaction is our key focus so we strive to serve you with products that do not cause a burden to your pocket. Our company has made a strong impact in the industry by delivering excellent services for our customers till date.
-                    </p>
+                        <br />
 
-                    <p>
-                        <span className='text-2xl'>In the Future, </span>we aim to continue serving pet parents with a mission to create a positive impact in their lives by letting them live and embrace each moment in their journey of becoming a family with their pets.
-                    </p>
+                        <p className="leading-7">
+                            Customer satisfaction is our key focus so we strive to serve you with products that do not cause a burden to your pocket. Our company has made a strong impact in the industry by delivering excellent service to our customers.  Check out our top ratings and customer reviews on Google to witness all of this on your own.
+                        </p>
+                    </div>
 
-                    <p>
-                        <i>
-                            “Pets are humanizing. They remind us we have an obligation and  responsibility to preserve and nurture and care for all life.” James Cromwell
-                        </i>
-                    </p>
+                    <div className="px-12 py-20">
+                        <h1 className='font-semibold text-4xl my-3 uppercase'>Here are our newest additions </h1>
+                        <ul className='list-disc pl-10 leading-8'>
+                            <li>
+                                With our team's continuous hard work and efforts, we could make Goodman Vetcare, a Pvt. Ltd. Company.
+                            </li>
+                            <li>We launched our own website in 2022 to facilitate more users and cater to all customer needs efficiently </li>
+                            <li>Animeal is brought up with the hope to improve customer service & deliver pet medicines quicker across Mumbai, Navi Mumbai, and Thane</li>
+                        </ul>
+                    </div>
 
-                    <p>
-                        <span className='text-2xl'>Reach us </span>at our social media handles on Facebook and Linkedin.
-                    </p>
-                    <p className="font-bold">Goodman Vetcare Pvt. Ltd</p>
-                    <p>
-                        Warehouse No - 501 5th floor Bharat industrial estate, Tokershi Jivraj Rd, Sewri, Mumbai, Maharashtra 400015
-                    </p>
+                    <div className="px-12">
+                        <h1 className='font-semibold text-4xl my-3 uppercase'>How can you avail the products? </h1>
+                        <p className="leading-7">
+                            The process is quite simple and quick. You can visit our website - Animeal.in or Google “pet shop near me” and use the code “Animeal” to access the greatest brands and order products in just few clicks. Alternatively, you can call us to enquire or order the products from our store.
+                        </p>
+                        <p className="leading-7">
+                            Exciting offers and services await you. So, what are you waiting for? Order best pet care products from one of the best pet stores in Mumbai and avail excellent offers!
+                        </p>
+                    </div>
+
+                    <div className="px-12 py-20">
+                        <h1 className='font-semibold text-4xl my-3 uppercase'>With all this being said,</h1>
+                        <p className="leading-7">
+                            We aim to continue serving pet parents with a mission to create a positive influence in their lives by letting them embrace each moment in their journey of becoming a family with their pets. Goodman Vetcare promises to be a companion through all the ups and downs.
+                        </p>
+                        <br />
+                        <p className="leading-7 font-bold">
+                            Get in touch with us at our social media handles on Facebook and Linkedin!
+                        </p>
+                    </div>
+
 
                 </div>
             </div>

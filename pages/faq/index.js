@@ -1,6 +1,7 @@
 import React from 'react'
 import axios from 'axios'
 import Head from 'next/head'
+import { Collapse } from '@nextui-org/react'
 
 const Faq = (props) => {
     return (
@@ -10,36 +11,59 @@ const Faq = (props) => {
                 <meta name="description" content={props.description} />
             </Head>
             <div className="container">
-                <div className="bg-white rounded-lg w-full p-4">
-                    <h1 className='font-semibold text-2xl'>General Questions</h1>
-                    Do we sell pets? <br />
-                    No, we do not sell pets, we only sell products that pets need.
-                    <br />
-                    <br />
-                    What are the modes of payment we accept? <br />
-                    Credit Cards, Cash on Delivery, Debit Cards, UPI and NetBanking.<br />
+                <div className=" rounded-lg w-full p-4">
 
-                    <h1 className='font-semibold text-2xl'>General Questions</h1>
-                    <p>
-                        Orders are normally dispatched within 24 hours and usually take 1-3 working days to be delivered based on your location. Orders placed for the Mumbai location are delivered in 1 Business Day (subject to availability of products in our warehouse).
-                    </p>
+                    <Collapse.Group splitted>
+                        <Collapse className='font-bold' expanded title="1.	Where does my delivery come from? ">
+                            <p className='font-light'>Your product's delivery starts from our centralized warehouse in Sewree. We are always looking forward to providing you with excellent services so our team is constantly working with quicker deliveries. </p>
+                        </Collapse>
 
-                    Orders can be tracked through our whatsapp chatbot as well.<br />
+                        <Collapse className='font-bold' title="2.	Any delivery charges or minimum order value?">
+                            <ul className="list-disc pl-10 font-light">
+                                <li>
+                                    Absolutely not! Our main purpose is to help you in keeping your pet safe and healthy, so we don’t expect you to fill a required amount while buying quality medicines for your pet.
+                                </li>
+                                <li>
+                                    As a customer-centric organization, there are no delivery charges too as our happiness ends with your pet’s happily wagging tail!
+                                </li>
+                            </ul>
+                        </Collapse>
 
-                    What shipping charges can I expect to incur?<br />
-                    It's absolutely free. No minimum order requirement.<br />
-                    <br />
-                    What locations do you ship to?<br />
-                    We know that pet lovers are all over the place, so we can ship to most areas in Mumbai<br />
+                        <Collapse className='font-bold' title="3.	How do I know the medicines are right? ">
+                            <p className='font-light'>As a pet parent, it is natural to have such a concern but our team of pharmacists personally checks and verifies all the orders of medicines before delivery. Quality medicines are our responsibility. </p>
+                        </Collapse>
 
-                    <h1 className='font-semibold text-2xl'>Exchange Policy</h1>
+                        <Collapse className='font-bold' title="4.	I can’t find my product on the website, what to do?">
+                            <p className='font-light'>With over 4500 products of all ranges, it becomes difficult to update them online. Although do not worry, if you face any difficulty while searching for your product, we are always available to help out. Get in touch with us and we will arrange it for you.</p>
+                        </Collapse>
 
-                    I’ve received my order, but I want to return it. Can I receive a refund?<br />
-                    Please make sure that you raise an exchange request within 7 days of the product delivery.<br />
-                    <br />
-                    Can I cancel my online order?<br />
-                    Cancellations can be made before the product is dispatched. You can make cancellation on the website or by emailing us on bark@animeal.in<br />
+                        <Collapse className='font-bold' title="5.	Are you veterinarians?">
+                            <p className='font-light'>We understand having a good vet is a must but while we are not veterinarians, we can surely assist you to connect with some of the top vets from Mumbai. Reach us on 9004485093.</p>
+                        </Collapse>
 
+                        <Collapse className='font-bold' title="6.	Does my pet love me?">
+                            <p className='font-light'>Well, we are 110% sure of the fact that your pet and you have an inseparable bond of love and it's one of the most precious feelings in the world. Keep on sharing those sweet cuddles and kisses to keep the bond alive. </p>
+                        </Collapse>
+
+                        <Collapse className='font-bold' title="7.	Do you sell pets?">
+                            <p className='font-light'>It’s a big NO for us. Goodman vetcare believes in keeping adoption on priority and follows a “Adopt, don’t shop” policy. </p>
+                            <p className='font-light'>However, stating the obvious there’s nothing as cuddly as a golden retriever or Gemini from a loving breeder. We are always there to hear you after you get your favourite pet home.</p>
+                        </Collapse>
+
+                        <Collapse className='font-bold' title="8.	Payment methods available? ">
+                            <p className='font-light'>It's a hassle-free mode for our customers. Our website has all modes of payment from COD to any online payment. </p>
+                        </Collapse>
+
+                        <Collapse className='font-bold' title="9.	Handling returns">
+                            <p className='font-light'>We have a firm trust that our customers are genuinely understanding. There’s no return and refund for any product purchased from us. If the product is opened or used, we won't be able to take it back. </p>
+                        </Collapse>
+
+                        <Collapse className='font-bold' title="10. What if I receive a damaged product?">
+                            <p className='font-light'>We handle your products with utmost care and love while storing them in our warehouse, but as we know it’s almost impossible to control the inevitable.  A product might get damaged during packaging or transport.  </p>
+                            <p className='font-light'>In that case, it’s all on us. Just send us a picture of the product on 90044865093 and we will process the return at the earliest</p>
+                        </Collapse>
+
+                    </Collapse.Group>
 
                 </div>
             </div>

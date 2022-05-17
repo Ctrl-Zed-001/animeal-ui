@@ -28,11 +28,19 @@ body {
 }
 
 .header,
-.loader {
+.loader,
+.filterbar {
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   background: hsl(0deg 0% 100% / 0%);
   box-shadow: 0 0.063rem 0.625rem 0 rgb(0 0 0 / 20%);
+}
+
+.about-sec-bg {
+  background-image: url("../public/img/about.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: right;
 }
 
 .container {

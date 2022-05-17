@@ -74,11 +74,11 @@ const Footer = () => {
                             <h1 className="font-semibold text-xs lg:text-sm">Show us some love on social media.</h1>
                             <img src="/img/icons/love.webp" alt="" />
                         </div>
-                        <div className="flex justify-center gap-4 lg:gap-4 text-center lg:mt-4">
-                            <a href="https://www.facebook.com/animeal.in"><img src="/img/icons/fb.webp" alt="" className='h-8' /></a>
-                            <a href="https://twitter.com/animeal_in/"><img src="/img/icons/twitter.webp" alt="" className='h-8' /></a>
-                            <a href="https://www.instagram.com/animeal.in/"><img src="/img/icons/insta.webp" alt="" className='h-8' /></a>
-                            <a href="https://wa.me/+919004485093"><img src="/img/icons/whatsapp.webp" alt="" className='h-8' /></a>
+                        <div className="flex justify-center gap-4 lg:gap-4 text-center lg:mt-4 ">
+                            <a className='z-30' href="https://www.facebook.com/animeal.in"><img src="/img/icons/fb.webp" alt="" className='h-8' /></a>
+                            <a className='z-30' href="https://twitter.com/animeal_in/"><img src="/img/icons/twitter.webp" alt="" className='h-8' /></a>
+                            <a className='z-30' href="https://www.instagram.com/animeal.in/"><img src="/img/icons/insta.webp" alt="" className='h-8' /></a>
+                            <a className='z-30' href="https://wa.me/+919004485093"><img src="/img/icons/whatsapp.webp" alt="" className='h-8' /></a>
                         </div>
                     </div>
                     <hr className='lg:hidden w-full bg-gray-500 my-4 xl:my-8' />
@@ -102,7 +102,7 @@ const Footer = () => {
             </div>
 
             <img src="/img/footer_dog.webp" alt="" className='absolute bottom-1 lg:-bottom-4 -left-16 lg:-left-36 h-32 lg:h-80 ' />
-            <img src="/img/footer_cat.webp" alt="" className='absolute -bottom-4 lg:-bottom-6 right-0 lg:right-10 h-32 lg:h-72' />
+            <img src="/img/footer_cat.webp" alt="" className='absolute -bottom-4 lg:-bottom-6 right-0 lg:right-10 h-32 lg:h-72 z-10' />
         </div >
     )
 }

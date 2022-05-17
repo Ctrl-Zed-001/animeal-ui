@@ -4,7 +4,7 @@ import ProductBox from '../../Components/ProductBox/ProductBox'
 import { MdExpandMore } from "react-icons/md";
 import { useRouter } from 'next/router'
 import axios from 'axios';
-import { Pagination } from '@nextui-org/react';
+import { Pagination, Loading } from '@nextui-org/react';
 
 const Shop = () => {
 
@@ -13,9 +13,11 @@ const Shop = () => {
     const [page, setPage] = useState(1)
     const [sort, setSort] = useState('relevent')
     const [filterData, setFilterData] = useState([])
+    const [isLoading, setIsLoading] = useState()
 
     useEffect(() => {
         if (router) {
+            setIsLoading(true)
             if (router.query.animal) {
                 axios.post(`${process.env.NEXT_PUBLIC_API_URI}/alllevelwiseproducts/post/data`, {
                     category1: router.query.animal,
@@ -24,6 +26,7 @@ const Shop = () => {
                     sort: sort
                 })
                     .then(res => {
+                        setIsLoading(false)
                         setSrpData(res.data.categoryAllLevelsWiseProduct)
                     })
                     .catch(err => console.log(err))
@@ -33,6 +36,7 @@ const Shop = () => {
                     sort: sort
                 })
                     .then(res => {
+                        setIsLoading(false)
                         setSrpData(res.data.productBySearch)
                         setFilterData([...filterData, ...res.data.brands])
                     })
@@ -43,6 +47,7 @@ const Shop = () => {
     }, [router])
 
     const paginate = (pageNumber) => {
+        setIsLoading(true)
         setPage(pageNumber)
         window.scrollTo({
             top: 0,
@@ -56,6 +61,7 @@ const Shop = () => {
                 sort: sort
             })
                 .then(res => {
+                    setIsLoading(false)
                     setSrpData(res.data.categoryAllLevelsWiseProduct)
                 })
                 .catch(err => console.log(err))
@@ -64,13 +70,17 @@ const Shop = () => {
                 query: router.query.slug,
                 sort: sort
             })
-                .then(res => setSrpData(res.data.productBySearch))
+                .then(res => {
+                    setIsLoading(false)
+                    setSrpData(res.data.productBySearch)
+                })
                 .catch(err => console.log(err))
         }
 
     }
 
     const sortResults = (e) => {
+        setIsLoading(true)
         setSort(e.target.value)
         if (router.query.animal) {
             axios.post(`${process.env.NEXT_PUBLIC_API_URI}/alllevelwiseproducts/post/data?page=${page}`, {
@@ -80,6 +90,7 @@ const Shop = () => {
                 sort: e.target.value
             })
                 .then(res => {
+                    setIsLoading(false)
                     setSrpData(res.data.categoryAllLevelsWiseProduct)
                 })
                 .catch(err => console.log(err))
@@ -88,7 +99,10 @@ const Shop = () => {
                 query: router.query.slug,
                 sort: e.target.value
             })
-                .then(res => setSrpData(res.data.productBySearch))
+                .then(res => {
+                    setIsLoading(false)
+                    setSrpData(res.data.productBySearch)
+                })
                 .catch(err => console.log(err))
         }
     }
@@ -100,7 +114,7 @@ const Shop = () => {
 
             <div className="container flex justify-between gap-10">
                 {/* Filter */}
-                {/* <div className="hidden md:block fliter-container w-1/5">
+                {/* <div className="md:block fliter-container w-1/5">
                     <Filters />
                 </div> */}
 
@@ -125,23 +139,33 @@ const Shop = () => {
                         </div>
                     </div>
 
-                    <div className="product-list-container grid grid-cols-2 md:grid-cols-4 gap-4 mt-6 m">
-                        {
-                            srpData && srpData.data && srpData.data.map((product, index) => {
-                                return <ProductBox product={product} key={index} />
-                            })
-                        }
+                    {
+                        isLoading ?
+                            <Loading className='flex items-center justify-center mt-60' color="warning" textColor="warning"></Loading> :
+                            srpData ?
+                                <div>
+                                    <div className="product-list-container grid grid-cols-2 md:grid-cols-4 gap-4 mt-6 m">
+                                        {
+                                            srpData && srpData.data && srpData.data.map((product, index) => {
+                                                return <ProductBox product={product} key={index} />
+                                            })
+                                        }
 
 
-                    </div>
+                                    </div>
 
-                    <div className="w-full mt-10 text-center">
-                        {
-                            srpData && srpData.total > 24 ?
-                                <Pagination total={Math.ceil(srpData.total / srpData.per_page)} initialPage={1} page={page} color='warning' shadow onChange={(page) => paginate(page)} /> :
-                                <></>
-                        }
-                    </div>
+                                    <div className="w-full mt-10 text-center">
+                                        {
+                                            srpData && srpData.total > 24 ?
+                                                <Pagination total={Math.ceil(srpData.total / srpData.per_page)} initialPage={1} page={page} color='warning' shadow onChange={(page) => paginate(page)} /> :
+                                                <></>
+                                        }
+                                    </div>
+                                </div> :
+                                <p>No result found :</p>
+                    }
+
+
                 </div>
             </div>
 

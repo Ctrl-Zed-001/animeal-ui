@@ -12,7 +12,7 @@ const Filters = () => {
             </div>
             <hr className='my-4' />
             <div className="filter-group ">
-                <h1 className='text-lg'>Pet</h1>
+                <h1 className='text-lg text-theme'>Pet</h1>
 
                 <div className="flex flex-col gap-3 mt-4">
                     <Checkbox value='whiskers' size='sm' color='warning' css={{ 'z-index': '0' }}>
@@ -30,7 +30,7 @@ const Filters = () => {
             <hr className='my-4' />
 
             <div className="filter-group ">
-                <h1 className='text-lg'>Category</h1>
+                <h1 className='text-lg text-theme'>Category</h1>
 
                 <div className="flex flex-col gap-3 mt-4">
                     <Checkbox value='whiskers' size='sm' color='warning' css={{ 'z-index': '0' }}>
@@ -48,7 +48,7 @@ const Filters = () => {
             <hr className='my-4' />
 
             <div className="filter-group ">
-                <h1 className='text-lg'>Sub Category</h1>
+                <h1 className='text-lg text-theme'>Sub Category</h1>
 
                 <div className="flex flex-col gap-3 mt-4">
                     <Checkbox value='whiskers' size='sm' color='warning' css={{ 'z-index': '0' }}>
@@ -66,7 +66,7 @@ const Filters = () => {
             <hr className='my-4' />
 
             <div className="filter-group ">
-                <h1 className='text-lg'>Brand</h1>
+                <h1 className='text-lg text-theme'>Brand</h1>
 
                 <div className="flex flex-col gap-3 mt-4">
                     <Checkbox value='whiskers' size='sm' color='warning' css={{ 'z-index': '0' }}>
@@ -84,7 +84,7 @@ const Filters = () => {
             <hr className='my-4' />
 
             <div className="filter-group ">
-                <h1 className='text-lg'>User Rating</h1>
+                <h1 className='text-lg text-theme'>User Rating</h1>
 
                 <div className="flex flex-col gap-3 mt-4">
                     <Checkbox value='whiskers' size='sm' color='warning' css={{ 'z-index': '0' }}>
