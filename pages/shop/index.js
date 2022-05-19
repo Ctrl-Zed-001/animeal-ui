@@ -38,7 +38,6 @@ const Shop = () => {
                     .then(res => {
                         setIsLoading(false)
                         setSrpData(res.data.productBySearch)
-                        setFilterData([...filterData, ...res.data.brands])
                     })
                     .catch(err => console.log(err))
             }
