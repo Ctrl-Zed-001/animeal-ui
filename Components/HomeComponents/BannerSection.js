@@ -130,7 +130,7 @@ const BannerSection = () => {
                 <div className="relative h-90 lg:w-3/6 w-3/6 text-center">
                     <img src="/img/3rd.webp" alt="" className='h-full object-cover rounded-lg w-full shadow' />
                     <h1 className="text-white xl:text-xl font-bold absolute top-4 xl:top-10 left-0 w-full px-2">Send us the prescription and we'll have it delivered</h1>
-                    <button onClick={() => setIsUploadModalOpen(true)} className='bg-amber-900 hover:bg-transparent transition-all border-2 border-white p-2 xl:px-4 xl:py-2 text-white absolute top-28 xl:top-32 left-10 xl:left-20 font-semibold rounded-lg text-xs xl:text-base'>Upload Now</button>
+                    <button onClick={() => setIsUploadModalOpen(true)} className='bg-amber-900 hover:bg-transparent transition-all border-2 border-white p-2 xl:px-4 xl:py-2 text-white absolute bottom-4 xl:top-32 left-10 xl:left-20 font-semibold rounded-lg text-xs xl:text-base'>Upload Now</button>
                 </div>
 
                 {/* RIGHT BANNER 2 */}
