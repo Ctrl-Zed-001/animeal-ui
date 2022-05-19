@@ -37,7 +37,7 @@ body {
 }
 
 .about-sec-bg {
-  background-image: url("../public/img/about.png");
+  background-image: url("/img/about.png");
   background-size: contain;
   background-repeat: no-repeat;
   background-position: right;
@@ -302,6 +302,10 @@ body.sidemenu-open .sidebar {
 
   .header {
     box-shadow: none;
+  }
+
+  .about-sec-bg {
+    background-image: none
   }
 }
 

@@ -4,26 +4,26 @@ import Head from 'next/head'
 
 const About = (props) => {
     return (
-        <div className='about-page'>
+        <div className='about-page mt-20 lg:mt-0 text-justify'>
             <Head>
                 <title>{props.title}</title>
                 <meta name="description" content={props.description} />
             </Head>
             <div className="container">
                 <div className="bg-white rounded-lg w-full">
-
-                    <div className="about-sec-bg px-12 py-20 rounded-t-lg">
-                        <div className='w-2/4'>
-                            <h1 className='font-semibold text-4xl my-3 uppercase'>About Us  </h1>
+                    <img src="/img/about.png" alt="" className="block lg:hidden" />
+                    <div className="about-sec-bg px-12 lg:py-20 rounded-t-lg">
+                        <div className='xl:w-2/4'>
+                            <h1 className='font-semibold text-4xl my-3 uppercase text-left'>About Us  </h1>
                             <p className='text-justify leading-7'>Goodman Chemist embarked on its journey in 1989 as the First Pet medicine store in Mumbai and since then there has been no looking back. Based in Parel, Mumbai, we work as an online retailer of pet food and several other pet products. In 1995, pet food and accessories became an addition to medicines because we have constantly dedicated ourselves to bringing out the best for our pet parents. </p>
                         </div>
                     </div>
 
                     <div className="px-12 py-20">
-                        <div className="grid grid-cols-2 gap-8">
+                        <div className="lg:grid lg:grid-cols-2 gap-8">
                             <img src="/img/graffiti.png" alt="" className='drop-shadow-xl' />
                             <div className='pt-12'>
-                                <h1 className='font-semibold text-4xl my-3 uppercase'>Know our founders </h1>
+                                <h1 className='font-semibold text-4xl my-3 uppercase text-left'>Know our founders </h1>
                                 <p className='leading-7'>
                                     Sometimes, it can be overwhelming to be a pet parent and we understand a lot of responsibilities come along. Our founders started the store with a vision to create a safe space for every pet owner across the country to serve every single need of your pet. Goodman Vetcare is committed to achieving maximum quality standards.
                                 </p>
@@ -35,7 +35,7 @@ const About = (props) => {
                     </div>
 
                     <div className="px-12">
-                        <h1 className='font-semibold text-4xl my-3 uppercase'>Why Should You Choose Us?</h1>
+                        <h1 className='font-semibold text-4xl my-3 uppercase text-left'>Why Should You Choose Us?</h1>
                         <p className="leading-7">
                             Being a parent to different kinds of pets can demand distinct care and attention. Whether you are a dog owner or a cat, you own a rabbit or hamster or even a parrot, we have got everything covered for you by offering a wide range of products, keeping in mind all the requirements of any pet owner.
                         </p>
@@ -79,7 +79,7 @@ const About = (props) => {
                     </div>
 
                     <div className="px-12 py-20">
-                        <h1 className='font-semibold text-4xl my-3 uppercase'>Here are our newest additions </h1>
+                        <h1 className='font-semibold text-4xl my-3 uppercase text-left'>Here are our newest additions </h1>
                         <ul className='list-disc pl-10 leading-8'>
                             <li>
                                 With our team's continuous hard work and efforts, we could make Goodman Vetcare, a Pvt. Ltd. Company.
@@ -90,7 +90,7 @@ const About = (props) => {
                     </div>
 
                     <div className="px-12">
-                        <h1 className='font-semibold text-4xl my-3 uppercase'>How can you avail the products? </h1>
+                        <h1 className='font-semibold text-4xl my-3 uppercase text-left'>How can you avail the products? </h1>
                         <p className="leading-7">
                             The process is quite simple and quick. You can visit our website - Animeal.in or Google “pet shop near me” and use the code “Animeal” to access the greatest brands and order products in just few clicks. Alternatively, you can call us to enquire or order the products from our store.
                         </p>
@@ -100,7 +100,7 @@ const About = (props) => {
                     </div>
 
                     <div className="px-12 py-20">
-                        <h1 className='font-semibold text-4xl my-3 uppercase'>With all this being said,</h1>
+                        <h1 className='font-semibold text-4xl my-3 uppercase text-left'>With all this being said,</h1>
                         <p className="leading-7">
                             We aim to continue serving pet parents with a mission to create a positive influence in their lives by letting them embrace each moment in their journey of becoming a family with their pets. Goodman Vetcare promises to be a companion through all the ups and downs.
                         </p>

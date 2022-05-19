@@ -5,7 +5,7 @@ import { Collapse } from '@nextui-org/react'
 
 const Faq = (props) => {
     return (
-        <div className='faq-page'>
+        <div className='faq-page mt-20 lg:mt-0'>
             <Head>
                 <title>{props.title}</title>
                 <meta name="description" content={props.description} />
