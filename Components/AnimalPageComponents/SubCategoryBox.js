@@ -7,9 +7,9 @@ const SubCategoryBox = (props) => {
         <Link href={{
             pathname: '/shop',
             query: {
-                animal: props.animal,
-                category: props.category,
-                subcategory: props.subcategory.category_url
+                animal: props.subcategory.parent_category,
+                category: props.subcategory.children_category,
+                subcategory: props.subcategory.category_name
             }
         }}>
             <div className='subcategory-box flex items-center p-3 rounded-lg cursor-pointer'>

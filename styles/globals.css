@@ -307,6 +307,17 @@ body.sidemenu-open .sidebar {
   .about-sec-bg {
     background-image: none
   }
+
+  .hidden-mobile-filter {
+    left: -30rem;
+    transition: 0.5s;
+  }
+
+  .visible-mobile-filter {
+    left: 0;
+    transition: 0.5s;
+    overflow: scroll;
+  }
 }
 
 .nextui-c-bLiKyn-iNZaNK-closeButton-true {
@@ -327,4 +338,25 @@ body.sidemenu-open .sidebar {
 .helplinepopup.block,
 .helplinepopup.hidden {
   transition: 0.5s;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgb(184, 184, 184);
+  border-radius: 5rem
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }

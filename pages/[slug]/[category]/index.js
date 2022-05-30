@@ -12,6 +12,7 @@ import Head from 'next/head';
 
 
 const index = (props) => {
+    console.log("🚀 ~ file: index.js ~ line 15 ~ index ~ props", props)
 
     const [categoryWiseProducts, setCategoryWiseProducts] = useState()
 
@@ -71,7 +72,7 @@ const index = (props) => {
                 >
                     {
                         props.categorylevels && props.categorylevels.map((subcategory, index) => {
-                            return <SwiperSlide key={index}><SubCategoryBox subcategory={subcategory} animal={props.animal} category={props.category} /></SwiperSlide>
+                            return <SwiperSlide key={index}><SubCategoryBox subcategory={subcategory} /></SwiperSlide>
                         })
                     }
                 </Swiper>
