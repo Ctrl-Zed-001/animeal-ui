@@ -16,6 +16,7 @@ class MyDocument extends Document {
                 <Head>
                     {CssBaseline.flush()}
                     <meta name="facebook-domain-verification" content="7f2cw67reip9k4asxormejzi0vkh1p" />
+                    <script src="/js/pixel.js"></script>
                 </Head>
                 <script src='/js/jquery-3.3.1.min.js' />
                 <script type="application/javascript" crossOrigin="anonymous" src={`https://securegw.paytm.in/merchantpgpui/checkoutjs/merchants/${process.env.NEXT_PUBLIC_MID}.js`}> </script>
