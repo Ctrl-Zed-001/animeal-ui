@@ -467,8 +467,8 @@ const Checkout = () => {
             form.append('drname', doctorName)
             form.append('name', address.addname)
             form.append('email', address.addemail)
-            form.append('phone', address.addnumber)
-            form.append('altphone', address.addaltphone)
+            form.append('number', address.addnumber)
+            form.append('altnumber', address.addaltphone)
             form.append('address', fullAddress)
             form.append(`prescription[]`, prescriptionFiles[0])
             form.append(`prescription[]`, prescriptionFiles[1])
@@ -727,7 +727,7 @@ const Checkout = () => {
 
                 {
                     isOnlinePayment ?
-                        <button disabled={loading ? true : false} onClick={() => validateAddress('online')} className={`w-full text-center ${loading ? 'bg-slate-100' : 'bg-theme'} p-2 rounded-lg py-4 mt-8 shadow font-semibold`}>
+                        <button disabled={loading ? true : false} onClick={() => uploadPrescription()} className={`w-full text-center ${loading ? 'bg-slate-100' : 'bg-theme'} p-2 rounded-lg py-4 mt-8 shadow font-semibold`}>
                             Pay Online
                         </button>
                         :
