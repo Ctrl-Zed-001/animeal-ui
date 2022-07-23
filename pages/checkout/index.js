@@ -259,7 +259,6 @@ const Checkout = () => {
                     // after successfully updating configuration, invoke JS Checkout
                     window.Paytm.CheckoutJS.invoke();
                     uploadPrescription()
-                    clearCart()
                 }).catch(function onError(error) {
                     console.log("error => ", error);
                     // OPEN PAYMENT FAIL POPUP HERE

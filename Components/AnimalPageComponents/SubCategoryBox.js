@@ -4,14 +4,7 @@ import React from 'react'
 const SubCategoryBox = (props) => {
 
     return (
-        <Link href={{
-            pathname: '/shop',
-            query: {
-                animal: props.subcategory.parent_category,
-                category: props.subcategory.children_category,
-                subcategory: props.subcategory.category_name
-            }
-        }}>
+        <Link href={`/${props.animal}/${props.category}/${props.subcategory.category_url}`} >
             <div className='subcategory-box flex items-center p-3 rounded-lg cursor-pointer'>
                 <img src={props.subcategory.category_icon == null ? '/img/category-placeholder.webp' : `${process.env.NEXT_PUBLIC_IMAGE_URI}/category-icon/${props.subcategory.category_icon}`} alt="" className='h-20' />
                 <h1 className='text-sm font-medium ml-2'>{props.subcategory.category_name}</h1>

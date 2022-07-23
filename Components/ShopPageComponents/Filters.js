@@ -66,8 +66,8 @@ const Filters = ({ filterData, applyFilters, sort, sortResults, hideFilter, clea
                 <div className="flex flex-col gap-3 mt-4">
                     {
                         filterData.animals?.map((animal, index) => {
-                            return (<Checkbox checked={apppliedFilters.animal?.includes(Capitalize(animal))} onChange={(e) => applyFilters({ type: 'animal', value: animal, checked: e.target.checked })} key={index} value={animal} size='sm' color='warning' css={{ 'z-index': '0' }}>
-                                {animal}
+                            return (<Checkbox checked={apppliedFilters.animal?.includes(animal.category_url)} onChange={(e) => applyFilters({ type: 'animal', value: animal.category_url, checked: e.target.checked })} key={index} value={animal.category_url} size='sm' color='warning' css={{ 'z-index': '0' }}>
+                                {animal.category_name}
                             </Checkbox>)
                         })
                     }
@@ -82,8 +82,8 @@ const Filters = ({ filterData, applyFilters, sort, sortResults, hideFilter, clea
                 <div className="flex flex-col gap-3 mt-4">
                     {
                         filterData.categories?.map((category, index) => {
-                            return (<Checkbox checked={apppliedFilters.category?.includes(Capitalize(category))} onChange={(e) => applyFilters({ type: 'category', value: category, checked: e.target.checked })} key={index} value={category} size='sm' color='warning' css={{ 'z-index': '0' }}>
-                                {category}
+                            return (<Checkbox checked={apppliedFilters.category?.includes(category.category_url)} onChange={(e) => applyFilters({ type: 'category', value: category.category_url, checked: e.target.checked })} key={index} value={category.category_url} size='sm' color='warning' css={{ 'z-index': '0' }}>
+                                {category.category_name}
                             </Checkbox>)
                         })
                     }
@@ -99,8 +99,8 @@ const Filters = ({ filterData, applyFilters, sort, sortResults, hideFilter, clea
                     <input onChange={(e) => searchInFilter("subcategory", e.target.value)} type="text" className='rounded shadow w-11/12 p-2 px-2 text-sm' placeholder='search...' />
                     {
                         subcategory?.map((subcategory, index) => {
-                            return (<Checkbox checked={apppliedFilters.subcategory?.includes(Capitalize(subcategory))} onChange={(e) => applyFilters({ type: 'subcategory', value: subcategory, checked: e.target.checked })} key={index} value={subcategory} size='sm' color='warning' css={{ 'z-index': '0' }}>
-                                {subcategory}
+                            return (<Checkbox checked={apppliedFilters.subcategory?.includes(subcategory.category_url)} onChange={(e) => applyFilters({ type: 'subcategory', value: subcategory.category_url, checked: e.target.checked })} key={index} value={subcategory.category_url} size='sm' color='warning' css={{ 'z-index': '0' }}>
+                                {subcategory.category_name}
                             </Checkbox>)
                         })
                     }
