@@ -7,11 +7,30 @@ import "swiper/css";
 import "swiper/css/free-mode";
 import "swiper/css/navigation";
 import "swiper/css/thumbs";
+import Link from 'next/link';
+
+import SlugCreator from '../../Helpers/SlugCreator'
 
 const ProductRow = (props) => {
+
     return (
         <div className="container top-products my-8">
-            <h1 className='font-medium text-xl'>{props.title}</h1>
+            <div className="flex justify-between items-center">
+                <h1 className='font-medium text-xl'>{props.title}</h1>
+                {
+                    props.subcategory ?
+                        <Link href={`/${props.animal}/${props.subcategory}/${SlugCreator(props.title)}`}>
+                            <span className="text-theme font-medium text-sm cursor-pointer">
+                                View all
+                            </span>
+                        </Link> :
+                        <Link href={`/${props.animal}/${SlugCreator(props.title)}`}>
+                            <span className="text-theme font-medium text-sm cursor-pointer">
+                                View all
+                            </span>
+                        </Link>
+                }
+            </div>
 
             <div className="mt-8">
                 <Swiper

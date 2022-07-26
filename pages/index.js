@@ -16,10 +16,9 @@ export default function Home(props) {
   const [customerFav, setCustomerFav] = useState()
   const [expertPick, setExpertPick] = useState()
   const [brands, setBrands] = useState()
-	console.log("PROCESS ENV ==============",process.env.NEXT_PUBLIC_API_URI)
   useEffect(() => {
-	console.log(process.env.NEXT_PUBLIC_API_URI)    
-let endpoints = [
+    console.log(process.env.NEXT_PUBLIC_API_URI)
+    let endpoints = [
       `${process.env.NEXT_PUBLIC_API_URI}/getcategories`,
       `${process.env.NEXT_PUBLIC_API_URI}/topratedproducts/get/data`,
       `${process.env.NEXT_PUBLIC_API_URI}/customerfavorite/get/data`,

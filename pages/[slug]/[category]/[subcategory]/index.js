@@ -60,11 +60,11 @@ const index = () => {
 
         axios.post(`${process.env.NEXT_PUBLIC_API_URI}/dyanamicsearchproducts/get/data?page=${pageNumber}`, {
             query: '',
-            animal: apppliedFilters.animal,
-            category: apppliedFilters.category,
-            subcategory: apppliedFilters.subcategory,
-            brand: apppliedFilters.brand,
-            rating: apppliedFilters.rating,
+            animal: apppliedFilters.animal ? apppliedFilters.animal : [router.query.slug],
+            category: apppliedFilters.category ? apppliedFilters.category : [router.query.category],
+            subcategory: apppliedFilters.subcategory ? apppliedFilters.subcategory : [router.query.subcategory],
+            brand: apppliedFilters.brand ? apppliedFilters.brand : [],
+            rating: apppliedFilters.rating ? apppliedFilters.rating : [],
             sort: sort
         })
             .then(res => {
@@ -92,6 +92,7 @@ const index = () => {
             .then(res => {
                 setIsLoading(false)
                 setSrpData(res.data.productBySearch)
+                setPage(1)
             })
             .catch(err => console.log(err))
     }
@@ -121,6 +122,7 @@ const index = () => {
             .then(res => {
                 setIsLoading(false)
                 setSrpData(res.data.productBySearch)
+                setPage(1)
             })
             .catch(err => console.log(err))
 

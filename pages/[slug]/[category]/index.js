@@ -12,6 +12,7 @@ import Head from 'next/head';
 
 
 const index = (props) => {
+    console.log("🚀 ~ file: index.js ~ line 15 ~ index ~ props", props)
 
     const [categoryWiseProducts, setCategoryWiseProducts] = useState()
 
@@ -81,7 +82,7 @@ const index = (props) => {
             {
                 categoryWiseProducts && categoryWiseProducts.map((products, index) => {
                     if (products.products.categoryLevel3WiseProduct && products.products.categoryLevel3WiseProduct.length !== null) {
-                        return <ProductRow key={index} title={products.category} products={products.products.categoryLevel3WiseProduct} />
+                        return <ProductRow animal={props.animal} subcategory={props.category} key={index} title={products.category} products={products.products.categoryLevel3WiseProduct} />
                     }
                 })
 
