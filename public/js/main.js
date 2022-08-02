@@ -147,6 +147,11 @@ $(document).ready(function () {
         y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
     })(window, document, "clarity", "script", "bkenv6u3cf");
 
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-6G0X6LY5BT');
+
     // INSPECT LET
     (function () {
         window.__insp = window.__insp || [];

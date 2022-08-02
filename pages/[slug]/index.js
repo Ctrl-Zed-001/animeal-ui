@@ -89,7 +89,7 @@ const index = (props) => {
             {
                 categoryWiseProducts && categoryWiseProducts.map((products, index) => {
                     if (products.products.categoryLevel2WiseProduct && products.products.categoryLevel2WiseProduct.length !== null) {
-                        return <ProductRow animal={props.slug} key={index} title={products.category} products={products.products.categoryLevel2WiseProduct} />
+                        return <ProductRow showLink={true} animal={props.slug} key={index} title={products.category} products={products.products.categoryLevel2WiseProduct} />
                     }
                 })
 

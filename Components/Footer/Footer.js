@@ -7,6 +7,7 @@ const Footer = () => {
 
     const router = useRouter()
     const [show, setShow] = useState(true)
+    const [showWhatsappText, setShowWhatsappText] = useState(false)
 
 
     useEffect(() => {
@@ -21,6 +22,10 @@ const Footer = () => {
 
     return (
         <div className={`${show ? 'block' : 'hidden'} footer mt-32 pb-10 lg:pb-24 relative px-4 lg:px-0`}>
+            <a target="_blank" href="https://wa.me/+919004485093">
+                <img onMouseOver={() => setShowWhatsappText(true)} onMouseLeave={() => setShowWhatsappText(false)} src="/img/wp.png" alt="" className='fixed bottom-16 right-0 h-16 w-16 z-50' />
+                <span className={`fixed bottom-20 right-20 text-white bg-green-500 px-3 rounded-lg text-sm ${showWhatsappText ? 'showtext' : 'hidden'}`}>Whatsapp Us</span>
+            </a>
             <img src="/img/footer-bg.webp" alt="" className='hidden lg:block -z-10 lg:absolute lg:bottom-0 left-0' />
             <img src="/img/footer-mobile-bg.webp" alt="" className='lg:hidden -z-10 absolute -bottom-10 left-0 w-full' />
             <div className="container py-6 bg-white rounded-3xl ">
@@ -75,10 +80,10 @@ const Footer = () => {
                             <img src="/img/icons/love.webp" alt="" />
                         </div>
                         <div className="flex justify-center gap-4 lg:gap-4 text-center lg:mt-4 ">
-                            <a className='z-30' href="https://www.facebook.com/animeal.in"><img src="/img/icons/fb.webp" alt="" className='h-8' /></a>
-                            <a className='z-30' href="https://twitter.com/animeal_in/"><img src="/img/icons/twitter.webp" alt="" className='h-8' /></a>
-                            <a className='z-30' href="https://www.instagram.com/animeal.in/"><img src="/img/icons/insta.webp" alt="" className='h-8' /></a>
-                            <a className='z-30' href="https://wa.me/+919004485093"><img src="/img/icons/whatsapp.webp" alt="" className='h-8' /></a>
+                            <a className='' href="https://www.facebook.com/animeal.in"><img src="/img/icons/fb.webp" alt="" className='h-8' /></a>
+                            <a className='' href="https://twitter.com/animeal_in/"><img src="/img/icons/twitter.webp" alt="" className='h-8' /></a>
+                            <a className='' href="https://www.instagram.com/animeal.in/"><img src="/img/icons/insta.webp" alt="" className='h-8' /></a>
+                            <a className='' href="https://wa.me/+919004485093"><img src="/img/icons/whatsapp.webp" alt="" className='h-8' /></a>
                         </div>
                     </div>
                     <hr className='lg:hidden w-full bg-gray-500 my-4 xl:my-8' />
@@ -102,7 +107,7 @@ const Footer = () => {
             </div>
 
             <img src="/img/footer_dog.webp" alt="" className='absolute bottom-1 lg:-bottom-4 -left-16 lg:-left-36 h-32 lg:h-80 ' />
-            <img src="/img/footer_cat.webp" alt="" className='absolute -bottom-4 lg:-bottom-6 right-0 lg:right-10 h-32 lg:h-72 z-10' />
+            <img src="/img/footer_cat.webp" alt="" className='absolute -bottom-4 lg:-bottom-6 right-0 lg:right-10 h-32 lg:h-72 ' />
         </div >
     )
 }

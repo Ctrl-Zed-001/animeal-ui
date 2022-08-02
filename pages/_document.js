@@ -24,6 +24,7 @@ class MyDocument extends Document {
                 {/* <script src="//code.tidio.co/5zzfp9wo8jthjunqp8zodiz3lw5mqqv4.js" async></script> */}
                 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-179635883-1"></script>
                 <script async src="https://www.googletagmanager.com/gtag/js?id=AW-610455455"></script>
+                <script async src="https://www.googletagmanager.com/gtag/js?id=G-6G0X6LY5BT"></script>
                 <body>
                     <Main />
                     <NextScript />
