@@ -114,7 +114,7 @@ const BannerSection = () => {
                     modules={[Autoplay]}
                 >
                     <SwiperSlide>
-                        <BannerBox link="/shop?slug=veterinary" image="/img/banner-2.webp" heading="Best Quality <br /> Pet Food <br /> 10% OFF" button="Shop Now" />
+                        <BannerBox link="/shop?slug=veterinary" image="/img/banner2.png" heading="" button="Register Now" />
                     </SwiperSlide>
                     {/* <SwiperSlide>
                         <BannerBox link="/shop?animal=dog&category=medicine&subcategory=fleas-and-ticks" image="/img/banner-5.webp" />
