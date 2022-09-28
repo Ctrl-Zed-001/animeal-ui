@@ -17,7 +17,7 @@ export default function Home(props) {
   const [expertPick, setExpertPick] = useState()
   const [brands, setBrands] = useState()
   useEffect(() => {
-    console.log(process.env.NEXT_PUBLIC_API_URI)
+
     let endpoints = [
       `${process.env.NEXT_PUBLIC_API_URI}/getcategories`,
       `${process.env.NEXT_PUBLIC_API_URI}/topratedproducts/get/data`,
