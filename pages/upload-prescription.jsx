@@ -2,12 +2,13 @@ import React, { useState, useRef } from 'react'
 import { Modal } from '@nextui-org/react';
 import { Input, Textarea } from '@nextui-org/react';
 import { HiPlusSm } from 'react-icons/hi';
-import { AiFillCloseCircle } from 'react-icons/ai'
+import { AiFillCloseCircle, AiOutlineWhatsApp } from 'react-icons/ai'
 import { useForm } from "react-hook-form";
 import FormData from 'form-data';
 import axios from 'axios';
 import UploadStatusModal from '../Components/HomeComponents/UploadStatusModal';
 import { useRouter } from 'next/router';
+
 
 
 
@@ -91,6 +92,11 @@ const uploadPrescription = () => {
             <div className="text-center">
                 <h1 className="text-lg font-semibold text-theme ">Don't want the hassle to search for the product?</h1>
                 <p className="text-center text-slate-500 text-sm">Just upload your prescription here and get it delivered</p>
+                <h1 className='my-3'>OR</h1>
+                <a href="https://wa.me/+919004485093" target="_blank" class="learn-more flex justify-between items-center gap-2 m-auto w-fit">
+                    <AiOutlineWhatsApp className='h-5 w-5' />
+                    Whatsapp Us
+                </a>
             </div>
 
             <h1 className="my-6 text-lg text-left">Upload Prescription</h1>
