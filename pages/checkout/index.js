@@ -32,7 +32,7 @@ const Checkout = () => {
     const form = new FormData();
 
     const { token, userDetails, isLoggedIn } = useContext(AuthContext)
-    const { cartTotal, clearCart, cartDiscount, doctorName, prescriptionFiles, prescriptionUploaded, hasMedicine } = useContext(CartContext)
+    const { cartTotal, subTotal, clearCart, cartDiscount, doctorName, prescriptionFiles, prescriptionUploaded, hasMedicine, setCartTotal } = useContext(CartContext)
 
     const [showAddressModal, setShowAddressModal] = useState(false)
     const [address, setAddress] = useState()
@@ -45,6 +45,8 @@ const Checkout = () => {
     const [isOnlinePayment, setIsOnlinePayment] = useState(true)
     const [isDeliverable, setIsDeliverable] = useState()
     const [loading, setIsLoading] = useState(false)
+    const [couponcode, setCouponcode] = useState('')
+    const [couponApplied, setCouponApplied] = useState(false)
 
 
     useEffect(() => {
@@ -275,100 +277,7 @@ const Checkout = () => {
 
     }
 
-    // RAZOR PAY CODE
-    // const callRazorPay = () => {
-    //     axios.post(
-    //         `${process.env.NEXT_PUBLIC_API_URI}/user/razorpayordercreate/post/data`,
-    //         {
-    //             "amount": cartTotal * 100
-    //         },
-    //         {
-    //             headers: {
-    //                 Authorization: token
-    //             }
-    //         }
-    //     )
-    //         .then(res => {
-    //             if (res.data.razorpayOrderDetails.id) {
-    //                 makePayment(res.data.razorpayOrderDetails.id)
-    //             }
-    //         })
-    //         .catch(err => console.log(err))
-    // }
 
-    // const makePayment = (orderId) => {
-    //     let rzp1;
-    //     var options = {
-    //         "key": process.env.NEXT_PUBLIC_RAZOR_PAY_KEY, // Enter the Key ID generated from the Dashboard
-    //         "amount": cartTotal * 100, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
-    //         "currency": "INR",
-    //         "name": "Animeal",
-    //         "description": "Test Transaction",
-    //         "order_id": orderId,
-    //         "image": "/img/logo.webp",
-    //         "handler": function (response) {
-    //             let payment_id = response.razorpay_payment_id
-    //             let order_id = response.razorpay_order_id;
-    //             let signature = response.razorpay_signature;
-    //             axios.post(
-    //                 `${process.env.NEXT_PUBLIC_API_URI}/user/onlinePayment/post/data`,
-    //                 {
-    //                     name: address.addname,
-    //                     drname: "zed",
-    //                     email: address.addemail,
-    //                     number: address.addnumber,
-    //                     altnumber: address.addaltnumber,
-    //                     address1: address.addaddress1,
-    //                     address2: address.addaddress2,
-    //                     city: address.addcity,
-    //                     pincode: address.addpincode,
-    //                     state: address.addstate,
-    //                     razorpay_payment_id: payment_id
-    //                 },
-    //                 {
-    //                     headers: {
-    //                         Authorization: token
-    //                     }
-    //                 }
-    //             )
-    //                 .then(res => {
-    //                     uploadPrescription()
-    //                     setOrderStatus(true)
-    //                     setStatusModal(true)
-    //                     clearCart()
-    //                 })
-    //                 .catch(err => console.log(err))
-    //         },
-    //         "prefill": {
-    //             "name": "Gaurav Kumar",
-    //             "email": "gaurav.kumar@example.com",
-    //             "contact": "9999999999"
-    //         },
-    //         "notes": {
-    //             "address": "Razorpay Corporate Office"
-    //         },
-    //         "theme": {
-    //             "color": "#3399cc"
-    //         }
-    //     };
-    //     rzp1 = new window.Razorpay(options)
-    //     rzp1.open()
-
-    //     rzp1.on('payment.failed', function (response) {
-    //         // alert('payment fail')
-    //         // alert(response.error.code);
-    //         // alert(response.error.description);
-    //         // alert(response.error.source);
-    //         // alert(response.error.step);
-    //         // alert(response.error.reason);
-    //         // alert(response.error.metadata.order_id);
-    //         // alert(response.error.metadata.payment_id);
-
-    //         // OPEN PAYMENT FAIL POPUP HERE
-    //         setOrderStatus(false)
-    //         setStatusModal(true)
-    //     });
-    // }
 
     const callOtp = () => {
         setOtpModal(true)
@@ -426,36 +335,7 @@ const Checkout = () => {
             })
     }
 
-    // const placeOnlineOrder = () => {
-    //     axios.post(
-    //         `${process.env.NEXT_PUBLIC_API_URI}/user/onlinePayment/post/data`,
-    //         {
-    //             name: address.addname,
-    //             drname: doctorName ? doctorName : '',
-    //             email: address.addemail,
-    //             number: address.addnumber,
-    //             altnumber: address.addaltnumber,
-    //             address1: address.addaddress1,
-    //             address2: address.addaddress2,
-    //             city: address.addcity,
-    //             pincode: address.addpincode,
-    //             state: address.addstate,
-    //             razorpay_payment_id: payment_id
-    //         },
-    //         {
-    //             headers: {
-    //                 Authorization: token
-    //             }
-    //         }
-    //     )
-    //         .then(res => {
-    //             uploadPrescription()
-    //             setOrderStatus(true)
-    //             setStatusModal(true)
-    //             clearCart()
-    //         })
-    //         .catch(err => console.log(err))
-    // }
+
 
     // UPLOAD PRESCRIPTION
     const uploadPrescription = () => {
@@ -479,6 +359,21 @@ const Checkout = () => {
             )
                 .then(res => console.log(res.data))
                 .catch(err => console.log(err))
+        }
+    }
+
+    const applyCoupon = (e) => {
+        if (couponApplied) {
+            toast.error("Coupon already applied")
+        } else {
+            if (couponcode == 'MATMISSKARO15') {
+                let discountedPrice = cartTotal - (subTotal * 0.05)
+                setCartTotal(discountedPrice)
+                setCouponApplied(true)
+                toast.success("coupon applied")
+            } else {
+                toast.error("oops! that didn't work.")
+            }
         }
     }
 
@@ -670,8 +565,8 @@ const Checkout = () => {
                     <h1 className='font-semibold mb-4'>Coupon Code</h1>
                     <div className='flex justify-between gap-2 items-center'>
                         <IoMdPricetag className='text-theme h-8 w-10' />
-                        <Input underlined className='w-11/12' />
-                        <HiChevronRight onClick={() => toast.error("oops! that didn't work.")} className='bg-theme rounded-full h-8 w-8' />
+                        <Input underlined className='w-11/12' value={couponcode} onChange={(e) => setCouponcode(e.target.value.toUpperCase())} />
+                        <HiChevronRight onClick={applyCoupon} className='bg-theme rounded-full h-8 w-8' />
                     </div>
                 </div>
 
@@ -681,10 +576,14 @@ const Checkout = () => {
                         <h1 className='font-semibold'>Payment Details</h1>
                     </div>
 
-                    <PaymentItem title='Sub Total' price={parseInt(cartTotal) + parseInt(cartDiscount)} />
+                    <PaymentItem title='Sub Total' price={parseInt(subTotal)} />
                     <PaymentItem title='Delivery Charge' price='0' />
                     <PaymentItem title='Coupon Discount' price='0' />
                     <PaymentItem className='text-green-600 font-semibold' title='You Have Saved' price={cartDiscount} />
+                    {
+                        couponApplied &&
+                        <PaymentItem className='text-green-600 font-semibold' title='MATMISSKARO15' price={subTotal * 0.05} />
+                    }
 
                     <hr className='w-full border-1 border-dashed my-4' />
 
