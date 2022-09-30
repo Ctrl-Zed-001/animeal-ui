@@ -82,7 +82,7 @@ const uploadPrescription = () => {
 
 
     return (
-        <div className="container p-20 lg:pt-10 rounded shadow bg-white w-full lg:w-8/12 ">
+        <div className="container my-16 lg:my-0 py-10 rounded shadow bg-white w-full lg:w-8/12 ">
             <UploadStatusModal isOpen={isStatusModalOpen} close={() => {
                 setIsStatusModalOpen(false)
                 router.push('/')
@@ -90,10 +90,10 @@ const uploadPrescription = () => {
 
 
             <div className="text-center">
-                <h1 className="text-lg font-semibold text-theme ">Don't want the hassle to search for the product?</h1>
-                <p className="text-center text-slate-500 text-sm">Just upload your prescription here and get it delivered</p>
+                <h1 className="text-2xl font-semibold text-theme ">Don't want the hassle to search for the product?</h1>
+                <p className="text-center text-slate-500 text-lg">Just upload your prescription here and get it delivered</p>
                 <h1 className='my-3'>OR</h1>
-                <a href="https://wa.me/+919004485093" target="_blank" class="learn-more flex justify-between items-center gap-2 m-auto w-fit">
+                <a href="https://wa.me/+919004485093" target="_blank" className="learn-more flex justify-between items-center gap-2 m-auto w-fit">
                     <AiOutlineWhatsApp className='h-5 w-5' />
                     Whatsapp Us
                 </a>
