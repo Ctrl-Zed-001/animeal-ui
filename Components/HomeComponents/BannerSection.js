@@ -81,7 +81,7 @@ const BannerSection = () => {
             </div>
 
             {/* MAIN BANNER */}
-            <div className="main-banner col-span-5">
+            <div className="main-banner col-span-10">
                 <Swiper
                     slidesPerView={1}
                     className=''
@@ -93,16 +93,10 @@ const BannerSection = () => {
                     modules={[Autoplay]}
                 >
                     <SwiperSlide>
-                        <BannerBox link="/shop?slug=food" image="/img/banner-1.webp" heading="Best Quality <br /> Pet Food <br /> 10% OFF" button="Shop Now" />
+                        <BannerBox link="/shop?slug=food" image="/img/main-banner.png" heading="" button="" />
                     </SwiperSlide>
-                    {/* <SwiperSlide>
-                        <BannerBox link="/shop?slug=pedigree" image="/img/banner-3.webp" />
-                    </SwiperSlide>
-                    <SwiperSlide>
-                        <BannerBox link="/shop?slug=me-o" image="/img/banner-4.webp" />
-                    </SwiperSlide> */}
                 </Swiper>
-
+                {/* 
                 <Swiper
                     slidesPerView={1}
                     className=''
@@ -116,17 +110,11 @@ const BannerSection = () => {
                     <SwiperSlide>
                         <BannerBox link="/shop?slug=veterinary" image="/img/banner-2.webp" heading="Vaccines and <br/> Medical Supplies" button="Shop Now" />
                     </SwiperSlide>
-                    {/* <SwiperSlide>
-                        <BannerBox link="/shop?animal=dog&category=medicine&subcategory=fleas-and-ticks" image="/img/banner-5.webp" />
-                    </SwiperSlide>
-                    <SwiperSlide>
-                        <BannerBox link="/shop?slug=supplements" image="/img/banner-6.webp" />
-                    </SwiperSlide> */}
-                </Swiper>
+                </Swiper> */}
             </div>
 
-            <div className="flex col-span-5 gap-1 lg:gap-4 lg:mt-0 mt-2">
-                {/* RIGHT BANNER 1 */}
+            {/* <div className="flex col-span-5 gap-1 lg:gap-4 lg:mt-0 mt-2">
+         
                 <div className="relative h-90 lg:w-3/6 w-3/6 text-center">
                     <img src="/img/3rd.webp" alt="" className='h-full object-cover rounded-lg w-full shadow' />
                     <h1 className="text-white xl:text-xl font-bold absolute top-4 xl:top-10 left-0 w-full px-2">Send us the prescription and we'll have it delivered</h1>
@@ -137,12 +125,12 @@ const BannerSection = () => {
                     </Link>
                 </div>
 
-                {/* RIGHT BANNER 2 */}
+       
                 <div className="relative h-90 w-3/6 lg:w-3/6 text-center">
                     <img src="/img/4th.webp" alt="" className='h-full object-cover rounded-lg w-full shadow' />
                     <h1 className="text-white text-xl font-bold absolute bottom-10 left-0 w-full px-2">Pathology <br /> <span className='text-3xl'>Coming Soon</span> </h1>
                 </div>
-            </div>
+            </div> */}
             <PrescriptionUpload isOpen={isUploadModalOpen} isMobile={isMobile} close={() => setIsUploadModalOpen(false)} showStatus={handleClose} />
             <UploadStatusModal isOpen={isStatusModalOpen} close={() => setIsStatusModalOpen(false)} status={status} />
         </div>
