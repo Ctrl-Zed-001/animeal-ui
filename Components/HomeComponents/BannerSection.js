@@ -87,13 +87,20 @@ const BannerSection = () => {
                     className=''
                     spaceBetween={0}
                     autoplay={{
-                        delay: 3000,
+                        delay: 5000,
                         disableOnInteraction: false,
                     }}
                     modules={[Autoplay]}
+                    loop={true}
                 >
                     <SwiperSlide>
                         <BannerBox link="/shop?slug=food" image="/img/main-banner.png" heading="" button="" />
+                    </SwiperSlide>
+                    <SwiperSlide>
+                        <BannerBox link="/shop?slug=food" image="/img/main-banner2.png" heading="" button="" />
+                    </SwiperSlide>
+                    <SwiperSlide>
+                        <BannerBox link="/shop?slug=food" image="/img/main-banner3.png" heading="" button="" />
                     </SwiperSlide>
                 </Swiper>
                 {/* 
