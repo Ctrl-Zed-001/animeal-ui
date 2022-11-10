@@ -7,9 +7,12 @@ const payment = () => {
     useEffect(() => {
         axios.post('/api/ccavRequestHandler', {
             merchant_id: '1529688',
-            amount: "1.00",
             order_id: '4334',
             currency: "INR",
+            amount: "1.00",
+            redirect_url: '/api/ccavResponseHandler',
+            cancel_url: '/api/ccavResponseHandler',
+            language: 'EN',
             billing_name: "zed",
             billing_address: "panvel",
             billing_city: "mumbai",
@@ -26,10 +29,7 @@ const payment = () => {
             delivery_country: 'India',
             delivery_tel: '8454015530',
             integration_type: 'iframe_normal',
-            customer_identifier: '44870',
-            redirect_url: '/api/ccavResponseHandler',
-            cancel_url: '/api/ccavResponseHandler',
-            language: 'EN'
+            customer_identifier: '44870'
         })
             .then(res => setIframe(res.data))
             .catch(err => console.log(err))

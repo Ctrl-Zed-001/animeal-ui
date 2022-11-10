@@ -1,30 +1,21 @@
-var http = require('http'),
-    fs = require('fs'),
-    ccav = require('./ccavutil.js'),
-    qs = require('querystring');
+const ccav = require('./ccavutil.js')
 
-exports.postRes = function (request, response) {
+export default function (req, res) {
     var ccavEncResponse = '',
         ccavResponse = '',
         workingKey = '1C1A069B7FD2CEF791F42561377C9A4F',	//Put in the 32-Bit key provided by CCAvenues.
         ccavPOST = '';
 
-    request.on('data', function (data) {
-        ccavEncResponse += data;
-        ccavPOST = qs.parse(ccavEncResponse);
-        var encryption = ccavPOST.encResp;
-        ccavResponse = ccav.decrypt(encryption, workingKey);
-    });
+    ccavEncResponse += data;
+    ccavPOST = new URLSearchParams(ccavEncResponse);
+    var encryption = ccavPOST.toString().encResp;
+    ccavResponse = ccav.decrypt(encryption, workingKey);
+    var pData = '';
+    pData = '<table border=1 cellspacing=2 cellpadding=2><tr><td>'
+    pData = pData + ccavResponse.replace(/=/gi, '</td><td>')
+    pData = pData.replace(/&/gi, '</td></tr><tr><td>')
+    pData = pData + '</td></tr></table>'
+    htmlcode = '<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><title>Response Handler</title></head><body><center><font size="4" color="blue"><b>Response Page</b></font><br>' + pData + '</center><br></body></html>';
 
-    request.on('end', function () {
-        var pData = '';
-        pData = '<table border=1 cellspacing=2 cellpadding=2><tr><td>'
-        pData = pData + ccavResponse.replace(/=/gi, '</td><td>')
-        pData = pData.replace(/&/gi, '</td></tr><tr><td>')
-        pData = pData + '</td></tr></table>'
-        htmlcode = '<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><title>Response Handler</title></head><body><center><font size="4" color="blue"><b>Response Page</b></font><br>' + pData + '</center><br></body></html>';
-        response.writeHeader(200, { "Content-Type": "text/html" });
-        response.write(htmlcode);
-        response.end();
-    });
+    res.status(200).send(formbody)
 };
