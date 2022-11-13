@@ -4,11 +4,12 @@ import PrescriptionUpload from './PrescriptionUpload'
 import { AuthContext } from '../../Context/AuthContext'
 import UploadStatusModal from './UploadStatusModal'
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay } from "swiper"
+import { Autoplay, Pagination } from "swiper"
 
 import "swiper/css";
 import "swiper/css/free-mode";
 import "swiper/css/navigation";
+import 'swiper/css/pagination';
 import BannerBox from './BannerBox'
 
 const BannerSection = () => {
@@ -90,17 +91,27 @@ const BannerSection = () => {
                         delay: 5000,
                         disableOnInteraction: false,
                     }}
-                    modules={[Autoplay]}
+                    modules={[Autoplay, Pagination]}
                     loop={true}
+                    pagination={{
+                        dynamicBullets: true,
+                        clickable: true
+                    }}
                 >
                     <SwiperSlide>
-                        <BannerBox link="/shop?slug=food" image="/img/main-banner.png" heading="" button="" />
+                        <BannerBox link="/shop?slug=food" image="/img/banner1.png" heading="" button="" />
                     </SwiperSlide>
                     <SwiperSlide>
-                        <BannerBox link="/shop?slug=food" image="/img/main-banner2.png" heading="" button="" />
+                        <BannerBox link="/shop?slug=food" image="/img/banner2.png" heading="" button="" />
                     </SwiperSlide>
                     <SwiperSlide>
-                        <BannerBox link="/shop?slug=food" image="/img/main-banner3.png" heading="" button="" />
+                        <BannerBox link="/shop?slug=food" image="/img/banner3.png" heading="" button="" />
+                    </SwiperSlide>
+                    <SwiperSlide>
+                        <BannerBox link="/shop?slug=food" image="/img/banner4.png" heading="" button="" />
+                    </SwiperSlide>
+                    <SwiperSlide>
+                        <BannerBox link="/shop?slug=food" image="/img/banner5.png" heading="" button="" />
                     </SwiperSlide>
                 </Swiper>
                 {/* 

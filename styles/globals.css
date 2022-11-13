@@ -413,3 +413,14 @@ a.learn-more:active::before {
   /* box-shadow: 0 0 0 2px #DCF8C6, 0 0 #ffe3e2; */
   transform: translate3d(0, 0, -1em);
 }
+
+.main-banner .swiper-pagination-bullet {
+  height: 0.5rem;
+  border-radius: 1rem;
+  box-shadow: 0px 2px 5px rgb(160, 160, 160);
+  background-color: white;
+}
+
+.main-banner .swiper-pagination-bullet-active-main {
+  background-color: rgb(253, 43, 43);
+}
