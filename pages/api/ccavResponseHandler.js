@@ -3,7 +3,7 @@ const ccav = require('./ccavutil.js')
 export default function (req, res) {
     var ccavEncResponse = '',
         ccavResponse = '',
-        workingKey = '1C1A069B7FD2CEF791F42561377C9A4F',	//Put in the 32-Bit key provided by CCAvenues.
+        workingKey = '0E3C7C18D465713163159A1A5E8AE19A',	//Put in the 32-Bit key provided by CCAvenues.
         ccavPOST = '';
 
     ccavEncResponse += req.data;
