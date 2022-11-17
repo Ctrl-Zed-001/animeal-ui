@@ -6,7 +6,7 @@ export default function (req, res) {
         workingKey = '1C1A069B7FD2CEF791F42561377C9A4F',	//Put in the 32-Bit key provided by CCAvenues.
         ccavPOST = '';
 
-    ccavEncResponse += data;
+    ccavEncResponse += req.data;
     ccavPOST = new URLSearchParams(ccavEncResponse);
     var encryption = ccavPOST.toString().encResp;
     ccavResponse = ccav.decrypt(encryption, workingKey);

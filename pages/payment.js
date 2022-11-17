@@ -8,8 +8,8 @@ const payment = () => {
         order_id: '4334',
         currency: "INR",
         amount: "1000.00",
-        redirect_url: '/api/ccavResponseHandler',
-        cancel_url: '/api/ccavResponseHandler',
+        redirect_url: 'https://animeal.in/api/ccavResponseHandler',
+        cancel_url: 'https://animeal.in/api/ccavResponseHandler',
         language: 'EN',
         integration_type: 'iframe_normal',
     })
