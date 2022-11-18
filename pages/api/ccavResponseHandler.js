@@ -8,13 +8,16 @@ export default function (req, res) {
         ccavResponse = '',
         workingKey = '0E3C7C18D465713163159A1A5E8AE19A',	//Put in the 32-Bit key provided by CCAvenues.
         ccavPOST = '';
-
-    ccavEncResponse += req.body;
+    console.log("level 1 =====")
+    ccavEncResponse += JSON.stringify(req.body);
     console.log("🚀 ~ file: ccavResponseHandler.js ~ line 13 ~ ccavEncResponse", ccavEncResponse)
-    ccavPOST = new URLSearchParams(JSON.stringify(ccavEncResponse));
+    ccavPOST = new URLSearchParams(ccavEncResponse);
+    console.log("level 2 =====")
     console.log("🚀 ~ file: ccavResponseHandler.js ~ line 15 ~ ccavPOST", ccavPOST)
     var encryption = ccavPOST.toString().encResp;
+    console.log("level 3 =====")
     ccavResponse = ccav.decrypt(encryption, workingKey);
+    console.log("level 4 =====")
     var pData = '';
     pData = '<table border=1 cellspacing=2 cellpadding=2><tr><td>'
     pData = pData + ccavResponse.replace(/=/gi, '</td><td>')
