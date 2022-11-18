@@ -12,6 +12,14 @@ const payment = () => {
         cancel_url: 'https://animeal.in/api/ccavResponseHandler',
         language: 'EN',
         integration_type: 'iframe_normal',
+        billing_name: "zed",
+        billing_address: "panvel",
+        billing_city: "mumbai",
+        billing_state: "MH",
+        billing_zip: '410206',
+        billing_country: 'India',
+        billing_tel: '8454015530',
+        billing_email: 'zshake11@gmail.com',
     })
 
     const pay = () => {
@@ -55,6 +63,38 @@ const payment = () => {
                 <div className="form-control my-4">
                     <label htmlFor="">Integration type : </label>
                     <input type="text" onChange={(e) => setFormData({ ...formData, integration_type: e.target.value })} value={formData.integration_type} />
+                </div>
+                <div className="form-control my-4">
+                    <label htmlFor="">Billing Name : </label>
+                    <input type="text" onChange={(e) => setFormData({ ...formData, billing_name: e.target.value })} value={formData.billing_name} />
+                </div>
+                <div className="form-control my-4">
+                    <label htmlFor="">Billing Address : </label>
+                    <input type="text" onChange={(e) => setFormData({ ...formData, billing_address: e.target.value })} value={formData.billing_address} />
+                </div>
+                <div className="form-control my-4">
+                    <label htmlFor="">billing_country : </label>
+                    <input type="text" onChange={(e) => setFormData({ ...formData, billing_country: e.target.value })} value={formData.billing_country} />
+                </div>
+                <div className="form-control my-4">
+                    <label htmlFor="">billing_tel : </label>
+                    <input type="text" onChange={(e) => setFormData({ ...formData, billing_tel: e.target.value })} value={formData.billing_tel} />
+                </div>
+                <div className="form-control my-4">
+                    <label htmlFor="">billing_state : </label>
+                    <input type="text" onChange={(e) => setFormData({ ...formData, billing_state: e.target.value })} value={formData.billing_state} />
+                </div>
+                <div className="form-control my-4">
+                    <label htmlFor="">billing_zip : </label>
+                    <input type="text" onChange={(e) => setFormData({ ...formData, billing_zip: e.target.value })} value={formData.billing_zip} />
+                </div>
+                <div className="form-control my-4">
+                    <label htmlFor="">billing_city : </label>
+                    <input type="text" onChange={(e) => setFormData({ ...formData, billing_city: e.target.value })} value={formData.billing_city} />
+                </div>
+                <div className="form-control my-4">
+                    <label htmlFor="">Billing email : </label>
+                    <input type="text" onChange={(e) => setFormData({ ...formData, billing_email: e.target.value })} value={formData.billing_email} />
                 </div>
                 <button onClick={pay} className='mt-2 border bg-gray-400 p-2'>Submit</button>
             </div>

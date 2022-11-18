@@ -13,9 +13,7 @@ export default function (req, res) {
     ccavPOST = new URLSearchParams(encryptedRes.encResp);
     var encryption = ccavPOST.toString();
 
-    console.log("level 3 =====", JSON.stringify(encryptedRes.encResp))
     ccavResponse = ccav.decrypt(encryptedRes.encResp, workingKey);
-    console.log("level 4 =====")
 
     var pData = '';
     pData = '<table border=1 cellspacing=2 cellpadding=2><tr><td>'
@@ -23,6 +21,5 @@ export default function (req, res) {
     pData = pData.replace(/&/gi, '</td></tr><tr><td>')
     pData = pData + '</td></tr></table>'
     let htmlcode = '<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><title>Response Handler</title></head><body><center><font size="4" color="blue"><b>Response Page</b></font><br>' + pData + '</center><br></body></html>';
-    console.log("level 5 =====")
     res.status(200).send(htmlcode)
 };
