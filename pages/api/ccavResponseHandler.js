@@ -10,7 +10,9 @@ export default function (req, res) {
         ccavPOST = '';
 
     ccavEncResponse += req.body;
-    ccavPOST = new URLSearchParams(ccavEncResponse);
+    console.log("🚀 ~ file: ccavResponseHandler.js ~ line 13 ~ ccavEncResponse", ccavEncResponse)
+    ccavPOST = new URLSearchParams(JSON.stringify(ccavEncResponse));
+    console.log("🚀 ~ file: ccavResponseHandler.js ~ line 15 ~ ccavPOST", ccavPOST)
     var encryption = ccavPOST.toString().encResp;
     ccavResponse = ccav.decrypt(encryption, workingKey);
     var pData = '';
