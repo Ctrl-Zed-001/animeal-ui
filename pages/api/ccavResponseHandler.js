@@ -1,12 +1,15 @@
 const ccav = require('./ccavutil.js')
 
 export default function (req, res) {
+    console.log("req ========", req)
+    console.log("req.data=============", req.data)
+    console.log("req.body==========", req.body)
     var ccavEncResponse = '',
         ccavResponse = '',
         workingKey = '0E3C7C18D465713163159A1A5E8AE19A',	//Put in the 32-Bit key provided by CCAvenues.
         ccavPOST = '';
 
-    ccavEncResponse += req.data;
+    ccavEncResponse += req.body;
     ccavPOST = new URLSearchParams(ccavEncResponse);
     var encryption = ccavPOST.toString().encResp;
     ccavResponse = ccav.decrypt(encryption, workingKey);
