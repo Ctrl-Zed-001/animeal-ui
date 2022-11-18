@@ -13,7 +13,7 @@ export default function (req, res) {
     ccavPOST = new URLSearchParams(encryptedRes.encResp);
     console.log("🚀 ~ file: ccavResponseHandler.js ~ line 14 ~ ccavPOST", ccavPOST)
     console.log("----------------------------")
-    var encryption = ccavPOST;
+    var encryption = ccavPOST.toString();
     console.log("level 3 =====")
     ccavResponse = ccav.decrypt(encryption, workingKey);
     console.log("level 4 =====")
