@@ -7,15 +7,13 @@ export default function (req, res) {
         ccavPOST = '';
 
     ccavEncResponse += JSON.stringify(req.body);
-    console.log("🚀 ~ file: ccavResponseHandler.js ~ line 13 ~ ccavEncResponse", ccavEncResponse)
+
     let encryptedRes = JSON.parse(ccavEncResponse)
-    console.log("🚀 ~ file: ccavResponseHandler.js ~ line 12 ~ encryptedRes", encryptedRes)
+
     ccavPOST = new URLSearchParams(encryptedRes.encResp);
-    console.log("🚀 ~ file: ccavResponseHandler.js ~ line 14 ~ ccavPOST", ccavPOST)
-    console.log("----------------------------")
     var encryption = ccavPOST.toString();
-    console.log("level 3 =====")
-    ccavResponse = ccav.decrypt(encryption, workingKey);
+    console.log("level 3 =====", JSON.stringify(encryptedRes.encResp))
+    ccavResponse = ccav.decrypt(JSON.stringify(encryptedRes.encResp), workingKey);
     console.log("level 4 =====")
     var pData = '';
     pData = '<table border=1 cellspacing=2 cellpadding=2><tr><td>'
