@@ -4,6 +4,7 @@ import Rating from '../ProductBox/Rating';
 import Capitalize from '../../Helpers/Capitalize';
 
 const Filters = ({ filterData, applyFilters, sort, sortResults, hideFilter, clearAll, apppliedFilters }) => {
+    console.log("🚀 ~ file: Filters.js ~ line 7 ~ Filters ~ filterData", filterData)
 
     const [subcategory, setSubCategory] = useState([])
     const [brands, setBrands] = useState([])
@@ -66,8 +67,8 @@ const Filters = ({ filterData, applyFilters, sort, sortResults, hideFilter, clea
                 <div className="flex flex-col gap-3 mt-4">
                     {
                         filterData.animals?.map((animal, index) => {
-                            return (<Checkbox checked={apppliedFilters.animal?.includes(animal.category_url)} onChange={(e) => applyFilters({ type: 'animal', value: animal.category_url, checked: e.target.checked })} key={index} value={animal.category_url} size='sm' color='warning' css={{ 'z-index': '0' }}>
-                                {animal.category_name}
+                            return (<Checkbox checked={apppliedFilters.animal?.includes(animal.slug)} onChange={(e) => applyFilters({ type: 'animal', value: animal.slug, checked: e.target.checked })} key={index} value={animal.slug} size='sm' color='warning' css={{ 'z-index': '0' }}>
+                                {animal.name}
                             </Checkbox>)
                         })
                     }
@@ -82,8 +83,8 @@ const Filters = ({ filterData, applyFilters, sort, sortResults, hideFilter, clea
                 <div className="flex flex-col gap-3 mt-4">
                     {
                         filterData.categories?.map((category, index) => {
-                            return (<Checkbox checked={apppliedFilters.category?.includes(category.category_url)} onChange={(e) => applyFilters({ type: 'category', value: category.category_url, checked: e.target.checked })} key={index} value={category.category_url} size='sm' color='warning' css={{ 'z-index': '0' }}>
-                                {category.category_name}
+                            return (<Checkbox checked={apppliedFilters.category?.includes(category.slug)} onChange={(e) => applyFilters({ type: 'category', value: category.slug, checked: e.target.checked })} key={index} value={category.slug} size='sm' color='warning' css={{ 'z-index': '0' }}>
+                                {category.name}
                             </Checkbox>)
                         })
                     }
@@ -99,8 +100,8 @@ const Filters = ({ filterData, applyFilters, sort, sortResults, hideFilter, clea
                     <input onChange={(e) => searchInFilter("subcategory", e.target.value)} type="text" className='rounded shadow w-11/12 p-2 px-2 text-sm' placeholder='search...' />
                     {
                         subcategory?.map((subcategory, index) => {
-                            return (<Checkbox checked={apppliedFilters.subcategory?.includes(subcategory.category_url)} onChange={(e) => applyFilters({ type: 'subcategory', value: subcategory.category_url, checked: e.target.checked })} key={index} value={subcategory.category_url} size='sm' color='warning' css={{ 'z-index': '0' }}>
-                                {subcategory.category_name}
+                            return (<Checkbox checked={apppliedFilters.subcategory?.includes(subcategory.slug)} onChange={(e) => applyFilters({ type: 'subcategory', value: subcategory.slug, checked: e.target.checked })} key={index} value={subcategory.slug} size='sm' color='warning' css={{ 'z-index': '0' }}>
+                                {subcategory.name}
                             </Checkbox>)
                         })
                     }
@@ -116,8 +117,8 @@ const Filters = ({ filterData, applyFilters, sort, sortResults, hideFilter, clea
                     <input onChange={(e) => searchInFilter("brands", e.target.value)} type="text" className='rounded shadow w-11/12 p-2 px-2 text-sm' placeholder='search...' />
                     {
                         brands?.map((brand, index) => {
-                            return (<Checkbox checked={apppliedFilters.brand?.includes(Capitalize(brand))} onChange={(e) => applyFilters({ type: 'brand', value: brand, checked: e.target.checked })} key={index} value={brand} size='sm' color='warning' css={{ 'z-index': '0' }}>
-                                {brand}
+                            return (<Checkbox checked={apppliedFilters.brand?.includes(Capitalize(brand.slug))} onChange={(e) => applyFilters({ type: 'brand', value: brand.slug, checked: e.target.checked })} key={index} value={brand} size='sm' color='warning' css={{ 'z-index': '0' }}>
+                                {brand.name}
                             </Checkbox>)
                         })
                     }

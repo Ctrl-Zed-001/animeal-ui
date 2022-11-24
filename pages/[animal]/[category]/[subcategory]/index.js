@@ -20,30 +20,28 @@ const index = () => {
     const [showFilter, setShowFilter] = useState(false)
 
     useEffect(() => {
-        if (router.query.slug) {
+        if (router.query.animal) {
             setIsLoading(true)
-            axios.post(`${process.env.NEXT_PUBLIC_API_URI}/dyanamicsearchproducts/get/data`, {
+            axios.post(`${process.env.NEXT_PUBLIC_API_URI}/products/getall`, {
                 query: '',
-                animal: router.query.slug ? [router.query.slug] : [],
+                animal: router.query.animal ? [router.query.animal] : [],
                 category: router.query.category ? [router.query.category] : [],
                 subcategory: router.query.subcategory ? [router.query.subcategory] : [],
-                brand: [],
-                rating: [],
                 sort: sort
             })
                 .then(res => {
                     setIsLoading(false)
-                    setSrpData(res.data.productBySearch)
+                    setSrpData(res.data)
                     setAppliedFilters({
-                        animal: router.query.slug ? [router.query.slug] : [],
+                        animal: router.query.animal ? [router.query.animal] : [],
                         category: router.query.category ? [router.query.category] : [],
                         subcategory: router.query.subcategory ? [router.query.subcategory] : [],
                         brand: [],
                         rating: [],
                     })
 
-                    axios.get(`${process.env.NEXT_PUBLIC_API_URI}/filters/post/data`)
-                        .then(res => setFilterData(res.data))
+                    axios.get(`${process.env.NEXT_PUBLIC_API_URI}/products/getallfilters`)
+                        .then(res => setFilterData(res.data.data))
                         .catch(err => console.log(err))
                 })
                 .catch(err => console.log(err))
@@ -60,7 +58,7 @@ const index = () => {
 
         axios.post(`${process.env.NEXT_PUBLIC_API_URI}/dyanamicsearchproducts/get/data?page=${pageNumber}`, {
             query: '',
-            animal: apppliedFilters.animal ? apppliedFilters.animal : [router.query.slug],
+            animal: apppliedFilters.animal ? apppliedFilters.animal : [router.query.animal],
             category: apppliedFilters.category ? apppliedFilters.category : [router.query.category],
             subcategory: apppliedFilters.subcategory ? apppliedFilters.subcategory : [router.query.subcategory],
             brand: apppliedFilters.brand ? apppliedFilters.brand : [],
@@ -91,7 +89,7 @@ const index = () => {
         })
             .then(res => {
                 setIsLoading(false)
-                setSrpData(res.data.productBySearch)
+                setSrpData(res.data)
                 setPage(1)
             })
             .catch(err => console.log(err))
@@ -171,11 +169,11 @@ const index = () => {
                     <h1 className="text-lg font-semibold text-slate-400">
                         Search results for :
                         <span className="text-slate-700 capitalize">
-                            {nameCraetor(router.query.slug ? router.query.slug : '')}, {nameCraetor(router.query.category ? router.query.category : '')}, {nameCraetor(router.query.subcategory ? router.query.subcategory : '')}</span>
+                            {nameCraetor(router.query.animal ? router.query.animal : '')}, {nameCraetor(router.query.category ? router.query.category : '')}, {nameCraetor(router.query.subcategory ? router.query.subcategory : '')}</span>
                     </h1>
 
                     <div className="sorting hidden md:flex justify-between items-center relative mt-4">
-                        <p className='text-sm font-medium'>showing {srpData && srpData.to} out of {srpData && srpData.total} products</p>
+                        <p className='text-sm font-medium'>showing {srpData && srpData.total} products</p>
                         <div>
                             <span className='absolute -top-2 right-28 text-gray-500 text-xs'>sort by</span>
 

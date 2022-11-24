@@ -36,8 +36,8 @@ const Header = (props) => {
 
     useEffect(() => {
         // CALL AUTOSUGGEST API
-        axios.post(`${process.env.NEXT_PUBLIC_API_URI}/dyanamicsearch/get/data`, { query: '' })
-            .then(res => setSuggestions(res.data.searchValues))
+        axios.get(`${process.env.NEXT_PUBLIC_API_URI}/autosuggest/gettop`)
+            .then(res => setSuggestions(res.data.data))
             .catch(err => console.log(err))
     }, [])
 
@@ -71,13 +71,13 @@ const Header = (props) => {
         // SET SEARCH VALUE STATE
         setSearchValue(e.target.value)
         // CALL AUTOSUGGEST API
-        let suggestionData = await axios.post(`${process.env.NEXT_PUBLIC_API_URI}/dyanamicsearch/get/data`, { query: e.target.value.toLowerCase() })
+        let suggestionData = await axios.post(`${process.env.NEXT_PUBLIC_API_URI}/autosuggest/find`, { query: e.target.value.toLowerCase() })
 
         if (e.target.value === '') {
             // SET SUGGESTION HEADING AS TOP SUGGESTIONS
             setSuggestionHeading("Top Suggestions")
 
-        } else if (suggestionData.data.searchValues.length === 0) {
+        } else if (suggestionData.data.data.length === 0) {
             // SET SUGGESTION HEADING AS TOP RESULTS..
             setSuggestionHeading("No Results Found")
         } else {
@@ -85,7 +85,7 @@ const Header = (props) => {
         }
 
 
-        setSuggestions(suggestionData.data.searchValues)
+        setSuggestions(suggestionData.data.data)
     }
 
     const search = (query) => {
@@ -135,7 +135,7 @@ const Header = (props) => {
                                         <ul >
                                             {
                                                 suggestions.map((suggestion, index) => {
-                                                    return <li ref={el => autoSuggestDropdownRef.current[index] = el} onClick={() => search(suggestion.keyword)} className='hover:bg-slate-100 p-3 rounded cursor-pointer' key={index}>{Capitalize(suggestion.keyword)}</li>
+                                                    return <li ref={el => autoSuggestDropdownRef.current[index] = el} onClick={() => search(suggestion.suggestion)} className='hover:bg-slate-100 p-3 rounded cursor-pointer' key={index}>{Capitalize(suggestion.suggestion)}</li>
                                                 })
                                             }
 

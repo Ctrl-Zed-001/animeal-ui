@@ -26,9 +26,9 @@ import "swiper/css/thumbs";
 
 
 const Product = (props) => {
+    console.log("🚀 ~ file: [slug].js ~ line 29 ~ Product ~ props", props)
     const [inWishlist, setInWishlist] = useState(false)
     const [inCart, setInCart] = useState(false)
-    const [productImages, setProductImages] = useState([...props.product.productimages])
     const [checkPinCode, setCheckPinCode] = useState('')
     const [isDeliverable, setIsDeliverable] = useState()
 
@@ -69,17 +69,6 @@ const Product = (props) => {
 
     }, [token, props])
 
-    useEffect(() => {
-        let imagesArray = [...props.product.productimages]
-        let mainImage = imagesArray.filter(img => img.main_id === 1)
-        let mainImageIndex = imagesArray.indexOf(mainImage[0])
-        if (mainImageIndex === (imagesArray.length - 1)) {
-            let newArray = [...imagesArray].reverse()
-            setProductImages([...newArray])
-        }
-
-
-    }, [])
 
     const cartClicked = () => {
         if (isLoggedIn) {
@@ -197,7 +186,7 @@ const Product = (props) => {
                 <div className='rounded-lg lg:w-5/12 single-product-slider'>
                     {/* MAIN SLIDER */}
                     {
-                        !productImages || productImages.length === 0 ?
+                        !props.product.gallery || props.product.gallery.length === 0 ?
                             <div className='mx-auto bg-white rounded-lg p-4'><img src='/img/product-placeholder.webp' className='h-96 mx-auto' /></div> :
                             <Swiper
                                 slidesPerView={1}
@@ -206,7 +195,7 @@ const Product = (props) => {
                                 modules={[FreeMode, Navigation, Thumbs]}
                             >
                                 {
-                                    productImages.map((image, index) => {
+                                    props.product.gallery.map((image, index) => {
                                         return (<SwiperSlide key={index} className=''>
                                             <div id='img-container'>
                                                 <img src={`${process.env.NEXT_PUBLIC_IMAGE_URI}/${image.product_id}/${image.product_image}`} alt="" id="single-product-image" className='rounded-lg mx-auto bg-white' />
@@ -229,7 +218,7 @@ const Product = (props) => {
                         spaceBetween={10}
                     >
                         {
-                            productImages.map((image, index) => {
+                            props.product.gallery.map((image, index) => {
                                 return (<SwiperSlide key={index} className=''>
                                     <img src={`${process.env.NEXT_PUBLIC_IMAGE_URI}/${image.product_id}/${image.product_image}`} alt="" className='rounded-lg mx-auto h-12 lg:h-20 border border-gray-200' />
                                 </SwiperSlide>)
@@ -243,14 +232,14 @@ const Product = (props) => {
                 {/* DATA */}
                 <div className="product-data flex-1 mt-6 lg:mt-0">
                     {/* <Breadcrumb className="hidden lg:block" /> */}
-                    <Link href={`/shop/?slug=${props.product.products.subcategory}`}><h3 className="text-xs lg:text-sm text-theme font-semibold cursor-pointer">{props.product.products.subcategory}</h3></Link>
+                    <Link href={`/shop/?slug=${props.product.sub_category[0].name}`}><h3 className="text-xs lg:text-sm text-theme font-semibold cursor-pointer">{props.product.sub_category[0].name}</h3></Link>
                     <h1 className="text-base lg:text-3xl font-semibold text-slate-900">
-                        {props.product.products.website_pro_name}
+                        {props.product.name}
                     </h1>
 
-                    <Link href={`/shop/?slug=${props.product.products.brand}`}><p className='text text-slate-600 font-medium my-2 cursor-pointer'>by : {props.product.products.brand}</p></Link>
+                    <Link href={`/shop/?slug=${props.product.brand.slug}`}><p className='text text-slate-600 font-medium my-2 cursor-pointer'>by : {props.product.brand.name}</p></Link>
                     {
-                        props.product.products.category.toLowerCase() == 'medicine' ?
+                        props.product.category.includes('medicine') ?
                             <div className="flex items-center gap-2 my-2">
                                 <img src="/img/icons/rx.webp" className='h-8' alt="" />
                                 <p className='text-sm font-semibold text-theme'>Prescription required</p>
@@ -259,26 +248,26 @@ const Product = (props) => {
                     }
                     <div className="flex items-center">
                         <Rating value={0} />
-                        <p className='text-xs lg:text-base text-slate-600 ml-3 font-medium'>{props.product.ratinglist.length} customer reviews</p>
+                        <p className='text-xs lg:text-base text-slate-600 ml-3 font-medium'>{props.product.rating} customer reviews</p>
                     </div>
 
                     <div className="flex mt-4 items-center">
                         {
-                            props.product.productPriceApi == props.product.productMrp ?
+                            props.product.selling_price == props.product.mrp ?
                                 <></> :
-                                <h3 className="text-sm lg:text-base font-medium text-gray-500 flex items-center mr-2 line-through"><BiRupee />{props.product.productMrp}</h3>
+                                <h3 className="text-sm lg:text-base font-medium text-gray-500 flex items-center mr-2 line-through"><BiRupee />{props.product.mrp}</h3>
                         }
-                        <h1 className="text-2xl flex items-center font-semibold"><BiRupee />{props.product.productPriceApi}</h1>
+                        <h1 className="text-2xl flex items-center font-semibold"><BiRupee />{props.product.selling_price}</h1>
                     </div>
-                    <p className="text-sm lg:text-base flex items-center mt-2 text-green-700 font-semibold">you save <BiRupee /> {parseInt(props.product.productMrp) - parseInt(props.product.productPriceApi)} </p>
+                    <p className="text-sm lg:text-base flex items-center mt-2 text-green-700 font-semibold">you save <BiRupee /> {parseInt(props.product.mrp) - parseInt(props.product.selling_price)} </p>
                     {/* <p className='text-sm text-slate-600 mt-3 font-medium'>Free 1-3 day shipping on this item.</p> */}
 
                     <div className="bg-white rounded-lg p-3 mt-3">
                         {
-                            props.product.availableStock == 0 ?
+                            props.product.stock == 0 ?
                                 <p className='text-red-500 text-sm lg:text-base font-semibold mb-4'>Out Of Stock</p> :
-                                props.product.availableStock <= 10 ?
-                                    <p className='text-red-500 text-sm lg:text-base font-semibold mb-4'>Only {props.product.availableStock} left in stock</p> :
+                                props.product.stock <= 10 ?
+                                    <p className='text-red-500 text-sm lg:text-base font-semibold mb-4'>Only {props.product.stock} left in stock</p> :
                                     <p className='text-green-700 text-sm lg:text-base font-semibold mb-4'>In stock</p>
                         }
 
@@ -350,7 +339,7 @@ const Product = (props) => {
 
                         <div className="flex gap-4">
                             {
-                                props.product.availableStock == 0 || props.product.productPriceApi == 0 ?
+                                props.product.stock == 0 || props.product.selling_price == 0 ?
                                     <></> :
                                     inCart ?
                                         <Link href='/cart'>
@@ -391,10 +380,10 @@ const Product = (props) => {
                         <p className="text-sm text-theme">read more..</p>
                     </div> */}
                     {
-                        props.product.products.shortdescription ?
-                            <Collapse title={props.product.products.shortdescription.substr(0, 90)} >
+                        props.product.short_description ?
+                            <Collapse title={props.product.short_description.substr(0, 90)} >
                                 <p className='text-justify'>
-                                    {props.product.products.shortdescription}
+                                    {props.product.short_description}
                                 </p>
                             </Collapse> :
                             <></>
@@ -406,7 +395,7 @@ const Product = (props) => {
             </div>
 
             {/* RELATED ITEMS */}
-            <ProductRow title="Your fur baby might also like this" products={props.relatedProducts} />
+            {/* <ProductRow title="Your fur baby might also like this" products={props.relatedProducts} /> */}
 
             <div className="container">
                 <hr className='border-1 border-gray-300 my-10' />
@@ -423,15 +412,15 @@ export async function getServerSideProps({ query }) {
 
     let slug = query.slug;
 
-    let res = await axios.get(`${process.env.NEXT_PUBLIC_API_URI}/singleproduct/${slug}`)
-    let relatedRes = await axios.get(`${process.env.NEXT_PUBLIC_API_URI}/similarproducts/${slug}`)
-    let product = await res.data
-    let relatedProducts = await relatedRes.data
+    let res = await axios.post(`${process.env.NEXT_PUBLIC_API_URI}/products/getone`, { slug: slug })
+    // let relatedRes = await axios.get(`${process.env.NEXT_PUBLIC_API_URI}/products/getall`)
+    let product = await res.data.data
+    // let relatedProducts = await relatedRes.data
 
     return {
         props: {
             product: product,
-            relatedProducts: relatedProducts.similarProducts
+            // relatedProducts: relatedProducts.similarProducts
         }
     }
 }

@@ -18,26 +18,22 @@ const index = (props) => {
 
     useEffect(() => {
         getProductsByCategory()
-        getBrandsfOrAnimals()
+        // getBrandsfOrAnimals()
     }, [])
 
     const getProductsByCategory = async () => {
         let allFetchedProducts = []
-        for (const category of props.categorylevels) {
-            let fetchedProducts = await axios.post(`${process.env.NEXT_PUBLIC_API_URI}/category/level2products/categoryonetwowise`, {
-                category1: props.slug,
-                category2: category.category_url
-            })
-            allFetchedProducts.push({
-                category: category.category_name,
-                products: fetchedProducts.data
-            })
-        }
+
+        await axios.all(props.categories.map(
+            category =>
+                axios.post(`${process.env.NEXT_PUBLIC_API_URI}/products/getall`, { animal: props.animal, category: category.slug })
+                    .then(res => allFetchedProducts.push({ category: category.name, products: res.data.data }))
+        ))
         setCategoryWiseProducts(allFetchedProducts)
     }
 
     const getBrandsfOrAnimals = () => {
-        axios.get(`${process.env.NEXT_PUBLIC_API_URI}/brand/categorybrand/get/${props.slug}`)
+        axios.get(`${process.env.NEXT_PUBLIC_API_URI}/brand/getbycategory`)
             .then(res => setBrands(res.data.categoryWiseBrand))
             .catch(err => console.log(err))
     }
@@ -54,7 +50,7 @@ const index = (props) => {
             }
 
             {/* Banner */}
-            <AnimalBanner hasImage={props.banner !== null ? true : false} image={`/category-banner/${props.banner}`} title={`The ${props.slug} Shop`} />
+            <AnimalBanner hasImage={props.banner !== null ? true : false} image={`/category-banner/${props.banner}`} title={`The ${props.animal} Shop`} />
 
             <div className="container my-10">
                 <Swiper
@@ -76,8 +72,8 @@ const index = (props) => {
                     autoplay={{ delay: 2000 }}
                 >
                     {
-                        props.categorylevels && props.categorylevels.map((category, index) => {
-                            return <SwiperSlide key={index}><CategoryBox placeholder='/img/category-placeholder.webp' animal={props.slug} category={category} /></SwiperSlide>
+                        props.categories && props.categories.map((category, index) => {
+                            return <SwiperSlide key={index}><CategoryBox placeholder='/img/category-placeholder.webp' animal={props.animal} category={category} /></SwiperSlide>
                         })
 
                     }
@@ -88,8 +84,8 @@ const index = (props) => {
             {/* CATEGORY */}
             {
                 categoryWiseProducts && categoryWiseProducts.map((products, index) => {
-                    if (products.products.categoryLevel2WiseProduct && products.products.categoryLevel2WiseProduct.length !== null) {
-                        return <ProductRow showLink={true} animal={props.slug} key={index} title={products.category} products={products.products.categoryLevel2WiseProduct} />
+                    if (products && products.length !== null) {
+                        return <ProductRow showLink={true} animal={props.animal} key={index} title={products.category} products={products.products} />
                     }
                 })
 
@@ -99,7 +95,7 @@ const index = (props) => {
 
             {
                 brands && brands.length > 0 ?
-                    <Brands title={`Popular Brands for ${props.slug}`} brands={brands} /> :
+                    <Brands title={`Popular Brands for ${props.animal}`} brands={brands} /> :
                     <></>
             }
 
@@ -109,24 +105,25 @@ const index = (props) => {
 
 export async function getServerSideProps({ query }) {
 
-    let res = await axios.get(`${process.env.NEXT_PUBLIC_API_URI}/category/${query.slug}`)
-    let bannerRes = await axios.get(`${process.env.NEXT_PUBLIC_API_URI}/banners/getcategorybanner/${query.slug}`)
-    let metaData = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URI}/metaurl/post/data`,
-        {
-            slug: "https://animeal.in/" + query.slug
-        }
-    )
-    let categoryLevels = res.data.categorylevels
-    let banner = bannerRes.data.categoryBanner
+    let categories = await axios.post(`${process.env.NEXT_PUBLIC_API_URI}/category/getall`, { animal: query.animal })
+    // let bannerRes = await axios.get(`${process.env.NEXT_PUBLIC_API_URI}/banners/getcategorybanner/${query.slug}`)
+    // let metaData = await axios.post(
+    //     `${process.env.NEXT_PUBLIC_API_URI}/metaurl/post/data`,
+    //     {
+    //         slug: "https://animeal.in/" + query.slug
+    //     }
+    // )
+
 
 
     return {
         props: {
-            metaData: metaData.data.success,
-            categorylevels: categoryLevels,
-            slug: query.slug,
-            banner: banner
+            // metaData: metaData.data.success,
+            // categorylevels: categoryLevels,
+            // slug: query.slug,
+            // banner: banner
+            categories: categories.data.data,
+            animal: query.animal
         }
     }
 }

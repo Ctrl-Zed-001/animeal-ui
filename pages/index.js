@@ -19,20 +19,20 @@ export default function Home(props) {
   useEffect(() => {
 
     let endpoints = [
-      `${process.env.NEXT_PUBLIC_API_URI}/getcategories`,
-      `${process.env.NEXT_PUBLIC_API_URI}/topratedproducts/get/data`,
-      `${process.env.NEXT_PUBLIC_API_URI}/customerfavorite/get/data`,
-      `${process.env.NEXT_PUBLIC_API_URI}/pickedbyexperts/get/data`,
-      `${process.env.NEXT_PUBLIC_API_URI}/brand/homepagebrand`
+      `${process.env.NEXT_PUBLIC_API_URI}/animal/getall`,
+      `${process.env.NEXT_PUBLIC_API_URI}/products/getrandom`,
+      `${process.env.NEXT_PUBLIC_API_URI}/products/getrandom`,
+      `${process.env.NEXT_PUBLIC_API_URI}/products/getrandom`,
+      `${process.env.NEXT_PUBLIC_API_URI}/brand/getall`,
     ];
 
     axios.all(endpoints.map((endpoint) => axios.get(endpoint)))
       .then(res => {
-        setAnimals(res[0].data.category_level1);
-        setTopProducts(res[1].data.topRatedProducts)
-        setCustomerFav(res[2].data.customerFavoriteProducts)
-        setExpertPick(res[3].data.pickedByExpertsProducts)
-        setBrands(res[4].data.homePageBrand)
+        setAnimals(res[0].data.data);
+        setTopProducts(res[1].data.data)
+        setCustomerFav(res[2].data.data)
+        setExpertPick(res[3].data.data)
+        setBrands(res[4].data.data)
       })
       .catch(err => console.log(err))
   }, []);
@@ -74,16 +74,16 @@ export default function Home(props) {
 
 export async function getServerSideProps(context) {
 
-  let metaData = await axios.post(
-    `${process.env.NEXT_PUBLIC_API_URI}/metaurl/post/data`,
-    {
-      slug: "https://animeal.in/"
-    }
-  )
+  // let metaData = await axios.post(
+  //   `${process.env.NEXT_PUBLIC_API_URI}/metaurl/post/data`,
+  //   {
+  //     slug: "https://animeal.in/"
+  //   }
+  // )
   return {
     props: {
-      title: metaData.data.success.meta_title,
-      description: metaData.data.success.meta_description
+      // title: metaData.data.success.meta_title,
+      // description: metaData.data.success.meta_description
     }
   }
 }
