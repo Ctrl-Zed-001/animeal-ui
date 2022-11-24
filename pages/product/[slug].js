@@ -187,10 +187,17 @@ const Product = (props) => {
 
         <div className='product-page my-16 xl:my-10'>
 
-            <Head>
-                <title>{props.product.meta_title}</title>
-                <meta name="description" content={props.product.meta_description} />
-            </Head>
+            {
+                props.metaData ?
+                    <Head>
+                        <title>{props.metaData.meta_title}</title>
+                        <meta name="description" content={props.metaData.meta_description} />
+                    </Head> :
+                    <Head>
+                        <title>{props.product.meta_title}</title>
+                        <meta name="description" content={props.product.meta_description} />
+                    </Head>
+            }
 
             <div className="lg:flex container gap-20 mb-20">
                 {/* PRODUCT IMAGE SLIDER */}
@@ -428,10 +435,18 @@ export async function getServerSideProps({ query }) {
     let product = await res.data
     let relatedProducts = await relatedRes.data
 
+    let metaData = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URI}/metaurl/post/data`,
+        {
+            slug: "https://animeal.in/" + 'product/' + query.slug
+        }
+    )
+
     return {
         props: {
             product: product,
-            relatedProducts: relatedProducts.similarProducts
+            relatedProducts: relatedProducts.similarProducts,
+            metaData: metaData.data.success
         }
     }
 }
