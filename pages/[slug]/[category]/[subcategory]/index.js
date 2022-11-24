@@ -7,8 +7,9 @@ import axios from 'axios';
 import { Pagination, Loading } from '@nextui-org/react';
 import Capitalize from '../../../../Helpers/Capitalize';
 import nameCraetor from '../../../../Helpers/SlugToName';
+import Head from 'next/head';
 
-const index = () => {
+const index = (props) => {
     const router = useRouter()
 
     const [srpData, setSrpData] = useState()
@@ -158,7 +159,14 @@ const index = () => {
 
     return (
         <div className='shop-page lg:my-10 my-16'>
-
+            {
+                props.metaData ?
+                    <Head>
+                        <title>{props.metaData.meta_title}</title>
+                        <meta name="description" content={props.metaData.meta_description} />
+                    </Head> :
+                    <></>
+            }
 
             <div className="container flex justify-between gap-10">
                 {/* Filter */}
@@ -222,4 +230,20 @@ const index = () => {
         </div>
     )
 }
+
+export async function getServerSideProps({ query }) {
+    let metaData = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URI}/metaurl/post/data`,
+        {
+            slug: "https://animeal.in/" + query.slug + '/' + query.category + '/' + query.subcategory
+        }
+    )
+    return {
+        props: {
+            metaData: metaData.data.success,
+        }
+    }
+}
+
+
 export default index
