@@ -10,9 +10,9 @@ const Brands = (props) => {
                 {
                     props.brands ?
                         props.brands.map((brand, index) => {
-                            return (<Link key={index} href={`/brand/${brand.brand_url}`}>
+                            return (<Link key={index} href={`/brand/${brand.slug}`}>
                                 <div className="brand-box rounded-lg cursor-pointer">
-                                    <img src={`${process.env.NEXT_PUBLIC_IMAGE_URI}/brand-icon/${brand.brand_icon}`} alt="" className='rounded-lg' />
+                                    <img src={`${process.env.NEXT_PUBLIC_IMAGE_URI}/${brand.icon.name}`} alt="" className='rounded-lg' />
                                 </div>
                             </Link>)
                         }) :

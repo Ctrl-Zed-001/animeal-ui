@@ -20,38 +20,38 @@ const AuthPopup = (props) => {
     const { setIsLoggedIn, getUserDetails, showAuthModal, setShowAuthModal, setToken, setUserDetails, loginSocial } = useContext(AuthContext)
 
 
-    const signup = (name, email, password) => {
-        axios.post(`${process.env.NEXT_PUBLIC_API_URI}/user/registration/post/data`,
+    const signup = (name, phone, password) => {
+        axios.post(`${process.env.NEXT_PUBLIC_API_URI}/user/signup`,
             {
                 name,
-                email,
+                phone,
                 password
             }
         )
             .then(res => {
-                localStorage.setItem('token', `Bearer ${res.data.token}`)
+                localStorage.setItem('token', `${res.data.token}`)
                 setIsLoggedIn(true)
-                setToken(`Bearer ${res.data.token}`)
+                setToken(`${res.data.token}`)
                 setUserDetails(res.data.user)
                 setShowAuthModal(false)
             })
             .catch(error => {
-                error.response.data.errors.map(err => toast.error(err))
+                toast.error(error.response.data.msg)
             })
     }
 
-    const login = (email, password) => {
-        axios.post(`${process.env.NEXT_PUBLIC_API_URI}/user/login/post/data`,
+    const login = (phone, password) => {
+        axios.post(`${process.env.NEXT_PUBLIC_API_URI}/user/login`,
             {
-                email,
+                phone,
                 password
             }
         )
             .then(res => {
-                localStorage.setItem('token', `Bearer ${res.data.access_token}`)
+                localStorage.setItem('token', `${res.data.token}`)
                 setIsLoggedIn(true)
-                setToken(`Bearer ${res.data.access_token}`)
-                getUserDetails(`Bearer ${res.data.access_token}`)
+                setToken(`${res.data.token}`)
+                setUserDetails(res.data.user)
                 setShowAuthModal(false)
             })
             .catch(error => {

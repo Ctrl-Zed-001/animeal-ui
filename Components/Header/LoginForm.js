@@ -21,16 +21,16 @@ const LoginForm = (props) => {
     }
 
     const swiper = useSwiper();
-    const [email, setEmail] = useState('')
+    const [phone, setPhone] = useState('')
     const [password, setPassword] = useState('')
     const [showStatus, setShowStatus] = useState()
 
     const callForgotPassword = () => {
-        if (email !== '') {
+        if (phone !== '') {
             axios.post(
                 `${process.env.NEXT_PUBLIC_API_URI}/user/newpassword/post/data`,
                 {
-                    email_id: email
+                    phone: phone
                 }
             )
                 .then(res => {
@@ -62,10 +62,10 @@ const LoginForm = (props) => {
             <h1 className='text-center my-2 md:my-4 text-gray-500 font-semibold'>- OR -</h1>
 
             <div className="form-box mx-auto md:w-7/12">
-                <form onSubmit={(e) => { e.preventDefault(); props.login(email, password) }}>
-                    <Input required name='name' type='email' labelPlaceholder="Email" color='default' fullWidth size='lg' onChange={(e) => setEmail(e.target.value)} />
+                <form onSubmit={(e) => { e.preventDefault(); props.login(phone, password) }}>
+                    <Input required name='mobile' type='text' placeholder="Mobile Number" labelLeft="+91" color='default' fullWidth size='lg' onChange={(e) => setPhone(e.target.value)} />
                     <Spacer y={1.6} />
-                    <Input.Password labelPlaceholder="Password" color='default' fullWidth size='lg' onChange={(e) => setPassword(e.target.value)} />
+                    <Input.Password placeholder="Password" color='default' fullWidth size='lg' onChange={(e) => setPassword(e.target.value)} />
                     <p className='mt-2 text-xs ml-2 text-theme cursor-pointer' onClick={callForgotPassword}>forgot password?</p>
                     <Spacer y={1.6} />
                     <button type="submit" className="bg-theme px-2 py-4 w-full shadow rounded-lg">Login</button>

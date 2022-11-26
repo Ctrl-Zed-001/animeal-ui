@@ -26,7 +26,7 @@ export default function Home(props) {
       `${process.env.NEXT_PUBLIC_API_URI}/brand/getall`,
     ];
 
-    axios.all(endpoints.map((endpoint) => axios.get(endpoint)))
+    axios.all(endpoints.map((endpoint) => axios.post(endpoint)))
       .then(res => {
         setAnimals(res[0].data.data);
         setTopProducts(res[1].data.data)
