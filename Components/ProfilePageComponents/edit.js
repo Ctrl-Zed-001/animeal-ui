@@ -16,12 +16,11 @@ const EditProfile = () => {
 
   const onSubmit = data => {
     axios.post(
-      `${process.env.NEXT_PUBLIC_API_URI}/getauthenticateupdate/post/data`,
+      `${process.env.NEXT_PUBLIC_API_URI}/user/update`,
       {
-        email: userDetails.email,
+        email: data.email,
         name: data.name,
-        number: data.number,
-        altnumber: data.altnumber
+        alt_phone: data.alt_phone
       },
       {
         headers: {
@@ -30,8 +29,8 @@ const EditProfile = () => {
       }
     )
       .then(res => {
-        toast.success("Address Updated Successfully!")
-        console.log(res.data)
+        toast.success("Profile Updated Successfully!")
+        router.reload()
       })
       .catch(err => {
         toast.error("Something went wrong")
@@ -57,10 +56,10 @@ const EditProfile = () => {
         <div className="profile-action-section col-span-8">
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="grid grid-cols-2 gap-10">
-              <Input placeholder={userDetails?.email} disabled label='Email' />
+              <Input initialValue={userDetails?.email} label='Email' {...register("email", { required: true })} color={errors && errors.email ? "error" : "default"} />
               <Input color={errors && errors.name ? "error" : "default"} initialValue={userDetails?.name} {...register("name", { required: true })} label='Name' />
-              <Input color={errors && errors.name ? "error" : "default"} initialValue={userDetails?.number} {...register("number", { required: true })} label='Number' />
-              <Input initialValue={userDetails?.altnumber} {...register("altnumber")} label='Alt Number' />
+              <Input initialValue={userDetails?.phone} label='Number' disabled />
+              <Input initialValue={userDetails?.alt_phone} {...register("alt_phone")} label='Alt Number' />
             </div>
             <div className="flex justify-end">
               <button className='px-6 bg-theme p-2 rounded-xl mt-6'>Save</button>

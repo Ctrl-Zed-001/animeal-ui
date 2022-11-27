@@ -21,7 +21,7 @@ const Profile = () => {
         if (!isLoggedIn) {
             router.replace('/')
         }
-    })
+    }, [])
 
     return (
         <div className="profile-page my-16 lg:my-0">

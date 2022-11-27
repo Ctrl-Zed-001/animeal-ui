@@ -4,6 +4,7 @@ import { AuthContext } from '../../Context/AuthContext'
 
 const ProfileInfoBox = () => {
     const { userDetails } = useContext(AuthContext)
+    console.log("🚀 ~ file: ProfileInfoBox.js ~ line 7 ~ ProfileInfoBox ~ userDetails", userDetails)
     return (
         <div className="profile info-section bg-theme p-4 rounded-lg col-span-3 pb-10">
 
@@ -27,11 +28,11 @@ const ProfileInfoBox = () => {
                         <tbody>
                             <tr>
                                 <td className="font-semibold p-2">Number :</td>
-                                <td>{userDetails?.number}</td>
+                                <td>{userDetails?.phone}</td>
                             </tr>
                             <tr className='border-slate-300'>
                                 <td className="font-semibold p-2">Alt Number :</td>
-                                <td>{userDetails?.altnumber}</td>
+                                <td>{userDetails?.alt_phone}</td>
                             </tr>
                             <tr className='border-slate-300'>
                                 <td className="font-semibold p-2">Joined on :</td>

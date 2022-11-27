@@ -63,7 +63,7 @@ const AuthContextProvider = (props) => {
 
     const getUserDetails = (token) => {
         axios.post(
-            `${process.env.NEXT_PUBLIC_API_URI}/user/getauthenticateuser/post/data`,
+            `${process.env.NEXT_PUBLIC_API_URI}/user/getdetails`,
             {},
             {
                 headers: {
@@ -72,7 +72,7 @@ const AuthContextProvider = (props) => {
             }
         )
             .then(res => {
-                setUserDetails(res.data.user)
+                setUserDetails(res.data.data)
                 setIsLoggedIn(true)
             })
             .catch(err => {
