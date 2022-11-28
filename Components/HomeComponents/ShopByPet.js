@@ -16,7 +16,7 @@ const ShopByPet = (props) => {
                             <Link href={`/${animal.category_url.toLowerCase()}`} key={id}>
                                 <div className="petbox drop-shadow hover:drop-shadow-none relative bg-white p-4 rounded-lg transition duration-150 ease-in cursor-pointer flex items-center">
                                     <h1 className='w-2/6'>{animal.category_name}</h1>
-                                    <img src="/img/farm-animlas.png" alt="" className='h-28 md:h-24 lg:h-28 xl:h-28' />
+                                    <img src={process.env.NEXT_PUBLIC_IMAGE_URI + '/category-icon/' + animal.category_icon} alt="" className='h-28 md:h-24 lg:h-28 xl:h-28' />
                                 </div>
                             </Link>
                         )
