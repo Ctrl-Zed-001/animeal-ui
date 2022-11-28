@@ -14,9 +14,9 @@ const ShopByPet = (props) => {
                     props.animals?.map((animal, id) => {
                         return (
                             <Link href={`/${animal.category_url.toLowerCase()}`} key={id}>
-                                <div className="petbox drop-shadow hover:drop-shadow-none relative bg-white p-4 rounded-lg pb-20 transition duration-150 ease-in cursor-pointer">
+                                <div className="petbox drop-shadow hover:drop-shadow-none relative bg-white p-4 rounded-lg transition duration-150 ease-in cursor-pointer flex items-center">
                                     <h1 className='w-2/6'>{animal.category_name}</h1>
-                                    <img src={process.env.NEXT_PUBLIC_IMAGE_URI + '/category-icon/' + animal.category_icon} alt="" className='absolute -bottom-3 md:-bottom-3 right-0 h-28 md:h-24 lg:h-28 xl:h-28 lg:-bottom-3' />
+                                    <img src="/img/farm-animlas.png" alt="" className='h-28 md:h-24 lg:h-28 xl:h-28' />
                                 </div>
                             </Link>
                         )
@@ -30,5 +30,12 @@ const ShopByPet = (props) => {
         </div>
     )
 }
+
+{/* <Link href={`/${animal.category_url.toLowerCase()}`} key={id}>
+                                <div className="petbox drop-shadow hover:drop-shadow-none relative bg-white p-4 rounded-lg pb-20 transition duration-150 ease-in cursor-pointer">
+                                    <h1 className='w-2/6'>{animal.category_name}</h1>
+                                    <img src={process.env.NEXT_PUBLIC_IMAGE_URI + '/category-icon/' + animal.category_icon} alt="" className='absolute -bottom-3 md:-bottom-3 right-0 h-28 md:h-24 lg:h-28 xl:h-28 lg:-bottom-3' />
+                                </div>
+                            </Link> */}
 
 export default ShopByPet
