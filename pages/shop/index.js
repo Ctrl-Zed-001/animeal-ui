@@ -21,28 +21,23 @@ const Shop = () => {
     useEffect(() => {
         if (router.query.slug || router.query.animal) {
             setIsLoading(true)
-            axios.post(`${process.env.NEXT_PUBLIC_API_URI}/dyanamicsearchproducts/get/data`, {
+            axios.post(`${process.env.NEXT_PUBLIC_API_URI}/products/getall`, {
                 query: router.query.slug,
-                animal: router.query.animal ? [router.query.animal] : [],
-                category: router.query.category ? [router.query.category] : [],
-                subcategory: router.query.subcategory ? [router.query.subcategory] : [],
-                brand: [],
-                rating: [],
                 sort: sort
             })
                 .then(res => {
                     setIsLoading(false)
-                    setSrpData(res.data.productBySearch)
+                    setSrpData(res.data)
                     setAppliedFilters({
-                        animal: router.query.animal ? [router.query.animal] : [],
-                        category: router.query.category ? [router.query.category] : [],
-                        subcategory: router.query.subcategory ? [router.query.subcategory] : [],
+                        animal: [],
+                        category: [],
+                        subcategory: [],
                         brand: [],
                         rating: [],
                     })
 
-                    axios.get(`${process.env.NEXT_PUBLIC_API_URI}/filters/post/data`)
-                        .then(res => setFilterData(res.data))
+                    axios.get(`${process.env.NEXT_PUBLIC_API_URI}/products/getallfilters`)
+                        .then(res => setFilterData(res.data.data))
                         .catch(err => console.log(err))
                 })
                 .catch(err => console.log(err))
@@ -57,7 +52,7 @@ const Shop = () => {
             behavior: 'smooth',
         })
 
-        axios.post(`${process.env.NEXT_PUBLIC_API_URI}/dyanamicsearchproducts/get/data?page=${pageNumber}`, {
+        axios.post(`${process.env.NEXT_PUBLIC_API_URI}/products/getall?page=${pageNumber}`, {
             query: router.query.slug,
             animal: apppliedFilters.animal ? apppliedFilters.animal : [],
             category: apppliedFilters.category ? apppliedFilters.category : [],
@@ -68,7 +63,7 @@ const Shop = () => {
         })
             .then(res => {
                 setIsLoading(false)
-                setSrpData(res.data.productBySearch)
+                setSrpData(res.data)
             })
             .catch(err => console.log(err))
 
@@ -79,7 +74,7 @@ const Shop = () => {
         setIsLoading(true)
         setSort(e.target.value)
 
-        axios.post(`${process.env.NEXT_PUBLIC_API_URI}/dyanamicsearchproducts/get/data?page=${page}`, {
+        axios.post(`${process.env.NEXT_PUBLIC_API_URI}/products/getall?page=${page}`, {
             query: router.query.slug,
             animal: apppliedFilters.animal,
             category: apppliedFilters.category,
@@ -90,7 +85,7 @@ const Shop = () => {
         })
             .then(res => {
                 setIsLoading(false)
-                setSrpData(res.data.productBySearch)
+                setSrpData(res.data)
                 setPage(1)
             })
             .catch(err => console.log(err))
@@ -100,16 +95,16 @@ const Shop = () => {
         let selectedFilters = JSON.parse(JSON.stringify(apppliedFilters))
         if (filters.checked) {
             if (selectedFilters[filters.type]) {
-                selectedFilters[filters.type] = [...selectedFilters[filters.type], Capitalize(filters.value)]
+                selectedFilters[filters.type] = [...selectedFilters[filters.type], filters.value]
             } else {
-                selectedFilters[filters.type] = [Capitalize(filters.value)]
+                selectedFilters[filters.type] = [filters.value]
             }
         } else {
             let modifiedFilters = selectedFilters[filters.type].filter(f => f !== filters.value)
             selectedFilters[filters.type] = modifiedFilters
         }
 
-        axios.post(`${process.env.NEXT_PUBLIC_API_URI}/dyanamicsearchproducts/get/data`, {
+        axios.post(`${process.env.NEXT_PUBLIC_API_URI}/products/getall`, {
             query: router.query.slug,
             animal: selectedFilters.animal,
             category: selectedFilters.category,
@@ -120,7 +115,7 @@ const Shop = () => {
         })
             .then(res => {
                 setIsLoading(false)
-                setSrpData(res.data.productBySearch)
+                setSrpData(res.data)
                 setPage(1)
             })
             .catch(err => console.log(err))
@@ -131,18 +126,13 @@ const Shop = () => {
     const clearAll = () => {
         console.log("clear called");
         setIsLoading(true)
-        axios.post(`${process.env.NEXT_PUBLIC_API_URI}/dyanamicsearchproducts/get/data`, {
+        axios.post(`${process.env.NEXT_PUBLIC_API_URI}/products/getall`, {
             query: router.query.slug,
-            animal: [],
-            category: [],
-            subcategory: [],
-            brand: [],
-            rating: [],
             sort: sort
         })
             .then(res => {
                 setIsLoading(false)
-                setSrpData(res.data.productBySearch)
+                setSrpData(res.data)
                 setAppliedFilters({
                     animal: [],
                     category: [],
@@ -194,7 +184,7 @@ const Shop = () => {
                                     <FcFilledFilter onClick={() => { setShowFilter(true) }} className='block xl:hidden text-4xl mt-2 bg-white rounded-lg p-2 shadow' />
                                     <div className="product-list-container grid grid-cols-2 md:grid-cols-4 gap-4 mt-6 m">
                                         {
-                                            srpData && srpData.data && srpData.data.map((product, index) => {
+                                            srpData && srpData.data.map((product, index) => {
                                                 return <ProductBox product={product} key={index} />
                                             })
                                         }

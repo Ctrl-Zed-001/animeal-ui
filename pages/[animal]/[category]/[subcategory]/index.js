@@ -23,7 +23,6 @@ const index = () => {
         if (router.query.animal) {
             setIsLoading(true)
             axios.post(`${process.env.NEXT_PUBLIC_API_URI}/products/getall`, {
-                query: '',
                 animal: router.query.animal ? [router.query.animal] : [],
                 category: router.query.category ? [router.query.category] : [],
                 subcategory: router.query.subcategory ? [router.query.subcategory] : [],

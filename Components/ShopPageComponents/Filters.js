@@ -4,7 +4,6 @@ import Rating from '../ProductBox/Rating';
 import Capitalize from '../../Helpers/Capitalize';
 
 const Filters = ({ filterData, applyFilters, sort, sortResults, hideFilter, clearAll, apppliedFilters }) => {
-    console.log("🚀 ~ file: Filters.js ~ line 7 ~ Filters ~ filterData", filterData)
 
     const [subcategory, setSubCategory] = useState([])
     const [brands, setBrands] = useState([])
