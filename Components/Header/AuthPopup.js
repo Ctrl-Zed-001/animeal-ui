@@ -32,7 +32,7 @@ const AuthPopup = (props) => {
                 localStorage.setItem('token', `${res.data.token}`)
                 setIsLoggedIn(true)
                 setToken(`${res.data.token}`)
-                setUserDetails(res.data.user)
+                setUserDetails(res.data.data)
                 setShowAuthModal(false)
             })
             .catch(error => {
@@ -51,7 +51,7 @@ const AuthPopup = (props) => {
                 localStorage.setItem('token', `${res.data.token}`)
                 setIsLoggedIn(true)
                 setToken(`${res.data.token}`)
-                setUserDetails(res.data.user)
+                setUserDetails(res.data.data)
                 setShowAuthModal(false)
             })
             .catch(error => {
