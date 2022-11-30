@@ -49,7 +49,7 @@ const CurrentOrderBox = (props) => {
                                             <div className="bg-slate-200 rounded-lg p-4 ">
                                                 <img src="/img/product-placeholder.webp" alt="" className='h-20' />
                                                 <div className="flex-1 font-medium">
-                                                    <h1 className='product-box-name'>{product.product_name}</h1>
+                                                    <h2 className='product-box-name'>{product.product_name}</h2>
                                                     <div className="flex justify-between text-xs">
                                                         <p className='text-slate-500 text-xs my-1'><span className="font-semibold text-black">size :</span> {product.product_quantity_kg}</p>
                                                         <p className='text-slate-500 text-xs my-1'><span className="font-semibold text-black">Qty :</span> {product.buying_quantity}</p>
@@ -74,10 +74,10 @@ const CurrentOrderBox = (props) => {
                 </div>
 
                 <div className="right-side mt-4 lg:mt-0">
-                    <h1 className=" font-semibold mb-4">Shipping Details</h1>
+                    <h2 className=" font-semibold mb-4">Shipping Details</h2>
                     <p className="text-xs text-slate-500">{props.order[0].address1 + ', ' + props.order[0].address2 + ', ' + props.order[0].city + ', ' + props.order[0].state + ' ' + props.order[0].pincode}  </p>
 
-                    <h1 className=" font-semibold mb-4 mt-6">Shipping Details</h1>
+                    <h2 className=" font-semibold mb-4 mt-6">Shipping Details</h2>
                     <table className='w-full lg:w-6/12 text-xs text-slate-500'>
                         <tbody>
                             <tr>
@@ -107,22 +107,22 @@ const CurrentOrderBox = (props) => {
 
                 <div className="col">
                     <div className="milestone h-3 w-3 bg-green-600 rounded-full mb-2 lg:mb-4 z-10"></div>
-                    <h1>Order placed</h1>
+                    <h2>Order placed</h2>
                     <p className="lg:text-xs text-slate-500">{dayjs(props.order[0].created_at).format("ddd, DD MMM YYYY")}</p>
                 </div>
                 <div className="col text-center">
                     <div className="milestone h-3 w-3 bg-slate-200 rounded-full mb-2 lg:mb-4 mx-auto"></div>
-                    <h1>Shipped</h1>
+                    <h2>Shipped</h2>
                     <p className="lg:text-xs text-slate-500"></p>
                 </div>
                 <div className="col text-center">
                     <div className="milestone h-3 w-3 bg-slate-200 rounded-full mb-2 lg:mb-4 mx-auto"></div>
-                    <h1>Out for delivery</h1>
+                    <h2>Out for delivery</h2>
                     <p className="lg:text-xs text-slate-500"></p>
                 </div>
                 <div className="col text-right flex flex-col items-end">
                     <div className="milestone h-3 w-3 bg-slate-200 rounded-full mb-2 lg:mb-4 "></div>
-                    <h1>Delivered</h1>
+                    <h2>Delivered</h2>
                     <p className="lg:text-xs text-slate-500"></p>
                 </div>
             </div>

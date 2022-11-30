@@ -169,7 +169,7 @@ const Header = (props) => {
 
                     <div className={`${showHelpline ? 'block' : 'hidden'}  helplinepopup bg-white rounded-lg p-4 text-center absolute top-14 -left-28 transition-all z-10`}>
                         <p className="text-sm text-gray-500 pb-2">Get help from our experts 24/7</p>
-                        <h1 className="text-2xl">9004485093</h1>
+                        <h2 className="text-2xl">9004485093</h2>
                     </div>
                 </div>
 

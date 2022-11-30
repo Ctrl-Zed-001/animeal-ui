@@ -170,7 +170,7 @@ const Shop = () => {
                     {
                         router.query.slug ?
                             <h1 className="text-lg font-semibold text-slate-400">Search results for : <span className="text-slate-700 capitalize">{router.query.slug}</span> </h1> :
-                            <h1 className="text-lg font-semibold text-slate-400">Top results for   <span className="capitalize text-slate-700">{router.query.animal}</span> , <span className="capitalize text-slate-700">{router.query.subcategory}</span></h1>
+                            <h2 className="text-lg font-semibold text-slate-400">Top results for   <span className="capitalize text-slate-700">{router.query.animal}</span> , <span className="capitalize text-slate-700">{router.query.subcategory}</span></h2>
                     }
                     <div className="sorting hidden md:flex justify-between items-center relative mt-4">
                         <p className='text-sm font-medium'>showing {srpData && srpData.to} out of {srpData && srpData.total} products</p>

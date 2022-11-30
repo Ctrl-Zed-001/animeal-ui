@@ -60,7 +60,7 @@ const PrescriptionModal = (props) => {
             <Modal.Body>
                 <div className="md:flex justify-between gap-8">
                     <div className="left-sec">
-                        <h1 className="text-xs font-semibold">Click here to upload prescription</h1>
+                        <h2 className="text-xs font-semibold">Click here to upload prescription</h2>
                         <div className="grid grid-cols-3 gap-4 my-4">
                             {
                                 previews ?
@@ -88,7 +88,7 @@ const PrescriptionModal = (props) => {
                         <button onClick={handleClose} className='bg-theme w-full py-2 rounded-lg mt-6'>Upload</button>
                     </div>
                     <div className="right-sec">
-                        <h1 className="text-xs font-semibold">Valid prescription guidelines</h1>
+                        <h2 className="text-xs font-semibold">Valid prescription guidelines</h2>
                         <p className="text-xs my-4">image should be sharp and must contain these 4 points.</p>
                         <img src="/img/prescription-demo.webp" alt="" className='h-60 mx-auto' />
                     </div>

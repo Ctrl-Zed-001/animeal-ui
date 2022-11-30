@@ -84,7 +84,7 @@ const PrescriptionUpload = (props) => {
                 </div>
             </Modal.Header>
             <Modal.Body>
-                <h1 className="my-6 text-lg text-left">Upload Prescription</h1>
+                <h2 className="my-6 text-lg text-left">Upload Prescription</h2>
                 <div className="flex items-center gap-4">
                     {
                         previews ?
@@ -104,7 +104,7 @@ const PrescriptionUpload = (props) => {
                     </div>
                 </div>
 
-                <h1 className="my-6 text-lg text-left">Basic Info</h1>
+                <h2 className="my-6 text-lg text-left">Basic Info</h2>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="grid grid-cols-1 lg:flex justify-between gap-8 items-center">
                         <Input

@@ -17,18 +17,18 @@ const ProductBox = (props) => {
 
                     <h2 className="animal text-slate-700 text-xs product-box-name">{props.product[0].product_subcategory}</h2>
                     <h1 className='text-sm font-medium product-box-name'>{props.product[0].product_name}</h1>
-                    <h1 className="text-xs text-slate-700">{props.product[0].product_size}</h1>
+                    <h2 className="text-xs text-slate-700">{props.product[0].product_size}</h2>
                     <Rating value={props.product[0].rating_average} />
                     <div className="flex ">
                         {
                             props.product[0].product_mop == props.product[0].product_mrp ?
                                 <></> :
                                 <div className="strike-price relative">
-                                    <h1 className='text-sm mt-1 flex items-center text-gray-500 mr-2'><BiRupee /> {props.product[0].product_mrp}</h1>
+                                    <h2 className='text-sm mt-1 flex items-center text-gray-500 mr-2'><BiRupee /> {props.product[0].product_mrp}</h2>
                                     <hr className='absolute top-3 z-10 border-1 w-11/12 border-gray-500' />
                                 </div>
                         }
-                        <h1 className='text-xl flex items-center'><BiRupee /> {props.product[0].product_mop}</h1>
+                        <h2 className='text-xl flex items-center'><BiRupee /> {props.product[0].product_mop}</h2>
                     </div>
                 </div>
 

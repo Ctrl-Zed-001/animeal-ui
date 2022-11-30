@@ -21,7 +21,7 @@ const AddressModal = (props) => {
                         props.addresses?.map((adr, index) => {
                             return (
                                 <div onClick={() => props.selectAddress(adr)} key={index} className="border p-3 rounded-lg my-3 text-xs leading-5 bg-gray-100 border-gray-100 hover:bg-yellow-100 hover:border-yellow-100">
-                                    <h1 className="text-xs font-medium mb-2">{adr.addname} ({adr.addresstype})</h1>
+                                    <h2 className="text-xs font-medium mb-2">{adr.addname} ({adr.addresstype})</h2>
                                     <p className='my-2'>{adr.addaddress1} {adr.addaddress2} {adr.addcity} {adr.addstate} {adr.addpincode}</p>
                                     <p className='font-medium'>{adr.addnumber}</p>
                                 </div>

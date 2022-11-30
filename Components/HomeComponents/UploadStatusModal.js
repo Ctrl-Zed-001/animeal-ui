@@ -18,7 +18,7 @@ const UploadStatusModal = (props) => {
                 {
                     props.status ?
                         <h1 className="text-center text-3xl font-semibold">Prescription uploaded successfully!</h1> :
-                        <h1 className="text-center text-3xl font-semibold">Oops! Something went wrogn.</h1>
+                        <h2 className="text-center text-3xl font-semibold">Oops! Something went wrogn.</h2>
                 }
 
                 {

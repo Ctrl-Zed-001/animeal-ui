@@ -34,7 +34,7 @@ const SignupForm = (props) => {
                     Login with Facebook
                 </div>
             </div>
-            <h1 className='text-center my-4 text-gray-500 font-semibold'>- OR -</h1>
+            <h2 className='text-center my-4 text-gray-500 font-semibold'>- OR -</h2>
 
             <div className="form-box mx-auto md:w-7/12">
                 <form onSubmit={(e) => { e.preventDefault(); props.signup(name, email, password) }}>

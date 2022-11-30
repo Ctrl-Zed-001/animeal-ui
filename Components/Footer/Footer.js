@@ -76,7 +76,7 @@ const Footer = () => {
                     <hr className='lg:hidden w-full bg-gray-500 my-4 xl:my-8' />
                     <div className="social-media-section my-6 lg:my-0">
                         <div className="flex mb-2 gap-2 lg:gap-0 items-center lg:items-start justify-center">
-                            <h1 className="font-semibold text-xs lg:text-sm">Show us some love on social media.</h1>
+                            <h2 className="font-semibold text-xs lg:text-sm">Show us some love on social media.</h2>
                             <img src="/img/icons/love.webp" alt="" />
                         </div>
                         <div className="flex justify-center gap-4 lg:gap-4 text-center lg:mt-4 ">
@@ -99,10 +99,10 @@ const Footer = () => {
                 <div className="lg:flex justify-between items-center lg:px-28">
                     <div className="lg:flex items-center gap-4 px-10">
                         <img src="/img/logo.webp" alt="" className='h-10 mx-auto' />
-                        <h1 className='font-semibold hidden xl:block text-xs lg:text-base text-center'> is brought to you by <span className="text-theme">GOODMAN VETCARE PVT. LTD.</span>  </h1>
-                        <h1 className='font-semibold block xl:hidden text-xs lg:text-base text-center'> is brought to you by <br /> <span className="text-theme">GOODMAN VETCARE PVT. LTD.</span>  </h1>
+                        <h2 className='font-semibold hidden xl:block text-xs lg:text-base text-center'> is brought to you by <span className="text-theme">GOODMAN VETCARE PVT. LTD.</span>  </h2>
+                        <h2 className='font-semibold block xl:hidden text-xs lg:text-base text-center'> is brought to you by <br /> <span className="text-theme">GOODMAN VETCARE PVT. LTD.</span>  </h2>
                     </div>
-                    <h1 className='font-semibold text-xs lg:text-base text-center'>© 2022 Copyright Animeal.in</h1>
+                    <h2 className='font-semibold text-xs lg:text-base text-center'>© 2022 Copyright Animeal.in</h2>
                 </div>
             </div>
 

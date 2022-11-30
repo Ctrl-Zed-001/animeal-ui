@@ -51,6 +51,10 @@ const Brand = (props) => {
 
     return (
         <div className='main-brand-page mt-16 lg:mt-0'>
+            <Head>
+                <title>{props.title}</title>
+                <meta name="description" content={props.description} />
+            </Head>
             {
                 router ?
                     <Head>
@@ -110,12 +114,20 @@ const Brand = (props) => {
 
 
 
-export async function getServerSideProps({ query }) {
+export async function getServerSideProps(context) {
 
     let categories = await axios.get(`${process.env.NEXT_PUBLIC_API_URI}/getcategories`)
+    let metaData = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URI}/metaurl/post/data`,
+        {
+            slug: "https://animeal.in" + context.resolvedUrl
+        }
+    )
     return {
         props: {
             categories: categories.data,
+            title: metaData.data.success.meta_title,
+            description: metaData.data.success.meta_description
         }
     }
 }

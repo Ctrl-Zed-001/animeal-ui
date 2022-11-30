@@ -275,7 +275,7 @@ const Product = (props) => {
                                 <></> :
                                 <h3 className="text-sm lg:text-base font-medium text-gray-500 flex items-center mr-2 line-through"><BiRupee />{props.product.productMrp}</h3>
                         }
-                        <h1 className="text-2xl flex items-center font-semibold"><BiRupee />{props.product.productPriceApi}</h1>
+                        <h2 className="text-2xl flex items-center font-semibold"><BiRupee />{props.product.productPriceApi}</h2>
                     </div>
                     <p className="text-sm lg:text-base flex items-center mt-2 text-green-700 font-semibold">you save <BiRupee /> {parseInt(props.product.productMrp) - parseInt(props.product.productPriceApi)} </p>
                     {/* <p className='text-sm text-slate-600 mt-3 font-medium'>Free 1-3 day shipping on this item.</p> */}

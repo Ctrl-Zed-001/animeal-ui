@@ -10,8 +10,8 @@ const CartSummary = (props) => {
                 <h1 className='font-semibold'>Free shipping in 24hr.</h1>
             </div>
             <div className="flex w-full items-center justify-between my-6">
-                <h1 className="">Subtotal ({props.qty} items)</h1>
-                <h1 className='font-semibold flex items-center'><BiRupee /> {props.subTotal} </h1>
+                <h2 className="">Subtotal ({props.qty} items)</h2>
+                <h2 className='font-semibold flex items-center'><BiRupee /> {props.subTotal} </h2>
             </div>
             <table className='w-full'>
                 <tbody>

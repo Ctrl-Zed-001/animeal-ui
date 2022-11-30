@@ -135,7 +135,7 @@ const BannerSection = () => {
          
                 <div className="relative h-90 lg:w-3/6 w-3/6 text-center">
                     <img src="/img/3rd.webp" alt="" className='h-full object-cover rounded-lg w-full shadow' />
-                    <h1 className="text-white xl:text-xl font-bold absolute top-4 xl:top-10 left-0 w-full px-2">Send us the prescription and we'll have it delivered</h1>
+                    <h2 className="text-white xl:text-xl font-bold absolute top-4 xl:top-10 left-0 w-full px-2">Send us the prescription and we'll have it delivered</h2>
                     <Link href="/upload-prescription" >
                         <button className='bg-amber-900 hover:bg-transparent transition-all border-2 border-white p-2 xl:px-4 xl:py-2 text-white absolute bottom-4 xl:bottom-96 left-10 xl:left-20 font-semibold rounded-lg text-xs xl:text-base'>
                             Upload Now
@@ -146,7 +146,7 @@ const BannerSection = () => {
        
                 <div className="relative h-90 w-3/6 lg:w-3/6 text-center">
                     <img src="/img/4th.webp" alt="" className='h-full object-cover rounded-lg w-full shadow' />
-                    <h1 className="text-white text-xl font-bold absolute bottom-10 left-0 w-full px-2">Pathology <br /> <span className='text-3xl'>Coming Soon</span> </h1>
+                    <h2 className="text-white text-xl font-bold absolute bottom-10 left-0 w-full px-2">Pathology <br /> <span className='text-3xl'>Coming Soon</span> </h2>
                 </div>
             </div> */}
             <PrescriptionUpload isOpen={isUploadModalOpen} isMobile={isMobile} close={() => setIsUploadModalOpen(false)} showStatus={handleClose} />
