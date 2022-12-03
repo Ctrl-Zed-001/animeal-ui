@@ -55,13 +55,6 @@ const Brand = (props) => {
                 <title>{props.title}</title>
                 <meta name="description" content={props.description} />
             </Head>
-            {
-                router ?
-                    <Head>
-                        <title>{Capitalize(router.query.slug)}</title>
-                    </Head>
-                    : <></>
-            }
             {/* Banner */}
             {
                 router ?
