@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { BiRupee } from 'react-icons/bi';
 import CartItem from '../../Components/CartPageComponents/CartItem';
 import PrescriptionModal from '../../Components/CartPageComponents/PrescriptionModal';
@@ -43,7 +43,7 @@ const Cart = () => {
                             {/* CART ITEMS */}
                             {
                                 cartItems?.map((item, index) => {
-                                    return <CartItem isLoggedIn={isLoggedIn} updateCartQuantity={updateCartQuantity} key={index} item={item[0]} removeCartItem={removeCartItem} />
+                                    return <CartItem isLoggedIn={isLoggedIn} updateCartQuantity={updateCartQuantity} key={index} item={item} removeCartItem={removeCartItem} />
                                 })
 
                             }

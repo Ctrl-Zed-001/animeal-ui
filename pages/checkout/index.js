@@ -20,8 +20,7 @@ import { useRouter } from 'next/router'
 import OtpPopup from '../../Components/CheckoutComponents/OtpPopup'
 import toast, { Toaster } from 'react-hot-toast'
 import FormData from 'form-data';
-import Loader from '../../Components/Loader/Loader';
-
+import { getAddress, saveAddress, generateOtp } from '../../Helpers/Api';
 
 
 
@@ -36,6 +35,7 @@ const Checkout = () => {
 
     const [showAddressModal, setShowAddressModal] = useState(false)
     const [address, setAddress] = useState()
+    console.log("🚀 ~ file: index.js:39 ~ Checkout ~ address", address)
     const [savedAddresses, setSavedAddresses] = useState()
     const [newAddressModal, ToggleNewAddressModal] = useState(false)
     const [statusModal, setStatusModal] = useState()
@@ -51,24 +51,16 @@ const Checkout = () => {
 
     useEffect(() => {
         if (token) {
-            axios.post(
-                `${process.env.NEXT_PUBLIC_API_URI}/user/getsavedaddresses/post/data`,
-                {},
-                {
-                    headers: {
-                        Authorization: token
-                    }
-                }
-            )
+            getAddress(token)
                 .then(res => {
-                    modifyAddresses(res.data.savedAddresses)
+                    modifyAddresses(res.data.data.address)
                 })
                 .catch(err => {
-                    router.replace('/');
+                    // router.replace('/');
                     console.log(err)
                 })
         } else {
-            router.replace('/')
+            // router.replace('/')
         }
     }, [token])
 
@@ -80,7 +72,7 @@ const Checkout = () => {
 
     const modifyAddresses = (addresses) => {
         setSavedAddresses(addresses)
-        let defaultAddress = addresses.filter(addr => addr.defaultaddress === 'Yes')
+        let defaultAddress = addresses.filter(addr => addr.primary === true)
         setAddress(defaultAddress[0])
     }
 
@@ -88,9 +80,9 @@ const Checkout = () => {
         if (!address) {
             toast.error("Please fill in all the fields")
         } else {
-            if (!address.addaddress1 || !address.addaddress2 || !address.addcity || !address.addname || !address.addnumber || !address.addpincode || !address.addstate) {
+            if (!address.line || !address.city || !address.name || !address.phone || !address.pincode || !address.state) {
                 toast.error("Please fill in all the fields")
-            } else if (address.addnumber.length < 10 || address.addnumber.length > 10) {
+            } else if (address.phone.length < 10 || address.phone.length > 10) {
                 toast.error("Please check your mobile number.")
             } else {
                 checkForDelivery(type)
@@ -99,19 +91,19 @@ const Checkout = () => {
     }
 
     const checkForDelivery = (type) => {
-        if (address.addpincode) {
-            if (address.addpincode.length > 6 || address.addpincode.length < 6) {
+        if (address.pincode) {
+            if (address.pincode.length > 6 || address.pincode.length < 6) {
                 toast.error("Please check your pincode")
             } else {
                 axios.post(
-                    `${process.env.NEXT_PUBLIC_API_URI}/valid/pincode/post/data`,
+                    `${process.env.NEXT_PUBLIC_API_URI}/pincode/single`,
                     {
-                        pincode: address.addpincode
+                        pincode: address.pincode
                     }
                 )
                     .then(res => {
-                        if (res.data.pincode == 'Pincode Found') {
-                            saveAddress(type)
+                        if (res.data.data !== null) {
+                            callSaveAddress(type)
                         } else {
                             setDeliveryModal(true)
                             setIsDeliverable(false)
@@ -125,76 +117,21 @@ const Checkout = () => {
         }
     }
 
-    const addNewAddress = (newData) => {
-        let body = {
-            addname: newData.addname,
-            addemail: userDetails.email,
-            addnumber: newData.addnumber,
-            addaltnumber: newData.addaltnumber,
-            addaddress1: newData.addaddress1,
-            addaddress2: newData.addaddress2,
-            addcity: newData.addcity,
-            addpincode: newData.addpincode,
-            addstate: newData.addstate,
-            addresstype: newData.addresstype ? newData.addresstype : 'Home',
-            defaultaddress: newData.defaultAddress ? newData.defaultAddress : 'Yes',
-            drname: doctorName ? doctorName : ''
-        }
-        axios.post(
-            `${process.env.NEXT_PUBLIC_API_URI}/user/addnewdaddress/post/data`,
-            body,
-            {
-                headers: {
-                    Authorization: token
-                }
-            }
-        )
+
+    const callSaveAddress = (paymentType) => {
+        saveAddress()
             .then(res => {
                 modifyAddresses([
-                    res.data.newAddressAdded,
+                    res.data.data,
                     ...savedAddresses
                 ])
             })
             .catch(err => console.log(err.response))
-        ToggleNewAddressModal(false)
-    }
-
-    const saveAddress = (paymentType) => {
-        if (!address.id) {
-            addNewAddress(address)
-        } else {
-            axios.post(
-                `${process.env.NEXT_PUBLIC_API_URI}/user/updatesaveddaddress/post/data`,
-                {
-                    addressid: address.id,
-                    addname: address.addname,
-                    addemail: userDetails.email,
-                    addnumber: address.addnumber,
-                    addaltnumber: address.addaltnumber,
-                    addaddress1: address.addaddress1,
-                    addaddress2: address.addaddress2,
-                    addcity: address.addcity,
-                    addpincode: address.addpincode,
-                    addstate: address.addstate,
-                    addresstype: address.addresstype ? address.addresstype : 'Home',
-                    defaultaddress: address.defaultAddress ? address.defaultAddress : 'Yes',
-                    drname: doctorName ? doctorName : null
-                },
-                {
-                    headers: {
-                        Authorization: token
-                    }
-                }
-            )
-                .then(res => console.log(res.data))
-                .catch(err => console.log(err))
-        }
-
-        if (paymentType === 'online') {
-            callPaytm()
-        } else {
-            callOtp()
-        }
+        // if (paymentType === 'online') {
+        //     callPaytm()
+        // } else {
+        //     callOtp()
+        // }
 
     }
 
@@ -217,16 +154,15 @@ const Checkout = () => {
             `${process.env.NEXT_PUBLIC_API_URI}/paytm/checksum/post/data`,
             {
                 user_id: userDetails.id,
-                name: address.addname,
+                name: address.name,
                 drname: doctorName ? doctorName : '',
                 email: address.addemail,
-                number: address.addnumber,
-                altnumber: address.addaltnumber,
-                address1: address.addaddress1,
-                address2: address.addaddress2,
-                city: address.addcity,
-                pincode: address.addpincode,
-                state: address.addstate,
+                number: address.phone,
+                altnumber: address.alt_phone,
+                address1: address.line,
+                city: address.city,
+                pincode: address.pincode,
+                state: address.state,
                 mid: process.env.NEXT_PUBLIC_MID,
                 amount: cartTotal
             },
@@ -281,16 +217,7 @@ const Checkout = () => {
 
     const callOtp = () => {
         setOtpModal(true)
-        axios.post(`${process.env.NEXT_PUBLIC_API_URI}/user/otpgeneration/post/data`,
-            {
-                number: address.addnumber.toString()
-            },
-            {
-                headers: {
-                    Authorization: token
-                }
-            }
-        )
+        generateOtp(address.phone, token)
             .then(res => {
                 let genOtp = res.data.OTPGenerated.substr(res.data.OTPGenerated.length - 6);
             })
@@ -304,16 +231,15 @@ const Checkout = () => {
             `${process.env.NEXT_PUBLIC_API_URI}/user/codorder/post/data`,
             {
                 otp: value,
-                name: address.addname,
+                name: address.name,
                 drname: doctorName ? doctorName : "",
                 email: address.addemail,
-                number: address.addnumber,
-                altnumber: address.addaltnumber,
-                address1: address.addaddress1,
-                address2: address.addaddress2,
-                city: address.addcity,
-                pincode: address.addpincode,
-                state: address.addstate
+                number: address.phone,
+                altnumber: address.alt_phone,
+                address1: address.line,
+                city: address.city,
+                pincode: address.pincode,
+                state: address.state
             },
             {
                 headers: {
@@ -340,13 +266,13 @@ const Checkout = () => {
     // UPLOAD PRESCRIPTION
     const uploadPrescription = () => {
         if (hasMedicine && prescriptionUploaded) {
-            let fullAddress = address.addaddress1 + ' ' + address.addaddress2 + ' ' + address.addcity + ' ' + address.addpincode + ' ' + address.addstate;
+            let fullAddress = address.line + ' ' + address.city + ' ' + address.pincode + ' ' + address.state;
             form.append('petname', '')
             form.append('pettype', '')
             form.append('drname', doctorName)
-            form.append('name', address.addname)
+            form.append('name', address.name)
             form.append('email', address.addemail)
-            form.append('number', address.addnumber)
+            form.append('number', address.phone)
             form.append('altnumber', address.addaltphone)
             form.append('address', fullAddress)
             form.append(`prescription[]`, prescriptionFiles[0])
@@ -392,9 +318,9 @@ const Checkout = () => {
                             <h1 className='font-semibold'>Delivery Address</h1>
                             <span className="text-slate-400 text-xs" onClick={() => setShowAddressModal(true)}>change</span>
                         </div>
-                        <h1 className="mt-2 font-medium mb-1">{address.addname} ({address.addresstype})</h1>
-                        <p className='my-1 text-sm'>{address.addaddress1} {address.addaddress2} {address.addcity} {address.addstate} {address.addpincode}</p>
-                        <p className='font-medium text-sm'>{address.addnumber}</p>
+                        <h1 className="mt-2 font-medium mb-1">{address.name} ({address.type})</h1>
+                        <p className='my-1 text-sm'>{address.line} {address.city} {address.state} {address.pincode}</p>
+                        <p className='font-medium text-sm'>{address.phone}</p>
                     </div> :
                     <button className='bg-slate-100 p-2 rounded-lg shadow font-semibold text-center w-full lg:hidden capitalize' onClick={() => setShowAddressModal(true)}>select from saved addresses</button>
             }
@@ -415,21 +341,19 @@ const Checkout = () => {
                         >
 
                             {
-                                savedAddresses && savedAddresses.map((slideContent, index) => {
+                                savedAddresses && savedAddresses.length > 0 && savedAddresses.map((slideContent, index) => {
                                     return (
                                         <SwiperSlide key={index} virtualIndex={index}>
                                             <div className='address-box bg-white p-4 pt-0 rounded-lg'>
                                                 <div className="flex justify-between w-full">
-                                                    <Radio onChange={() => changeAddress(index)} checked={slideContent.defaultaddress === 'Yes' ? true : false} size='xs' color='success' value={index} />
-                                                    <div className="flex items-center gap-2 text-xs text-gray-600 mt-4">
-                                                        <AiFillEdit /> Edit
-                                                    </div>
+                                                    <Radio onChange={() => changeAddress(index)} checked={slideContent.primary ? true : false} size='xs' color='success' value={index} />
+
 
                                                 </div>
                                                 <div className="address text-sm mt-3 text-gray-500">
-                                                    <h1 className='text-base text-medium mb-1 text-gray-700'>{slideContent.addname} <span className='text-xs text-gray-500'>({slideContent.addresstype})</span></h1>
-                                                    <p>{slideContent.addaddress1 + ' ' + slideContent.addaddress2 + ' ' + slideContent.addcity + ' ' + slideContent.addstate + ' ' + slideContent.addpincode}</p>
-                                                    <p className="text-semibold mt-2 text-gray-800">{slideContent.addnumber}</p>
+                                                    <h1 className='text-base text-medium mb-1 text-gray-700'>{slideContent.name} <span className='text-xs text-gray-500'>({slideContent.type})</span></h1>
+                                                    <p>{slideContent.line + ' ' + ' ' + slideContent.city + ' ' + slideContent.state + ' ' + slideContent.pincode}</p>
+                                                    <p className="text-semibold mt-2 text-gray-800">{slideContent.phone}</p>
                                                 </div>
                                             </div>
                                         </SwiperSlide>
@@ -457,29 +381,29 @@ const Checkout = () => {
 
                             underlined
                             label="Name *"
-                            initialValue={address?.addname}
+                            initialValue={address?.name}
                             required
-                            onChange={(e) => setAddress({ ...address, addname: e.target.value })}
+                            onChange={(e) => setAddress({ ...address, name: e.target.value })}
                         />
                         <Input
                             fullWidth
 
                             underlined
                             label="Phone Number *"
-                            initialValue={address?.addnumber}
+                            initialValue={address?.phone}
                             type="number"
                             required
-                            onChange={(e) => setAddress({ ...address, addnumber: e.target.value })}
+                            onChange={(e) => setAddress({ ...address, phone: e.target.value })}
                         />
                         <Input
                             fullWidth
 
                             underlined
                             label="Alternate Number"
-                            initialValue={address?.addaltnumber}
+                            initialValue={address?.alt_phone}
                             type="number"
                             required
-                            onChange={(e) => setAddress({ ...address, addaltnumber: e.target.value })}
+                            onChange={(e) => setAddress({ ...address, alt_phone: e.target.value })}
                         />
                     </div>
                     <div className="grid grid-cols-1 lg:flex justify-between gap-14 my-14 w-full">
@@ -487,21 +411,12 @@ const Checkout = () => {
                             fullWidth
 
                             underlined
-                            label="Address line 1 *"
-                            initialValue={address?.addaddress1}
+                            label="Address line"
+                            initialValue={address?.line}
                             required
-                            onChange={(e) => setAddress({ ...address, addaddress1: e.target.value })}
+                            onChange={(e) => setAddress({ ...address, line: e.target.value })}
                         />
-                        <Input
-                            fullWidth
-
-                            underlined
-                            label="Area / locality *"
-                            initialValue={address?.addaddress2}
-                            required
-                            onChange={(e) => setAddress({ ...address, addaddress2: e.target.value })}
-                        />
-                        <select onChange={(e) => setAddress({ ...address, addresstype: e.target.value })} name='addtype' value={address?.addresstype ? address?.addresstype : "Home"} className='bg-transparent border-b-2 border-gray-200 w-full lg:w-12/12'>
+                        <select onChange={(e) => setAddress({ ...address, type: e.target.value })} name='addtype' value={address?.type ? address?.type : "Home"} className='bg-transparent border-b-2 border-gray-200 w-full lg:w-12/12'>
                             <option value="Home">Home</option>
                             <option value="Office">Office</option>
                         </select>
@@ -512,7 +427,7 @@ const Checkout = () => {
                             
                             underlined
                             label="Address Type"
-                            initialValue={address?.addresstype}
+                            initialValue={address?.type}
                         />
                         
                     </div> */}
@@ -522,28 +437,28 @@ const Checkout = () => {
 
                             underlined
                             label="City / Town *"
-                            initialValue={address?.addcity}
+                            initialValue={address?.city}
                             required
-                            onChange={(e) => setAddress({ ...address, addcity: e.target.value })}
+                            onChange={(e) => setAddress({ ...address, city: e.target.value })}
                         />
                         <Input
                             fullWidth
 
                             underlined
                             label="State *"
-                            initialValue={address?.addstate}
+                            initialValue={address?.state}
                             required
-                            onChange={(e) => setAddress({ ...address, addstate: e.target.value })}
+                            onChange={(e) => setAddress({ ...address, state: e.target.value })}
                         />
                         <Input
                             fullWidth
 
                             underlined
                             label="ZipCode *"
-                            initialValue={address?.addpincode}
+                            initialValue={address?.pincode}
                             type="number"
                             required
-                            onChange={(e) => setAddress({ ...address, addpincode: e.target.value })}
+                            onChange={(e) => setAddress({ ...address, pincode: e.target.value })}
                         />
                     </div>
                     <div className="flex justify-end items-center gap-6">
@@ -551,7 +466,7 @@ const Checkout = () => {
                         <Switch
                             checked={true}
                             initialChecked={true}
-                            onChange={(e) => setAddress({ ...address, defaultAddress: e.target.checked })} color='success' />
+                            onChange={(e) => setAddress({ ...address, primary: e.target.checked })} color='success' />
                     </div>
                 </div>
 
@@ -639,7 +554,7 @@ const Checkout = () => {
             < AddressModal addresses={savedAddresses} selectAddress={selectAddress} visible={showAddressModal} close={() => setShowAddressModal(false)} />
 
             {/* NEW ADDRESS MODAL */}
-            <NewAddressModal isOpen={newAddressModal} close={() => ToggleNewAddressModal(false)} save={addNewAddress} />
+            <NewAddressModal isOpen={newAddressModal} close={() => ToggleNewAddressModal(false)} token={token} save={(data) => modifyAddresses([data, ...savedAddresses])} />
 
             {/* ORDER STATUS MODAL */}
             {

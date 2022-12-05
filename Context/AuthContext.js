@@ -2,6 +2,7 @@ import React, { useState, useEffect, createContext } from 'react'
 import axios from 'axios'
 import { useSession, signIn, signOut } from "next-auth/react"
 import { useRouter } from 'next/router';
+import Loader from '../Components/Loader/Loader'
 
 export const AuthContext = createContext();
 
@@ -12,6 +13,7 @@ const AuthContextProvider = (props) => {
     const [isMobile, setIsMobile] = useState(false)
     const [showAuthModal, setShowAuthModal] = useState(false)
     const [token, setToken] = useState('')
+    const [loading, setLoading] = useState(true)
 
     const { data: session, status } = useSession()
 
@@ -58,6 +60,7 @@ const AuthContextProvider = (props) => {
             setUserDetails()
             setToken('')
         }
+        setLoading(false)
     }, [status])
 
 
@@ -80,6 +83,7 @@ const AuthContextProvider = (props) => {
                 setIsLoggedIn(false)
                 setUserDetails()
                 setToken('')
+                router.replace('/')
             })
     }
 
@@ -100,7 +104,11 @@ const AuthContextProvider = (props) => {
 
     return (
         <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn, userDetails, setUserDetails, isMobile, getUserDetails, showAuthModal, setShowAuthModal, token, setToken, logout, loginSocial }}>
-            {props.children}
+            {
+                loading ?
+                    <Loader /> :
+                    props.children
+            }
         </AuthContext.Provider>
     )
 }

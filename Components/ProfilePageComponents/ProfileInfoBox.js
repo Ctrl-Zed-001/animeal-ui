@@ -4,7 +4,6 @@ import { AuthContext } from '../../Context/AuthContext'
 
 const ProfileInfoBox = () => {
     const { userDetails } = useContext(AuthContext)
-    console.log("🚀 ~ file: ProfileInfoBox.js ~ line 7 ~ ProfileInfoBox ~ userDetails", userDetails)
     return (
         <div className="profile info-section bg-theme p-4 rounded-lg col-span-3 pb-10">
 

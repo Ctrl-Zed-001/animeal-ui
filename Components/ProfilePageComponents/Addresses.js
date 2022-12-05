@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import AddressBox from './AddressBox'
 import axios from 'axios'
 import toast, { Toaster } from 'react-hot-toast'
+import { getAddress, removeAddress } from '../../Helpers/Api'
 
 const Addresses = (props) => {
 
@@ -9,18 +10,10 @@ const Addresses = (props) => {
     const [defaultAddress, setDefaultAddress] = useState()
 
     useEffect(() => {
-        axios.post(
-            `${process.env.NEXT_PUBLIC_API_URI}/user/getsavedaddresses/post/data`,
-            {},
-            {
-                headers: {
-                    Authorization: props.token
-                }
-            }
-        )
+        getAddress(props.token)
             .then(res => {
-                setSavedAddresses(res.data.savedAddresses)
-                let defaultAddress = res.data.savedAddresses.filter(addr => addr.defaultaddress === 'Yes')
+                setSavedAddresses(res.data.data.address)
+                let defaultAddress = res.data.data.filter(addr => addr.defaultaddress === 'Yes')
                 setDefaultAddress(defaultAddress[0])
             })
             .catch(err => {
@@ -29,18 +22,7 @@ const Addresses = (props) => {
     }, [])
 
     const deleteAddress = (id) => {
-        console.log("🚀 ~ file: Addresses.js ~ line 32 ~ deleteAddress ~ id", id)
-        axios.post(
-            `${process.env.NEXT_PUBLIC_API_URI}/user/addressremoved/post/data`,
-            {
-                addressid: id
-            },
-            {
-                headers: {
-                    Authorization: props.token
-                }
-            }
-        )
+        removeAddress(id, props.token)
             .then(res => {
                 if (res.status === 200) {
                     let oldList = [...savedAddresses]

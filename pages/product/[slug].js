@@ -26,14 +26,13 @@ import "swiper/css/thumbs";
 
 
 const Product = (props) => {
-    console.log("🚀 ~ file: [slug].js ~ line 29 ~ Product ~ props", props)
     const [inWishlist, setInWishlist] = useState(false)
     const [inCart, setInCart] = useState(false)
     const [checkPinCode, setCheckPinCode] = useState('')
     const [isDeliverable, setIsDeliverable] = useState()
 
     const { setShowAuthModal, isLoggedIn, token } = useContext(AuthContext)
-    const { addToCart, setRefreshCart, refreshCart } = useContext(CartContext)
+    const { fetchCart, setRefreshCart, refreshCart } = useContext(CartContext)
 
     const [thumbsSwiper, setThumbsSwiper] = useState(null);
 
@@ -41,9 +40,9 @@ const Product = (props) => {
     useEffect(() => {
         if (token) {
             axios.post(
-                `${process.env.NEXT_PUBLIC_API_URI}/user/addtocartvalidation/post/data`,
+                `${process.env.NEXT_PUBLIC_API_URI}/cart/checkcart`,
                 {
-                    product_id: props.product.products.product_id
+                    productId: props.product.id
                 },
                 {
                     headers: {
@@ -51,13 +50,26 @@ const Product = (props) => {
                     }
                 }
             )
-                .then(res => setInCart(res.data.validateAddToCart))
+                .then(res => setInCart(res.data))
+                .catch(err => console.log(err))
+            axios.post(
+                `${process.env.NEXT_PUBLIC_API_URI}/wishlist/checkwishlist`,
+                {
+                    productId: props.product.id
+                },
+                {
+                    headers: {
+                        Authorization: token
+                    }
+                }
+            )
+                .then(res => setInWishlist(res.data))
                 .catch(err => console.log(err))
         } else {
             // check kar local cart mei hai kya
             if (JSON.parse(localStorage.getItem('unauthcart'))) {
                 let localCart = JSON.parse(localStorage.getItem('unauthcart'))
-                let findItem = localCart.filter(item => item[0].product_id == props.product.products.product_id)
+                let findItem = localCart.filter(item => item[0].product_id == props.product.product_id)
                 if (findItem && findItem.length > 0) {
                     setInCart(true)
                 } else {
@@ -72,10 +84,9 @@ const Product = (props) => {
 
     const cartClicked = () => {
         if (isLoggedIn) {
-            axios.post(`${process.env.NEXT_PUBLIC_API_URI}/user/addtocart/post/data`,
+            axios.post(`${process.env.NEXT_PUBLIC_API_URI}/cart/add`,
                 {
-                    product_id: props.product.products.product_id,
-                    quantity: props.product.products.minimum_quantity
+                    productid: props.product.id
                 },
                 {
                     headers: {
@@ -83,15 +94,9 @@ const Product = (props) => {
                     }
                 })
                 .then(res => {
-                    console.log("🚀 ~ file: [slug].js ~ line 97 ~ cartClicked ~ res", res.data)
                     toast.success('Item added to cart');
                     setInCart(true)
-                    addToCart([{
-                        ...res.data.success,
-                        available_stock: parseInt(props.product.availableStock) - props.product.products.minimum_quantity,
-                        category: props.product.products.category,
-                        minimum_quantity: props.product.products.minimum_quantity
-                    }])
+                    fetchCart(token)
                 })
                 .catch(err => console.log(err))
         } else {
@@ -99,23 +104,23 @@ const Product = (props) => {
             toast.success('Item added to cart');
             setInCart(true)
             let itemForCart = {
-                product_main_id: props.product.products.id,
-                product_id: props.product.products.product_id,
-                product_name: props.product.products.website_pro_name,
+                product_main_id: props.product.id,
+                product_id: props.product.product_id,
+                product_name: props.product.website_pro_name,
                 product_image: props.product.productimages[0] ? props.product.productimages[0].product_image : '',
-                product_description: props.product.products.shortdescription,
-                quantity: props.product.products.minimum_quantity,
+                product_description: props.product.shortdescription,
+                quantity: props.product.minimum_quantity,
                 product_price: props.product.productPriceApi,
                 product_discount: parseInt(props.product.productMrp) - parseInt(props.product.productPriceApi),
-                product_offer: props.product.products.offer,
+                product_offer: props.product.offer,
                 product_total: props.product.productPriceApi,
                 product_discount_total: parseInt(props.product.productMrp) - parseInt(props.product.productPriceApi),
-                product_weight: props.product.products.size,
-                updated_at: props.product.products.updated_at,
-                created_at: props.product.products.created_at,
-                category: props.product.products.category,
-                available_stock: parseInt(props.product.products.stock),
-                minimum_quantity: parseInt(props.product.products.minimum_quantity)
+                product_weight: props.product.size,
+                updated_at: props.product.updated_at,
+                created_at: props.product.created_at,
+                category: props.product.category,
+                available_stock: parseInt(props.product.stock),
+                minimum_quantity: parseInt(props.product.minimum_quantity)
             }
             let localCartList = JSON.parse(localStorage.getItem('unauthcart'))
             if (localCartList) {
@@ -131,9 +136,9 @@ const Product = (props) => {
 
     const wishlistClicked = (type) => {
         if (isLoggedIn) {
-            axios.post(`${process.env.NEXT_PUBLIC_API_URI}/user/${type}/post/data`,
+            axios.post(`${process.env.NEXT_PUBLIC_API_URI}/wishlist/add`,
                 {
-                    product_id: props.product.products.product_id,
+                    productid: props.product.id,
                 },
                 {
                     headers: {
@@ -156,13 +161,13 @@ const Product = (props) => {
     const checkAvailability = (e) => {
         e.preventDefault()
         axios.post(
-            `${process.env.NEXT_PUBLIC_API_URI}/valid/pincode/post/data`,
+            `${process.env.NEXT_PUBLIC_API_URI}/pincode/single`,
             {
                 pincode: checkPinCode
             }
         )
             .then(res => {
-                if (res.data.pincode == 'Pincode Found') {
+                if (res.data.data !== null) {
                     setIsDeliverable(true)
                 } else {
                     setIsDeliverable(false)
@@ -315,7 +320,7 @@ const Product = (props) => {
                                                             {prod.product_weight}
                                                             <br />
                                                             {
-                                                                props.product.products.category.toLowerCase() == 'food' ?
+                                                                props.product.category.toLowerCase() == 'food' ?
                                                                     <div className="flex items-center text-sm text-slate-600 mt-2">
                                                                         <BiRupee /> {Math.round(prod.product_price / getWeight(prod.product_weight))} / Kg
                                                                     </div> :
@@ -375,7 +380,7 @@ const Product = (props) => {
 
                     {/* <div className="content-box">
                         <p className={`text-justify text-sm leading-5 text-slate-600 mb-0 font-medium max-h-16 hover:max-h-fit overflow-hidden transition-all ease-in-out duration-500`}>
-                            {props.product.products.shortdescription}
+                            {props.product.shortdescription}
                         </p>
                         <p className="text-sm text-theme">read more..</p>
                     </div> */}

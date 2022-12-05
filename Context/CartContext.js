@@ -24,18 +24,7 @@ const CartContextProvider = (props) => {
 
     useEffect(() => {
         if (token) {
-            axios.post(
-                `${process.env.NEXT_PUBLIC_API_URI}/user/getcart/post/data`,
-                {},
-                {
-                    headers: {
-                        Authorization: token
-                    }
-                })
-                .then(res => {
-                    checkLocalCartAndUpdate(res.data.cartDetails)
-                })
-                .catch(err => console.log(err))
+            fetchCart(token)
         } else {
             setCartItems([]);
             setCartTotal(0)
@@ -54,6 +43,20 @@ const CartContextProvider = (props) => {
         }
     }, [refreshCart])
 
+    const fetchCart = (token) => {
+        axios.post(
+            `${process.env.NEXT_PUBLIC_API_URI}/cart/getall`,
+            {},
+            {
+                headers: {
+                    Authorization: token
+                }
+            })
+            .then(res => {
+                checkLocalCartAndUpdate(res.data.data)
+            })
+            .catch(err => console.log(err))
+    }
 
     const checkLocalCartAndUpdate = (data) => {
         let localCart = [...cartItems]
@@ -72,7 +75,7 @@ const CartContextProvider = (props) => {
             // CHECK K SAME PRODUCT WAPS TO NAI DALA
 
             data.forEach((item, index) => {
-                localCart = localCart.filter(localItem => localItem[0].product_id !== item[0].product_id)
+                localCart = localCart.filter(localItem => localItem.product.id !== item.product.id)
             })
 
             // abi ye local cart ko db mei push karne ka
@@ -94,8 +97,8 @@ const CartContextProvider = (props) => {
         localCart.forEach((item) => {
             axios.post(`${process.env.NEXT_PUBLIC_API_URI}/user/addtocart/post/data`,
                 {
-                    product_id: item[0].product_id,
-                    quantity: item[0].quantity
+                    product_id: item.product.id,
+                    quantity: item.quantity
                 },
                 {
                     headers: {
@@ -111,14 +114,15 @@ const CartContextProvider = (props) => {
         })
     }
 
-    const updateCartQuantity = (action, id, quantity) => {
+    const updateCartQuantity = (action, id, productid) => {
         // CHECK K BANDA LOGGEDIN HAI KYA
         if (isLoggedIn) {
             axios.post(
-                `${process.env.NEXT_PUBLIC_API_URI}/user/${action}/post/data`,
+                `${process.env.NEXT_PUBLIC_API_URI}/cart/update`,
                 {
-                    "product_id": id,
-                    "quantity": quantity
+                    "id": id,
+                    "productid": productid,
+                    "action": action
                 },
                 {
                     headers: {
@@ -128,12 +132,8 @@ const CartContextProvider = (props) => {
             )
                 .then(res => {
                     let oldList = [...cartItems];
-                    let oldItemIndex = cartItems.findIndex(item => item[0].product_id == id)
-                    if (action === 'updatecartplus') {
-                        oldList[oldItemIndex][0] = { ...oldList[oldItemIndex][0], quantity: quantity, product_total: res.data.cartUpdatePlus.product_total, product_discount_total: parseInt(res.data.cartUpdatePlus.product_discount_total) }
-                    } else {
-                        oldList[oldItemIndex][0] = { ...oldList[oldItemIndex][0], quantity: quantity, product_total: res.data.cartUpdateMinus.product_total, product_discount_total: parseInt(res.data.cartUpdateMinus.product_discount_total) }
-                    }
+                    let oldItemIndex = cartItems.findIndex(item => item.id == id)
+                    oldList[oldItemIndex] = { ...oldList[oldItemIndex], quantity: res.data.data.quantity }
                     setCartItems([...oldList])
                     validateAndUpdateCart([...oldList])
 
@@ -142,7 +142,7 @@ const CartContextProvider = (props) => {
         } else {
             // AGAR LOGGEDIN NAHI HAI TO SIRF STATE UPDATE HOYEGA
             let oldList = [...cartItems];
-            let oldItemIndex = cartItems.findIndex(item => item[0].product_id == id)
+            let oldItemIndex = cartItems.findIndex(item => item.product.id == id)
             if (action === 'updatecartplus') {
                 oldList[oldItemIndex][0] = { ...oldList[oldItemIndex][0], quantity: quantity, product_total: parseInt(oldList[oldItemIndex][0].product_total) + parseInt(oldList[oldItemIndex][0].product_price), product_discount_total: parseInt(oldList[oldItemIndex][0].product_discount_total) + parseInt(oldList[oldItemIndex][0].product_discount) }
             } else {
@@ -169,9 +169,9 @@ const CartContextProvider = (props) => {
     const removeCartItem = (id, type) => {
         if (isLoggedIn) {
             axios.post(
-                `${process.env.NEXT_PUBLIC_API_URI}/user/removecartitem/post/data`,
+                `${process.env.NEXT_PUBLIC_API_URI}/cart/remove`,
                 {
-                    "product_id": id
+                    "id": id
                 },
                 {
                     headers: {
@@ -201,7 +201,7 @@ const CartContextProvider = (props) => {
             setHasMedicine(false)
         } else {
             let oldList = [...cartItems];
-            let newList = oldList.filter(item => item[0].product_id !== id)
+            let newList = oldList.filter(item => item.id !== id)
             setCartItems([...newList])
             validateAndUpdateCart([...newList])
             if (!isLoggedIn) {
@@ -217,7 +217,7 @@ const CartContextProvider = (props) => {
 
     const removeAllItems = () => {
         cartItems.forEach(item => {
-            removeCartItem(item[0].product_id, 'all')
+            removeCartItem(item.id, 'all')
         })
     }
 
@@ -237,9 +237,9 @@ const CartContextProvider = (props) => {
         let discount = 0;
         let subtotal = 0;
         data.forEach(item => {
-            total = parseInt(total) + parseInt(item[0].product_total)
-            quantity = parseInt(quantity) + parseInt(item[0].quantity)
-            discount = parseInt(discount) + parseInt(item[0].product_discount_total)
+            total = parseInt(total) + (parseInt(item.quantity) * parseInt(item.product.selling_price))
+            quantity = parseInt(quantity) + parseInt(item.quantity)
+            discount = parseInt(discount) + ((parseInt(item.product.mrp) * parseInt(item.quantity)) - (parseInt(item.product.selling_price) * parseInt(item.quantity)))
             subtotal = parseInt(total) + parseInt(discount)
         })
         setCartTotal(Math.round(parseInt(total)))
@@ -250,8 +250,11 @@ const CartContextProvider = (props) => {
     }
 
     const checkMedicine = (data) => {
-        let containFilter = data.filter(item => item[0].category.toLowerCase() == "medicine")
-        if (containFilter.length > 0) {
+        let containFilter = data.map(item => {
+            return item.product.category.map(cat => cat.slug === 'medicine')[0]
+        })
+        console.log("🚀 ~ file: CartContext.js:257 ~ containFilter ~ containFilter", containFilter)
+        if (containFilter.includes(true)) {
             setHasMedicine(true)
         } else {
             setHasMedicine(false)
@@ -259,7 +262,7 @@ const CartContextProvider = (props) => {
     }
 
     return (
-        <CartContext.Provider value={{ cartItems, setCartItems, cartTotal, setCartTotal, qty, setQty, removeAllItems, removeCartItem, updateCartQuantity, addToCart, cartDiscount, subTotal, clearCart, hasMedicine, setRefreshCart, refreshCart, prescriptionUploaded, setPrescriptionFiles, prescriptionFiles, setPrescriptionUploaded, doctorName, setDoctorName }}>
+        <CartContext.Provider value={{ fetchCart, cartItems, setCartItems, cartTotal, setCartTotal, qty, setQty, removeAllItems, removeCartItem, updateCartQuantity, addToCart, cartDiscount, subTotal, clearCart, hasMedicine, setRefreshCart, refreshCart, prescriptionUploaded, setPrescriptionFiles, prescriptionFiles, setPrescriptionUploaded, doctorName, setDoctorName }}>
             {props.children}
         </CartContext.Provider>
     )

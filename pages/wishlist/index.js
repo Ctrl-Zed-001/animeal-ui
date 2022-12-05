@@ -11,7 +11,7 @@ const Wishlist = () => {
     useEffect(() => {
         if (token) {
             axios.post(
-                `${process.env.NEXT_PUBLIC_API_URI}/user/wishlistproducts/post/data`,
+                `${process.env.NEXT_PUBLIC_API_URI}/wishlist/getall`,
                 {},
                 {
                     headers: {
@@ -19,7 +19,7 @@ const Wishlist = () => {
                     }
                 }
             )
-                .then(res => setWishlistProducts(res.data.wishlistProducts.data))
+                .then(res => setWishlistProducts(res.data.data))
                 .catch(err => console.log(err))
         }
 
@@ -27,9 +27,9 @@ const Wishlist = () => {
 
     const remove = (id) => {
         if (token) {
-            axios.post(`${process.env.NEXT_PUBLIC_API_URI}/user/destroywishlistproduct/post/data`,
+            axios.post(`${process.env.NEXT_PUBLIC_API_URI}/wishlist/remove`,
                 {
-                    product_id: id,
+                    id: id,
                 },
                 {
                     headers: {
@@ -38,7 +38,7 @@ const Wishlist = () => {
                 })
                 .then(res => {
                     let oldList = [...wishlistProducts]
-                    let newList = oldList.filter(item => item.product_id !== id)
+                    let newList = oldList.filter(item => item.id !== id)
                     setWishlistProducts([...newList])
                 })
                 .catch(err => console.log(err))
@@ -52,7 +52,7 @@ const Wishlist = () => {
                 {
                     wishlistProducts && wishlistProducts.length > 0 ?
                         wishlistProducts.map((item, index) => {
-                            return <WishlistBox key={index} product={item} remove={remove} />
+                            return <WishlistBox key={index} item={item} product={item.product} remove={remove} />
                         }) :
                         <p>No items in your wishlist.</p>
                 }

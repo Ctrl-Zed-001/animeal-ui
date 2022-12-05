@@ -3,17 +3,16 @@ import { Modal } from '@nextui-org/react';
 import { Switch, Input } from '@nextui-org/react';
 
 import { useForm } from "react-hook-form";
+import { saveAddress } from '../../Helpers/Api';
 
 const NewAddressModal = (props) => {
 
-    const [defaultAddress, setDefaultAddress] = useState("Yes")
+    const [defaultAddress, setDefaultAddress] = useState(true)
     const { register, handleSubmit, formState: { errors } } = useForm();
 
     const onSubmit = data => {
-        props.save({
-            ...data,
-            defaultAddress
-        })
+        saveAddress(data, props.token)
+            .then(res => props.save(res.data.data))
     };
 
     return (
@@ -35,8 +34,8 @@ const NewAddressModal = (props) => {
                                 underlined
                                 label="Name"
                                 initialValue=""
-                                {...register("addname", { required: true })}
-                                color={errors?.addname ? "error" : "default"}
+                                {...register("name", { required: true })}
+                                color={errors?.name ? "error" : "default"}
                             />
                             <Input
                                 fullWidth
@@ -45,8 +44,8 @@ const NewAddressModal = (props) => {
                                 label="Phone Number"
                                 initialValue=""
                                 type="number"
-                                {...register("addnumber", { required: true, minLength: 10, maxLength: 10 })}
-                                color={errors?.addnumber ? "error" : "default"}
+                                {...register("phone", { required: true, minLength: 10, maxLength: 10 })}
+                                color={errors?.phone ? "error" : "default"}
                             />
                             <Input
                                 fullWidth
@@ -55,8 +54,8 @@ const NewAddressModal = (props) => {
                                 label="Alternate Number"
                                 initialValue=""
                                 type="number"
-                                {...register("addaltnumber", { minLength: 10, maxLength: 10 })}
-                                color={errors?.addaltnumber ? "error" : "default"}
+                                {...register("alt_phone", { minLength: 10, maxLength: 10 })}
+                                color={errors?.alt_phone ? "error" : "default"}
                             />
                         </div>
                         <div className="flex justify-between gap-14 my-14 w-full">
@@ -66,19 +65,11 @@ const NewAddressModal = (props) => {
                                 underlined
                                 label="Roo no. / house no. / street"
                                 initialValue=""
-                                {...register("addaddress1", { required: true })}
-                                color={errors?.addaddress1 ? "error" : "default"}
+                                {...register("line", { required: true })}
+                                color={errors?.line ? "error" : "default"}
                             />
-                            <Input
-                                fullWidth
-                                clearable
-                                underlined
-                                label="Area / locality"
-                                initialValue=""
-                                {...register("addaddress2", { required: true })}
-                                color={errors?.addaddress2 ? "error" : "default"}
-                            />
-                            <select value="Home" {...register("addresstype", { required: true })} name='addtype' className='bg-transparent border-b-2 border-gray-200 w-8/12'>
+
+                            <select value="Home" {...register("type", { required: true })} name='addtype' className='bg-transparent border-b-2 border-gray-200 w-8/12'>
                                 <option value="Home">Home</option>
                                 <option value="Office">Office</option>
                             </select>
@@ -89,7 +80,7 @@ const NewAddressModal = (props) => {
                             clearable
                             underlined
                             label="Address Type"
-                            initialValue={address?.addresstype}
+                            initialValue={address?.type}
                         />
                         
                     </div> */}
@@ -100,8 +91,8 @@ const NewAddressModal = (props) => {
                                 underlined
                                 label="City / Town"
                                 initialValue=""
-                                {...register("addcity", { required: true })}
-                                color={errors?.addcity ? "error" : "default"}
+                                {...register("city", { required: true })}
+                                color={errors?.city ? "error" : "default"}
                             />
                             <Input
                                 fullWidth
@@ -109,8 +100,8 @@ const NewAddressModal = (props) => {
                                 underlined
                                 label="State"
                                 initialValue=""
-                                {...register("addstate", { required: true })}
-                                color={errors?.addstate ? "error" : "default"}
+                                {...register("state", { required: true })}
+                                color={errors?.state ? "error" : "default"}
                             />
                             <Input
                                 fullWidth
@@ -119,8 +110,8 @@ const NewAddressModal = (props) => {
                                 label="Pincode"
                                 initialValue=""
                                 type="number"
-                                {...register("addpincode", { required: true, minLength: 6, maxLength: 6 })}
-                                color={errors?.addpincode ? "error" : "default"}
+                                {...register("pincode", { required: true, minLength: 6, maxLength: 6 })}
+                                color={errors?.pincode ? "error" : "default"}
                             />
                         </div>
                         <div className="flex justify-end items-center gap-6">Set as default address <Switch checked={true} initialChecked={true} onChange={(e) => setDefaultAddress(e.target.checked ? "Yes" : "No")} color='success' /> </div>

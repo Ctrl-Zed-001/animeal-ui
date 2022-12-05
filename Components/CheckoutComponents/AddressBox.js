@@ -12,9 +12,9 @@ const AddressBox = (props) => {
                 </div>
             </div>
             <div className="address text-xs mt-6 text-gray-600">
-                <h1 className='text-base text-medium mb-1'>{props.address.addname}</h1>
-                <p>{props.address.addaddress1 + ' ' + props.address.addaddress2 + ' ' + props.address.addcity + ' ' + props.address.addstate + ' ' + props.address.addpincode}</p>
-                <p className="text-medium">{props.address.addnumber}</p>
+                <h1 className='text-base text-medium mb-1'>{props.address.name}</h1>
+                <p>{props.address.line + ' ' + props.address.city + ' ' + props.address.state + ' ' + props.address.pincode}</p>
+                <p className="text-medium">{props.address.phone}</p>
             </div>
         </div>
     )
