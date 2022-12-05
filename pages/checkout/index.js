@@ -366,14 +366,15 @@ const Checkout = () => {
         if (couponApplied) {
             toast.error("Coupon already applied")
         } else {
-            if (couponcode == 'MATMISSKARO15') {
-                let discountedPrice = cartTotal - (subTotal * 0.05)
-                setCartTotal(discountedPrice)
-                setCouponApplied(true)
-                toast.success("coupon applied")
-            } else {
-                toast.error("oops! that didn't work.")
-            }
+            // if (couponcode == 'MATMISSKARO15') {
+            //     let discountedPrice = cartTotal - (subTotal * 0.05)
+            //     setCartTotal(discountedPrice)
+            //     setCouponApplied(true)
+            //     toast.success("coupon applied")
+            // } else {
+            //     toast.error("oops! that didn't work.")
+            // }
+            toast.error("oops! that didn't work.")
         }
     }
 
