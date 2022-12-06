@@ -9,9 +9,13 @@ import CartContextProvider from '../Context/CartContext';
 import { SessionProvider } from "next-auth/react"
 import Loader from '../Components/Loader/Loader'
 import OneSignal from 'react-onesignal';
+import { useRouter } from 'next/router';
+import Head from 'next/head';
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   const [isAutoSuggestOpen, setIsAutoSuggestOpen] = useState(false)
+  const router = useRouter()
+  console.log("🚀 ~ file: _app.js:18 ~ MyApp ~ router", router)
 
   useEffect(() => {
     runOneSignal()
@@ -30,6 +34,9 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
 
   return (
     <SessionProvider session={session}>
+      <Head>
+        <link rel="canonical" href={`https://animeal.in${router.asPath}`} />
+      </Head>
       <AuthContextProvider>
         <CartContextProvider>
           <div className='theme'>

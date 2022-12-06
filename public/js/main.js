@@ -298,6 +298,17 @@ $(document).ready(function () {
             onchange({ type: document[hidden] ? "blur" : "focus" });
     })();
 
+
+
+
+
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'AW-11036631183');
+
+
 });
 
 

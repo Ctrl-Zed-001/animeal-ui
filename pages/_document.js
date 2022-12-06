@@ -1,7 +1,9 @@
 import Document, { Html, Head, Main, NextScript } from 'next/document';
 import { CssBaseline } from '@nextui-org/react';
 
+
 class MyDocument extends Document {
+
     static async getInitialProps(ctx) {
         const initialProps = await Document.getInitialProps(ctx);
         return {
@@ -18,7 +20,6 @@ class MyDocument extends Document {
                     <meta name="facebook-domain-verification" content="7f2cw67reip9k4asxormejzi0vkh1p" />
                     <script src="/js/pixel.js"></script>
                     <meta name="ahrefs-site-verification" content="8fedb0969abe40ef3a34473d8ad8db2fc4ef640626a4cb3c581533764b3bad57"></meta>
-                    <link rel="canonical" href={window.location.href} />
                 </Head>
                 <script src='/js/jquery-3.3.1.min.js' />
                 <script type="application/javascript" crossOrigin="anonymous" src={`https://securegw.paytm.in/merchantpgpui/checkoutjs/merchants/${process.env.NEXT_PUBLIC_MID}.js`}> </script>
@@ -26,6 +27,7 @@ class MyDocument extends Document {
                 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-179635883-1"></script>
                 <script async src="https://www.googletagmanager.com/gtag/js?id=AW-610455455"></script>
                 <script async src="https://www.googletagmanager.com/gtag/js?id=G-6G0X6LY5BT"></script>
+                <script async src="https://www.googletagmanager.com/gtag/js?id=AW-11036631183"></script>
                 <body>
                     <Main />
                     <NextScript />

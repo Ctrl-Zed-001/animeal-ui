@@ -99,6 +99,9 @@ const BannerSection = () => {
                     }}
                 >
                     <SwiperSlide>
+                        <BannerBox link="/shop?slug=food" image="/img/banner-0.jpeg" heading="" button="" />
+                    </SwiperSlide>
+                    <SwiperSlide>
                         <BannerBox link="/shop?slug=food" image="/img/banner1.png" heading="" button="" />
                     </SwiperSlide>
                     <SwiperSlide>
