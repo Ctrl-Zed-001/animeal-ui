@@ -67,7 +67,7 @@ export const saveAddress = (address, token) => {
 export const generateOtp = (phone, token) => {
     return axios.post(`${process.env.NEXT_PUBLIC_API_URI}/order/generateotp`,
         {
-            number: phone
+            phone: phone
         },
         {
             headers: {

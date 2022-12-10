@@ -11,7 +11,7 @@ const Shop = () => {
 
     const router = useRouter()
     const [srpData, setSrpData] = useState()
-    const [page, setPage] = useState(1)
+    const [page, setPage] = useState(0)
     const [sort, setSort] = useState('relevent')
     const [filterData, setFilterData] = useState([])
     const [isLoading, setIsLoading] = useState()
@@ -23,7 +23,8 @@ const Shop = () => {
             setIsLoading(true)
             axios.post(`${process.env.NEXT_PUBLIC_API_URI}/products/getall`, {
                 query: router.query.slug,
-                sort: sort
+                sort: sort,
+                page: 0
             })
                 .then(res => {
                     setIsLoading(false)
@@ -52,14 +53,15 @@ const Shop = () => {
             behavior: 'smooth',
         })
 
-        axios.post(`${process.env.NEXT_PUBLIC_API_URI}/products/getall?page=${pageNumber}`, {
+        axios.post(`${process.env.NEXT_PUBLIC_API_URI}/products/getall`, {
             query: router.query.slug,
             animal: apppliedFilters.animal ? apppliedFilters.animal : [],
             category: apppliedFilters.category ? apppliedFilters.category : [],
             subcategory: apppliedFilters.subcategory ? apppliedFilters.subcategory : [],
             brand: apppliedFilters.brand ? apppliedFilters.brand : [],
             rating: apppliedFilters.rating ? apppliedFilters.rating : [],
-            sort: sort
+            sort: sort,
+            page: pageNumber
         })
             .then(res => {
                 setIsLoading(false)
@@ -74,14 +76,15 @@ const Shop = () => {
         setIsLoading(true)
         setSort(e.target.value)
 
-        axios.post(`${process.env.NEXT_PUBLIC_API_URI}/products/getall?page=${page}`, {
+        axios.post(`${process.env.NEXT_PUBLIC_API_URI}/products/getall`, {
             query: router.query.slug,
             animal: apppliedFilters.animal,
             category: apppliedFilters.category,
             subcategory: apppliedFilters.subcategory,
             brand: apppliedFilters.brand,
             rating: apppliedFilters.rating,
-            sort: e.target.value
+            sort: e.target.value,
+            page: page
         })
             .then(res => {
                 setIsLoading(false)
@@ -169,9 +172,9 @@ const Shop = () => {
 
                             <select value={sort} name="sorting" id="sorting" onChange={(e) => sortResults(e)} className='text-sm text-left rounded-lg px-2 py-3 bg-slate-100 text-gray-600 mx-2 flex justify-between items-center shadow'>
                                 <option value="relevent">Popularity</option>
-                                <option value="hightolow">price : high to low</option>
-                                <option value="lowtohigh">price : low to high</option>
-                                <option value="ratinghigh">rating : high to low</option>
+                                <option value="price-high-to-low">price : high to low</option>
+                                <option value="price-low-to-high">price : low to high</option>
+                                <option value="rating">rating : high to low</option>
                             </select>
                         </div>
                     </div>

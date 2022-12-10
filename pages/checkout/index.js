@@ -35,7 +35,6 @@ const Checkout = () => {
 
     const [showAddressModal, setShowAddressModal] = useState(false)
     const [address, setAddress] = useState()
-    console.log("🚀 ~ file: index.js:39 ~ Checkout ~ address", address)
     const [savedAddresses, setSavedAddresses] = useState()
     const [newAddressModal, ToggleNewAddressModal] = useState(false)
     const [statusModal, setStatusModal] = useState()
@@ -100,17 +99,15 @@ const Checkout = () => {
                     {
                         pincode: address.pincode
                     }
-                )
-                    .then(res => {
-                        if (res.data.data !== null) {
-                            callSaveAddress(type)
-                        } else {
-                            setDeliveryModal(true)
-                            setIsDeliverable(false)
-                        }
+                ).then(res => {
+                    if (res.data.data) {
+                        callSaveAddress(type)
+                    } else {
+                        setDeliveryModal(true)
+                        setIsDeliverable(false)
+                    }
 
-                    })
-                    .catch(err => { setDeliveryModal(true); setIsDeliverable(false) })
+                }).catch(err => { setDeliveryModal(true); setIsDeliverable(false) })
             }
         } else {
             toast.error("Please fill in all the fields")
@@ -119,19 +116,16 @@ const Checkout = () => {
 
 
     const callSaveAddress = (paymentType) => {
-        saveAddress()
+        saveAddress(address, token)
             .then(res => {
-                modifyAddresses([
-                    res.data.data,
-                    ...savedAddresses
-                ])
+                console.log("address saved")
             })
             .catch(err => console.log(err.response))
-        // if (paymentType === 'online') {
-        //     callPaytm()
-        // } else {
-        //     callOtp()
-        // }
+        if (paymentType === 'online') {
+            callPaytm()
+        } else {
+            otpGen()
+        }
 
     }
 
@@ -215,11 +209,11 @@ const Checkout = () => {
 
 
 
-    const callOtp = () => {
-        setOtpModal(true)
-        generateOtp(address.phone, token)
+    const otpGen = () => {
+        generateOtp(userDetails.phone, token)
             .then(res => {
-                let genOtp = res.data.OTPGenerated.substr(res.data.OTPGenerated.length - 6);
+                localStorage.setItem('otpToken', res.data.data)
+                setOtpModal(true)
             })
             .catch(err => console.log(err))
     }
@@ -227,19 +221,12 @@ const Checkout = () => {
     const placeCodOrder = (value) => {
         setOtpModal(false)
         // VALIDATE OTP API
+        let otpToken = localStorage.getItem('otpToken')
         axios.post(
-            `${process.env.NEXT_PUBLIC_API_URI}/user/codorder/post/data`,
+            `${process.env.NEXT_PUBLIC_API_URI}/order/validateotp`,
             {
                 otp: value,
-                name: address.name,
-                drname: doctorName ? doctorName : "",
-                email: address.addemail,
-                number: address.phone,
-                altnumber: address.alt_phone,
-                address1: address.line,
-                city: address.city,
-                pincode: address.pincode,
-                state: address.state
+                token: otpToken
             },
             {
                 headers: {
@@ -554,7 +541,10 @@ const Checkout = () => {
             < AddressModal addresses={savedAddresses} selectAddress={selectAddress} visible={showAddressModal} close={() => setShowAddressModal(false)} />
 
             {/* NEW ADDRESS MODAL */}
-            <NewAddressModal isOpen={newAddressModal} close={() => ToggleNewAddressModal(false)} token={token} save={(data) => modifyAddresses([data, ...savedAddresses])} />
+            <NewAddressModal isOpen={newAddressModal} close={() => ToggleNewAddressModal(false)} token={token} save={(data) => {
+                modifyAddresses([data, ...savedAddresses]);
+                ToggleNewAddressModal(false)
+            }} />
 
             {/* ORDER STATUS MODAL */}
             {
