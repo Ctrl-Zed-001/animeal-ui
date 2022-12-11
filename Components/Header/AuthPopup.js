@@ -72,9 +72,9 @@ const AuthPopup = (props) => {
             width={props.isMobile ? 'fullscreen' : '60%'}
         >
             <Modal.Body className='p-0 overflow-hidden'>
-                <div className="md:flex justify-end items-center">
-                    <img src="/img/authbanner.webp" alt="" className='h-44 md:h-80 mx-auto' />
-                    <div className="form-section p-6 rounded-l-xl bg-slate-200 h-full md:w-8/12">
+                <div className="lg:flex justify-end items-center bg-slate-200">
+                    <img src="/img/login.jpeg" alt="" className='md:w-6/12 login-image object-cover' />
+                    <div className="form-section p-6 lg:p-0  bg-slate-200 h-full md:w-6/12">
                         <Swiper className="mySwiper">
                             <SwiperSlide><LoginForm login={login} loginSocial={loginSocial} close={() => setShowAuthModal(false)} /></SwiperSlide>
                             <SwiperSlide><SignupForm signup={signup} loginSocial={loginSocial} close={() => setShowAuthModal(false)} /></SwiperSlide>

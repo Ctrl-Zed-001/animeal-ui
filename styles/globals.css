@@ -424,3 +424,13 @@ a.learn-more:active::before {
 .main-banner .swiper-pagination-bullet-active-main {
   background-color: rgb(253, 43, 43);
 }
+
+.login-image {
+  height: 30rem;
+}
+
+@media (max-width: 414px) {
+  .login-image {
+    height: auto;
+  }
+}
