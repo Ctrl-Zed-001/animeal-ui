@@ -5,7 +5,7 @@ import { Radio, Input, Switch } from '@nextui-org/react';
 import AddressModal from '../../Components/CheckoutComponents/AddressModal';
 import { IoMdPricetag } from 'react-icons/io'
 import { HiShieldCheck, HiChevronRight } from 'react-icons/hi'
-import { AiFillPlusCircle, AiFillEdit } from 'react-icons/ai'
+import { AiFillPlusCircle, AiFillEdit, AiOutlineLoading3Quarters } from 'react-icons/ai'
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import SwiperCore, { Virtual, Navigation } from 'swiper';;
@@ -24,6 +24,7 @@ import { getAddress, saveAddress, generateOtp } from '../../Helpers/Api';
 
 
 
+
 const Checkout = () => {
 
     SwiperCore.use([Virtual, Navigation]);
@@ -31,7 +32,7 @@ const Checkout = () => {
     const form = new FormData();
 
     const { token, userDetails, isLoggedIn } = useContext(AuthContext)
-    const { cartTotal, subTotal, clearCart, cartDiscount, doctorName, prescriptionFiles, prescriptionUploaded, hasMedicine, setCartTotal } = useContext(CartContext)
+    const { cartTotal, subTotal, clearCart, cartDiscount, doctorName, prescriptionFiles, prescriptionUploaded, hasMedicine, setCartTotal, cartItems } = useContext(CartContext)
 
     const [showAddressModal, setShowAddressModal] = useState(false)
     const [address, setAddress] = useState()
@@ -49,17 +50,18 @@ const Checkout = () => {
 
 
     useEffect(() => {
+        localStorage.removeItem('otpToken')
         if (token) {
             getAddress(token)
                 .then(res => {
                     modifyAddresses(res.data.data.address)
                 })
                 .catch(err => {
-                    // router.replace('/');
+                    router.replace('/');
                     console.log(err)
                 })
         } else {
-            // router.replace('/')
+            router.replace('/')
         }
     }, [token])
 
@@ -76,8 +78,10 @@ const Checkout = () => {
     }
 
     const validateAddress = (type) => {
+        setIsLoading(true)
         if (!address) {
             toast.error("Please fill in all the fields")
+            setIsLoading(false)
         } else {
             if (!address.line || !address.city || !address.name || !address.phone || !address.pincode || !address.state) {
                 toast.error("Please fill in all the fields")
@@ -93,6 +97,7 @@ const Checkout = () => {
         if (address.pincode) {
             if (address.pincode.length > 6 || address.pincode.length < 6) {
                 toast.error("Please check your pincode")
+                setIsLoading(false)
             } else {
                 axios.post(
                     `${process.env.NEXT_PUBLIC_API_URI}/pincode/single`,
@@ -120,9 +125,19 @@ const Checkout = () => {
             .then(res => {
                 console.log("address saved")
             })
-            .catch(err => console.log(err.response))
+            .catch(err => { setIsLoading(true); console.log(err.response) })
         if (paymentType === 'online') {
-            callPaytm()
+            createOrder('ONLINE')
+                .then(order => {
+                    callPaytm(order.data.id)
+                })
+                .catch(err => {
+                    {
+                        setOrderStatus(false)
+                        setStatusModal(true)
+                        console.log(err)
+                    }
+                })
         } else {
             otpGen()
         }
@@ -138,27 +153,44 @@ const Checkout = () => {
         setShowAddressModal(false)
     }
 
+    const createOrder = (mode, status) => {
+        return new Promise(async (resolve, reject) => {
 
-    const callPaytm = async () => {
+            try {
+                let products = cartItems.map(item => {
+                    return { id: item.id }
+                })
 
-        setIsLoading(true)
-        console.log("paytm called")
+                let order = await axios.post(`${process.env.NEXT_PUBLIC_API_URI}/order/save`, {
+                    user: userDetails.id,
+                    products: products,
+                    payment_mode: mode,
+                    shipping_address: address.id,
+                    total: cartTotal,
+                    applied_coupon: couponcode,
+                    discount: cartDiscount,
+                    status: status
+                }, {
+                    headers: {
+                        Authorization: token
+                    }
+                })
+                resolve(order.data)
+            } catch (e) {
+                reject(e)
+            }
+
+        })
+    }
+
+    const callPaytm = async (orderid) => {
 
         axios.post(
-            `${process.env.NEXT_PUBLIC_API_URI}/paytm/checksum/post/data`,
+            `${process.env.NEXT_PUBLIC_API_URI}/order/initiatepaytm`,
             {
-                user_id: userDetails.id,
-                name: address.name,
-                drname: doctorName ? doctorName : '',
-                email: address.addemail,
-                number: address.phone,
-                altnumber: address.alt_phone,
-                address1: address.line,
-                city: address.city,
-                pincode: address.pincode,
-                state: address.state,
-                mid: process.env.NEXT_PUBLIC_MID,
-                amount: cartTotal
+                orderid: orderid,
+                amount: cartTotal,
+                userid: userDetails.id
             },
             {
                 headers: {
@@ -167,13 +199,13 @@ const Checkout = () => {
             }
         )
             .then(res => {
-                setIsLoading(false)
+
                 var config = {
                     "root": "",
                     "flow": "DEFAULT",
                     "data": {
-                        "orderId": res.data.orderId, /* update order id */
-                        "token": res.data.success.body.txnToken, /* update token value */
+                        "orderId": res.data.orderid, /* update order id */
+                        "token": res.data.body.txnToken, /* update token value */
                         "tokenType": "TXN_TOKEN",
                         "amount": cartTotal /* update amount */
                     },
@@ -186,17 +218,39 @@ const Checkout = () => {
                     }
                 };
 
-                // initialze configuration using init method 
-                window.Paytm.CheckoutJS.init(config).then(function onSuccess() {
-                    // after successfully updating configuration, invoke JS Checkout
-                    window.Paytm.CheckoutJS.invoke();
-                    uploadPrescription()
-                }).catch(function onError(error) {
-                    console.log("error => ", error);
-                    // OPEN PAYMENT FAIL POPUP HERE
-                    setOrderStatus(false)
-                    setStatusModal(true)
-                });
+                // if (window.Paytm && window.Paytm.CheckoutJS) {
+                //     window.Paytm.CheckoutJS.init(config)
+                //         .then(function onSuccess() {
+                //             console.log("paytm success")
+                //             window.Paytm.CheckoutJS.invoke();
+                //             uploadPrescription()
+                //         })
+                //         .catch(function onError(error) {
+                //             console.log("error => ", error);
+                //             setOrderStatus(false)
+                //             setStatusModal(true)
+                //         })
+                // }
+
+
+                if (window.Paytm && window.Paytm.CheckoutJS) {
+                    window.Paytm.CheckoutJS.onLoad(function excecuteAfterCompleteLoad() {
+                        window.Paytm.CheckoutJS.init(config)
+                            .then(function onSuccess() {
+                                console.log("paytm success")
+                                window.Paytm.CheckoutJS.invoke();
+                                setIsLoading(false)
+                                // uploadPrescription()
+                            })
+                            .catch(function onError(error) {
+                                console.log("error => ", error);
+                                setOrderStatus(false)
+                                setStatusModal(true)
+                            })
+                    }())
+                }
+
+
             })
             .catch(err => {
                 setIsLoading(false)
@@ -215,10 +269,10 @@ const Checkout = () => {
                 localStorage.setItem('otpToken', res.data.data)
                 setOtpModal(true)
             })
-            .catch(err => console.log(err))
+            .catch(err => { setIsLoading(false); console.log(err) })
     }
 
-    const placeCodOrder = (value) => {
+    const validateOtp = (value) => {
         setOtpModal(false)
         // VALIDATE OTP API
         let otpToken = localStorage.getItem('otpToken')
@@ -226,7 +280,7 @@ const Checkout = () => {
             `${process.env.NEXT_PUBLIC_API_URI}/order/validateotp`,
             {
                 otp: value,
-                token: otpToken
+                otpToken: otpToken
             },
             {
                 headers: {
@@ -235,15 +289,22 @@ const Checkout = () => {
             }
         )
             .then(res => {
-                console.log(res.data)
                 uploadPrescription()
-                setOrderStatus(true)
-                setStatusModal(true)
-                clearCart()
+                createOrder('COD', 'CONFIRMED')
+                    .then(() => {
+                        setIsLoading(false)
+                        setOrderStatus(true)
+                        setStatusModal(true)
+                        clearCart()
+                    })
+                    .catch(err => {
+                        setOrderStatus(false)
+                        setStatusModal(true)
+                        console.log(err)
+                    })
             })
             .catch(err => {
-                setOrderStatus(false)
-                setStatusModal(true)
+                alert("wrong OTP")
                 console.log(err)
             })
     }
@@ -497,7 +558,7 @@ const Checkout = () => {
                 </div>
 
                 {/* PAYMENT OPTIONS  */}
-                <Radio.Group onChange={(value) => setIsOnlinePayment(value)} value={true}>
+                <Radio.Group onChange={(value) => setIsOnlinePayment(!isOnlinePayment)} value={isOnlinePayment}>
                     <div className='online-payment bg-white p-3 rounded-lg mt-4'>
                         <div className="flex items-center">
                             <Radio value={true} size={'xs'} color='success' css={{ 'margin': '0 !important' }}></Radio>
@@ -528,11 +589,20 @@ const Checkout = () => {
                 {
                     isOnlinePayment ?
                         <button disabled={loading ? true : false} onClick={() => validateAddress('online')} className={`w-full text-center ${loading ? 'bg-slate-100' : 'bg-theme'} p-2 rounded-lg py-4 mt-8 shadow font-semibold`}>
-                            Pay Online
+                            {
+                                loading ?
+                                    <AiOutlineLoading3Quarters className='animate-spin mx-auto' /> :
+                                    <>Pay Online</>
+                            }
+
                         </button>
                         :
                         <button disabled={loading ? true : false} onClick={() => validateAddress('cod')} className={`w-full text-center ${loading ? 'bg-slate-100' : 'bg-theme'} p-2 rounded-lg py-4 mt-8 shadow font-semibold`}>
-                            Place Order
+                            {
+                                loading ?
+                                    <AiOutlineLoading3Quarters className='animate-spin mx-auto' /> :
+                                    <>Place Order</>
+                            }
                         </button>
                 }
             </div >
@@ -552,7 +622,7 @@ const Checkout = () => {
                     <StatusPopup
                         isOpen={statusModal}
                         image={orderStatus ? "/img/order-success.webp" : "/img/order-fail.webp"}
-                        close={() => { setStatusModal(false); router.replace('/') }}
+                        close={() => { setStatusModal(false); router.replace('/profile/orders') }}
                         heading={orderStatus ? "Your Order has been accepted" : "Oops! Order Failed"}
                         subheading={orderStatus ? "Your items has been placcd and is on it’s way to being processed" : "Looks like something went wrong while placing your order. Please try again after some time."}
                         class={orderStatus ? "bg-cyan-200" : "bg-red-300"}
@@ -575,7 +645,7 @@ const Checkout = () => {
             {/* OTP MODAL */}
             {
                 otpModal !== undefined ?
-                    <OtpPopup isOpen={otpModal} close={() => setOtpModal(false)} placeOrder={placeCodOrder} /> :
+                    <OtpPopup isOpen={otpModal} close={() => setOtpModal(false)} validateOtp={validateOtp} /> :
                     <></>
             }
 

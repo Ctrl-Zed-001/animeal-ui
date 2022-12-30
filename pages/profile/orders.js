@@ -18,11 +18,10 @@ const Orders = () => {
     const router = useRouter()
 
     useEffect(() => {
-        if (!isLoggedIn) {
-            router.replace('/')
-        } else {
-            axios.get(
-                `${process.env.NEXT_PUBLIC_API_URI}/user/orders/get/data`,
+        if (token) {
+            axios.post(
+                `${process.env.NEXT_PUBLIC_API_URI}/user/getorders`,
+                {},
                 {
                     headers: {
                         Authorization: token
@@ -30,20 +29,12 @@ const Orders = () => {
                 }
             )
                 .then(res => {
-
-                    let currentOrder = res.data.backendData.filter((order) => {
-                        if (order[0].order_status !== "Customer Cancelled" && order[0].order_status !== "Delivered" && order[0].order_status !== "Refunded") {
-                            return order[0]
-                        }
-                    })
-                    setPendingOrder(currentOrder)
-
-                    let previousOrders = res.data.backendData.filter((order) => {
-                        if (order[0].order_status == "Delivered" || order[0].order_status == "Customer Cancelled" || order[0].order_status == "Refunded") {
-                            return order[0]
-                        }
-                    })
-                    setPastOrders(previousOrders)
+                    if (res.data.data.length > 0) {
+                        setPastOrders(res.data.data.filter(order => order.status == 'DELIVERED'))
+                        setPendingOrder(res.data.data.filter(order => order.status !== 'DELIVERED'))
+                    } else {
+                        setNoOrders(true)
+                    }
 
                 })
                 .catch(err => {
