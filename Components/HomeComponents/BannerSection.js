@@ -102,19 +102,16 @@ const BannerSection = () => {
                         <BannerBox link="/shop?slug=food" image="/img/banner-0.jpeg" heading="" button="" />
                     </SwiperSlide> */}
                     <SwiperSlide>
-                        <BannerBox link="/upload-prescription" image="/img/banner5.png" heading="" button="" />
+                        <BannerBox link="/shop?slug=food" image="/img/banner6.png" heading="" button="" />
                     </SwiperSlide>
                     <SwiperSlide>
-                        <BannerBox link="/brand/royal-canin" image="/img/banner1.png" heading="" button="" />
+                        <BannerBox link="/brand/royal-canin" image="/img/banner7.png" heading="" button="" />
                     </SwiperSlide>
                     <SwiperSlide>
-                        <BannerBox link="/shop?slug=Vetlife" image="/img/banner2.png" heading="" button="" />
+                        <BannerBox link="/brand/smartheart" image="/img/banner8.png" heading="" button="" />
                     </SwiperSlide>
                     <SwiperSlide>
-                        <BannerBox link="/shop?slug=Jerhigh" image="/img/banner3.png" heading="" button="" />
-                    </SwiperSlide>
-                    <SwiperSlide>
-                        <BannerBox link="/brand/meo" image="/img/banner4.png" heading="" button="" />
+                        <BannerBox link="/brand/farmina" image="/img/banner9.png" heading="" button="" />
                     </SwiperSlide>
                 </Swiper>
                 {/* 
