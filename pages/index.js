@@ -16,23 +16,24 @@ export default function Home(props) {
   const [customerFav, setCustomerFav] = useState()
   const [expertPick, setExpertPick] = useState()
   const [brands, setBrands] = useState()
+
   useEffect(() => {
 
     let endpoints = [
-      `${process.env.NEXT_PUBLIC_API_URI}/getcategories`,
-      `${process.env.NEXT_PUBLIC_API_URI}/topratedproducts/get/data`,
-      `${process.env.NEXT_PUBLIC_API_URI}/customerfavorite/get/data`,
-      `${process.env.NEXT_PUBLIC_API_URI}/pickedbyexperts/get/data`,
-      `${process.env.NEXT_PUBLIC_API_URI}/brand/homepagebrand`
+      `${process.env.NEXT_PUBLIC_API_URI}/animals?populate=*`,
+      `${process.env.NEXT_PUBLIC_API_URI}/products?pagination[page]=1&populate[0]=display_image&populate[1]=animal`,
+      `${process.env.NEXT_PUBLIC_API_URI}/products?pagination[page]=2&populate[0]=display_image&populate[1]=animal`,
+      `${process.env.NEXT_PUBLIC_API_URI}/products?pagination[page]=3&populate[0]=display_image&populate[1]=animal`,
+      `${process.env.NEXT_PUBLIC_API_URI}/brands?populate[0]=icon`
     ];
 
     axios.all(endpoints.map((endpoint) => axios.get(endpoint)))
       .then(res => {
-        setAnimals(res[0].data.category_level1);
-        setTopProducts(res[1].data.topRatedProducts)
-        setCustomerFav(res[2].data.customerFavoriteProducts)
-        setExpertPick(res[3].data.pickedByExpertsProducts)
-        setBrands(res[4].data.homePageBrand)
+        setAnimals(res[0].data.data);
+        setTopProducts(res[1].data.data)
+        setCustomerFav(res[2].data.data)
+        setExpertPick(res[3].data.data)
+        setBrands(res[4].data.data)
       })
       .catch(err => console.log(err))
   }, []);
@@ -74,16 +75,14 @@ export default function Home(props) {
 
 export async function getServerSideProps(context) {
 
-  let metaData = await axios.post(
-    `${process.env.NEXT_PUBLIC_API_URI}/metaurl/post/data`,
-    {
-      slug: "https://animeal.in/"
-    }
+  let metaData = await axios.get(
+    `${process.env.NEXT_PUBLIC_API_URI}/meta-datas?filters[slug][$eq]=home`,
   )
   return {
     props: {
-      title: metaData.data.success.meta_title,
-      description: metaData.data.success.meta_description
+      title: metaData.data.data[0].attributes.title,
+      description: metaData.data.data[0].attributes.description
     }
   }
+
 }

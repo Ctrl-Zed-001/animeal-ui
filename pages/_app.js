@@ -15,7 +15,6 @@ import Head from 'next/head';
 function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   const [isAutoSuggestOpen, setIsAutoSuggestOpen] = useState(false)
   const router = useRouter()
-  console.log("🚀 ~ file: _app.js:18 ~ MyApp ~ router", router)
 
   useEffect(() => {
     runOneSignal()

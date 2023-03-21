@@ -12,12 +12,13 @@ import Link from 'next/link';
 import SlugCreator from '../../Helpers/SlugCreator'
 
 const ProductRow = (props) => {
+    console.log("🚀 ~ file: ProductRow.js:15 ~ ProductRow ~ props:", props)
 
     return (
         <div className="container top-products my-8">
             <div className="flex justify-between items-center">
                 <h1 className='font-medium text-xl'>{props.title}</h1>
-                {
+                {/* {
                     !props.showLink ?
                         <></> :
                         props.subcategory ?
@@ -31,7 +32,7 @@ const ProductRow = (props) => {
                                     View all
                                 </span>
                             </Link>
-                }
+                } */}
             </div>
 
             <div className="mt-8">
