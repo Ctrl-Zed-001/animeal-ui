@@ -40,9 +40,6 @@ const Footer = () => {
                             <span>Mumbai</span>
                             9004485093
                         </a>
-                    </div>
-                    <div className="flex justify-between gap-4 lg:gap-8">
-                        <a href="https://wa.me/+919004485093" className='lg:text-base flex items-center gap-2 bg-theme px-4 py-2 rounded-lg'><AiOutlineWhatsApp />chat with us</a>
                         <a href="tel:+919004485093" className='hidden text-xs lg:text-base lg:flex items-center gap-2 border-2 text-yellow-500 border-yellow-500 px-4 py-2 rounded-lg'><MdCall />
                             <span>Navi Mumbai</span>
                             9004575093</a>
