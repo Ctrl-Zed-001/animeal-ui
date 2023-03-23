@@ -7,12 +7,9 @@ import "swiper/css";
 import "swiper/css/free-mode";
 import "swiper/css/navigation";
 import "swiper/css/thumbs";
-import Link from 'next/link';
 
-import SlugCreator from '../../Helpers/SlugCreator'
 
 const ProductRow = (props) => {
-    console.log("🚀 ~ file: ProductRow.js:15 ~ ProductRow ~ props:", props)
 
     return (
         <div className="container top-products my-8">

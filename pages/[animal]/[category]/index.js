@@ -93,12 +93,12 @@ const index = (props) => {
 }
 
 export async function getServerSideProps({ query }) {
-    let res = await axios.get(`${process.env.NEXT_PUBLIC_API_URI}/category/${query.slug}/${query.category}`)
-    let bannerRes = await axios.get(`${process.env.NEXT_PUBLIC_API_URI}/banners/getcategorybannerlevel2/${query.slug}/${query.category}`)
+    let res = await axios.get(`${process.env.NEXT_PUBLIC_API_URI}/category/${query.animal}/${query.category}`)
+    let bannerRes = await axios.get(`${process.env.NEXT_PUBLIC_API_URI}/banners/getcategorybannerlevel2/${query.animal}/${query.category}`)
     let metaData = await axios.post(
         `${process.env.NEXT_PUBLIC_API_URI}/metaurl/post/data`,
         {
-            slug: "https://animeal.in/" + query.slug + '/' + query.category
+            slug: "https://animeal.in/" + query.animal + '/' + query.category
         }
     )
     let categorylevels = res.data.categorylevels3;
@@ -107,7 +107,7 @@ export async function getServerSideProps({ query }) {
         props: {
             metaData: metaData.data.success,
             categorylevels: categorylevels,
-            animal: query.slug,
+            animal: query.animal,
             category: query.category,
             banner: banner
         }

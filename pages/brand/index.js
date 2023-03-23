@@ -11,10 +11,10 @@ const index = (props) => {
             </h1>
             <div className="grid grid-cols-4 gap-10">
                 {
-                    props.brands.map((brand, index) => {
-                        return (<Link href={`/brand/${brand.brand_url}`}>
+                    props.brands.data.map((brand, index) => {
+                        return (<Link key={index} href={`/brand/${brand.attributes.slug}`}>
                             <div key={index} className="brand-box rounded-lg cursor-pointer">
-                                <img src={`${process.env.NEXT_PUBLIC_IMAGE_URI}/brand-icon/${brand.brand_icon}`} alt="" className='rounded-lg' />
+                                <img src={`${brand.attributes.icon.data.attributes.url}`} alt="" className='rounded-lg' />
                             </div>
                         </Link>)
                     })
@@ -25,13 +25,13 @@ const index = (props) => {
 }
 
 export async function getServerSideProps({ query }) {
-
-    let brandRes = await axios.get(`${process.env.NEXT_PUBLIC_API_URI}/brand/allbrands`)
+    let brandRes = await axios.get(`${process.env.NEXT_PUBLIC_API_URI}/brands?populate[0]=icon`)
     let brands = brandRes.data
+
 
     return {
         props: {
-            brands: brands.homePageBrand
+            brands: brands
         }
     }
 }

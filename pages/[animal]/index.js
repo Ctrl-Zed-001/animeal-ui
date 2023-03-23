@@ -25,7 +25,7 @@ const index = (props) => {
     const getProductsByCategory = async () => {
         let allFetchedProducts = await axios.get(`${process.env.NEXT_PUBLIC_API_URI}/products?filters[animal][slug]=${props.slug}&populate[0]=category&populate[1]=animal`)
         let allCategories = [...new Set(allFetchedProducts.data.data.map(item => item.attributes.category.data.attributes.name))];
-        setCategories(allCategories)
+        setCategories([...allCategories])
         setAllProducts(allFetchedProducts.data.data)
     }
 
@@ -105,7 +105,7 @@ export async function getServerSideProps({ query }) {
         props: {
             title: metaData.data.data[0].attributes.title,
             description: metaData.data.data[0].attributes.description,
-            slug: query.slug
+            slug: query.animal
         }
     }
 }

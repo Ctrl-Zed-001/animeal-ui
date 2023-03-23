@@ -13,41 +13,23 @@ import Capitalize from '../../../Helpers/Capitalize';
 const Brand = (props) => {
 
     const router = useRouter()
+    const [allProducts, setAllProducts] = useState([])
+    const [categories, setCategories] = useState([])
 
-    const [food, setFood] = useState()
-    const [supplements, setSupplements] = useState()
-    const [supplies, setSupplies] = useState()
-    const [treats, setTreats] = useState()
-    const [medicine, setMedicine] = useState()
-    const [banner, setBanner] = useState()
 
     useEffect(() => {
-        if (router) {
-            let endpoints = [
-                `${process.env.NEXT_PUBLIC_API_URI}/brand/branddetails/get/data/${router.query.slug}/food`,
-                `${process.env.NEXT_PUBLIC_API_URI}/brand/branddetails/get/data/${router.query.slug}/supplements`,
-                `${process.env.NEXT_PUBLIC_API_URI}/brand/branddetails/get/data/${router.query.slug}/supplies`,
-                `${process.env.NEXT_PUBLIC_API_URI}/brand/branddetails/get/data/${router.query.slug}/treats`,
-                `${process.env.NEXT_PUBLIC_API_URI}/brand/branddetails/get/data/${router.query.slug}/medicine`
-            ];
-            axios.all(endpoints.map((endpoint) => axios.get(endpoint)))
-                .then(res => {
-                    console.log(res)
-                    res.forEach(arr => {
-                        if (arr.data.brandBanner !== null) {
-                            setBanner(arr.data.brandBanner)
-                            return;
-                        }
-                    });
-                    setFood(res[0].data.brandDetails);
-                    setSupplements(res[1].data.brandDetails)
-                    setSupplies(res[2].data.brandDetails)
-                    setTreats(res[3].data.brandDetails)
-                    setMedicine(res[4].data.brandDetails)
-                })
-                .catch(err => console.log(err))
-        }
-    }, [router])
+        getProductsByBrand()
+    }, [])
+
+    const getProductsByBrand = async () => {
+        let fetchedProducts = await axios.get(`${process.env.NEXT_PUBLIC_API_URI}/products?filters[brand][slug][$eq]=${props.brandDetails.attributes.slug}&populate[0]=animal&populate[1]=category`)
+
+        let allCategories = [...new Set(fetchedProducts.data.data.map(item => item.attributes.category.data.attributes.name))];
+
+        setCategories([...allCategories])
+        setAllProducts([...fetchedProducts.data.data])
+    }
+
 
     return (
         <div className='main-brand-page mt-16 lg:mt-0'>
@@ -56,48 +38,17 @@ const Brand = (props) => {
                 <meta name="description" content={props.description} />
             </Head>
             {/* Banner */}
+
+            <AnimalBanner hasImage={props.brandDetails.attributes?.banner?.data ? true : false} image={`${props.brandDetails.attributes?.banner?.data?.attributes.url}`} title={props.brandDetails.attributes.name} /> :
+
+
+            <ShopByPet animals={props.animals} />
             {
-                router ?
-                    <AnimalBanner hasImage={banner ? true : false} image={`/brand-banner/${banner}`} title={router.query.slug} /> :
-                    <></>
+                categories && categories.map((category, index) => {
+                    return <ProductRow title={`Top ${props.brandDetails.attributes.name} ${category}`} products={allProducts.filter(prod => prod.attributes.category.data.attributes.name == category)} />
+                })
             }
 
-            <ShopByPet animals={props.categories.category_level1} />
-
-            {/* FOOD */}
-            {
-                food && food.length > 0 ?
-                    <ProductRow title={`Top ${router.query.slug} Foods`} products={food} /> :
-                    <></>
-            }
-
-            {/* Supplements */}
-            {
-                supplements && supplements.length > 0 ?
-                    <ProductRow title={`Top ${router.query.slug} Supplements`} products={supplements} /> :
-                    <></>
-            }
-
-            {/* Supplies */}
-            {
-                supplies && supplies.length > 0 ?
-                    <ProductRow title={`Top ${router.query.slug} Supplies`} products={supplies} /> :
-                    <></>
-            }
-
-            {/* Treats */}
-            {
-                treats && treats.length > 0 ?
-                    <ProductRow title={`Top ${router.query.slug} Treats`} products={treats} /> :
-                    <></>
-            }
-
-            {/* Medicine */}
-            {
-                medicine && medicine.length > 0 ?
-                    <ProductRow title={`Top ${router.query.slug} Medicine`} products={medicine} /> :
-                    <></>
-            }
 
 
 
@@ -109,20 +60,23 @@ const Brand = (props) => {
 
 export async function getServerSideProps(context) {
 
-    let categories = await axios.get(`${process.env.NEXT_PUBLIC_API_URI}/getcategories`)
-    let metaData = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URI}/metaurl/post/data`,
-        {
-            slug: "https://animeal.in" + context.resolvedUrl
-        }
-    )
+    let [animals, metaData, brandDetails] = await Promise.all([
+        axios.get(`${process.env.NEXT_PUBLIC_API_URI}/animals?populate[0]=icon`),
+        axios.get(
+            `${process.env.NEXT_PUBLIC_API_URI}/meta-datas?filters[slug][$eq]=home`
+        ),
+        axios.get(`${process.env.NEXT_PUBLIC_API_URI}/brands?filter[slug][$eq]=${context.query.slug}&populate[0]=banner`)
+    ])
+
     return {
         props: {
-            categories: categories.data,
-            title: metaData.data.success.meta_title,
-            description: metaData.data.success.meta_description
+            animals: animals.data.data,
+            title: metaData.data.data[0].attributes.title,
+            description: metaData.data.data[0].attributes.description,
+            brandDetails: brandDetails.data.data[0]
         }
     }
 }
+
 
 export default Brand

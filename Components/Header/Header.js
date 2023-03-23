@@ -36,48 +36,29 @@ const Header = (props) => {
 
     useEffect(() => {
         // CALL AUTOSUGGEST API
-        axios.post(`${process.env.NEXT_PUBLIC_API_URI}/dyanamicsearch/get/data`, { query: '' })
-            .then(res => setSuggestions(res.data.searchValues))
-            .catch(err => console.log(err))
+        autoSuggest()
     }, [])
 
     const unHighlightAll = () => {
         autoSuggestDropdownRef.current.forEach(element => element.classList.remove('bg-slate-200'))
     }
-    // const highlightSuggestion = (e) => {
-    //     console.log(highlightedSuggestion)
-    //     console.log(autoSuggestDropdownRef.current[highlightedSuggestion])
 
-    //     if (e.code == "ArrowDown" && highlightedSuggestion === 0) {
-    //         unHighlightAll()
-    //         autoSuggestDropdownRef.current[0].classList.add('bg-slate-200')
-    //         setHighlightedSuggestion(1)
-    //     } else if (e.code == "ArrowDown" && highlightedSuggestion !== 5) {
-    //         unHighlightAll()
-    //         autoSuggestDropdownRef.current[highlightedSuggestion].classList.add('bg-slate-200')
-    //         setHighlightedSuggestion(highlightedSuggestion + 1)
-    //     } else if (e.code == "ArrowUp" && highlightedSuggestion === 0) {
-    //         unHighlightAll()
-    //         autoSuggestDropdownRef.current[4].classList.add('bg-slate-200')
-    //         setHighlightedSuggestion(3)
-    //     } else if (e.code == "ArrowUp" && highlightedSuggestion >= 1) {
-    //         unHighlightAll()
-    //         autoSuggestDropdownRef.current[highlightedSuggestion].classList.add('bg-slate-200')
-    //         setHighlightedSuggestion(highlightedSuggestion - 1)
-    //     }
-    // }
 
     const autoSuggest = async (e) => {
         // SET SEARCH VALUE STATE
-        setSearchValue(e.target.value)
-        // CALL AUTOSUGGEST API
-        let suggestionData = await axios.post(`${process.env.NEXT_PUBLIC_API_URI}/dyanamicsearch/get/data`, { query: e.target.value.toLowerCase() })
+        let searchText = e?.target?.value || '';
 
-        if (e.target.value === '') {
+        setSearchValue(searchText)
+
+        // CALL AUTOSUGGEST API
+        let suggestionData = await axios.get(`${process.env.NEXT_PUBLIC_API_URI}/autosuggests?filters[suggestion][$contains]=${searchText}`)
+
+
+        if (searchText === '') {
             // SET SUGGESTION HEADING AS TOP SUGGESTIONS
             setSuggestionHeading("Top Suggestions")
 
-        } else if (suggestionData.data.searchValues.length === 0) {
+        } else if (suggestionData.data.data.length === 0) {
             // SET SUGGESTION HEADING AS TOP RESULTS..
             setSuggestionHeading("No Results Found")
         } else {
@@ -85,7 +66,7 @@ const Header = (props) => {
         }
 
 
-        setSuggestions(suggestionData.data.searchValues)
+        setSuggestions(suggestionData.data.data)
     }
 
     const search = (query) => {
@@ -135,7 +116,7 @@ const Header = (props) => {
                                         <ul >
                                             {
                                                 suggestions.map((suggestion, index) => {
-                                                    return <li ref={el => autoSuggestDropdownRef.current[index] = el} onClick={() => search(suggestion.keyword)} className='hover:bg-slate-100 p-3 rounded cursor-pointer' key={index}>{Capitalize(suggestion.keyword)}</li>
+                                                    return <li ref={el => autoSuggestDropdownRef.current[index] = el} onClick={() => search(suggestion.attributes.suggestion)} className='hover:bg-slate-100 p-3 rounded cursor-pointer' key={index}>{Capitalize(suggestion.attributes.suggestion)}</li>
                                                 })
                                             }
 
