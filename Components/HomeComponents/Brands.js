@@ -2,6 +2,7 @@ import React from 'react'
 import Link from 'next/link'
 
 const Brands = (props) => {
+    console.log("🚀 ~ file: Brands.js:5 ~ Brands ~ props:", props)
     return (
         <div className='container brand-section'>
             <h1 className='text-xl font-medium'>{props.title}</h1>
@@ -12,7 +13,7 @@ const Brands = (props) => {
                         props.brands.map((brand, index) => {
                             return (<Link key={index} href={`/brand/${brand.attributes.slug}`}>
                                 <div className="brand-box rounded-lg cursor-pointer">
-                                    <img src={`${brand.attributes.icon.data?.attributes.url}`} alt="" className='rounded-lg' />
+                                    <img src={`${brand.attributes.icon?.data?.attributes.url}`} alt="" className='rounded-lg' />
                                 </div>
                             </Link>)
                         }) :

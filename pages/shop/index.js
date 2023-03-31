@@ -7,7 +7,7 @@ import axios from 'axios';
 import { Pagination, Loading } from '@nextui-org/react';
 import Capitalize from '../../Helpers/Capitalize';
 
-const Shop = () => {
+const Shop = (props) => {
 
     const router = useRouter()
     const [srpData, setSrpData] = useState()
@@ -19,37 +19,42 @@ const Shop = () => {
     const [showFilter, setShowFilter] = useState(false)
 
     useEffect(() => {
-        if (router.query.slug || router.query.animal) {
-            setIsLoading(true)
-            axios.post(`${process.env.NEXT_PUBLIC_API_URI}/dyanamicsearchproducts/get/data`, {
-                query: router.query.slug,
-                animal: router.query.animal ? [router.query.animal] : [],
-                category: router.query.category ? [router.query.category] : [],
-                subcategory: router.query.subcategory ? [router.query.subcategory] : [],
-                brand: [],
-                rating: [],
-                sort: sort
+
+        setIsLoading(true)
+        getProducts()
+            .then(res => {
+                setIsLoading(false)
+                setSrpData(res.data)
+                getFilters()
             })
-                .then(res => {
-                    setIsLoading(false)
-                    setSrpData(res.data.productBySearch)
-                    setAppliedFilters({
-                        animal: router.query.animal ? [router.query.animal] : [],
-                        category: router.query.category ? [router.query.category] : [],
-                        subcategory: router.query.subcategory ? [router.query.subcategory] : [],
-                        brand: [],
-                        rating: [],
-                    })
+            .catch(err => console.log(err))
 
-                    axios.get(`${process.env.NEXT_PUBLIC_API_URI}/filters/post/data`)
-                        .then(res => setFilterData(res.data))
-                        .catch(err => console.log(err))
-                })
-                .catch(err => console.log(err))
-        }
-    }, [router])
+    }, [])
 
-    const paginate = (pageNumber) => {
+
+    const getProducts = async (extraFilters) => {
+
+        return await axios.get(`${process.env.NEXT_PUBLIC_API_URI}/products?filters[$or][0][name][$containsi]=${props.query}&filters[$or][1][short_description][$containsi]=${props.query}&filters[$or][2][long_description][$containsi]=${props.query}&filters[$or][3][meta_keywords][$containsi]=${props.query}${extraFilters ? extraFilters : ''}&populate[0]=animal`)
+    }
+
+    const getFilters = async () => {
+        let [animals, categories, subcategories, brands] = await Promise.all([
+            axios.get(`${process.env.NEXT_PUBLIC_API_URI}/animals`),
+            axios.get(`${process.env.NEXT_PUBLIC_API_URI}/categories`),
+            axios.get(`${process.env.NEXT_PUBLIC_API_URI}/subcategories`),
+            axios.get(`${process.env.NEXT_PUBLIC_API_URI}/brands`)
+        ])
+
+        setFilterData({
+            animals: animals.data.data,
+            categories: categories.data.data,
+            subcategories: subcategories.data.data,
+            brands: brands.data.data
+        })
+
+    }
+
+    const paginate = async (pageNumber) => {
         setIsLoading(true)
         setPage(pageNumber)
         window.scrollTo({
@@ -57,103 +62,83 @@ const Shop = () => {
             behavior: 'smooth',
         })
 
-        axios.post(`${process.env.NEXT_PUBLIC_API_URI}/dyanamicsearchproducts/get/data?page=${pageNumber}`, {
-            query: router.query.slug,
-            animal: apppliedFilters.animal ? apppliedFilters.animal : [],
-            category: apppliedFilters.category ? apppliedFilters.category : [],
-            subcategory: apppliedFilters.subcategory ? apppliedFilters.subcategory : [],
-            brand: apppliedFilters.brand ? apppliedFilters.brand : [],
-            rating: apppliedFilters.rating ? apppliedFilters.rating : [],
-            sort: sort
-        })
-            .then(res => {
-                setIsLoading(false)
-                setSrpData(res.data.productBySearch)
-            })
-            .catch(err => console.log(err))
+        let query = generateQueryString(apppliedFilters)
+
+        let productsRes = await getProducts(query + `&paginate[page]=${pageNumber}`)
+        setIsLoading(false)
+        setSrpData(productsRes.data)
 
 
     }
 
-    const sortResults = (e) => {
+    const sortResults = async (e) => {
         setIsLoading(true)
         setSort(e.target.value)
 
-        axios.post(`${process.env.NEXT_PUBLIC_API_URI}/dyanamicsearchproducts/get/data?page=${page}`, {
-            query: router.query.slug,
-            animal: apppliedFilters.animal,
-            category: apppliedFilters.category,
-            subcategory: apppliedFilters.subcategory,
-            brand: apppliedFilters.brand,
-            rating: apppliedFilters.rating,
-            sort: e.target.value
-        })
-            .then(res => {
-                setIsLoading(false)
-                setSrpData(res.data.productBySearch)
-                setPage(1)
-            })
-            .catch(err => console.log(err))
+        let query = generateQueryString(apppliedFilters)
+
+        let productsRes = await getProducts(query + `&sort[0]=${e.target.value}`)
+        setIsLoading(false)
+        setSrpData(productsRes.data)
+
     }
 
-    const applyFilters = (filters) => {
-        let selectedFilters = JSON.parse(JSON.stringify(apppliedFilters))
+    const applyFilters = async (filters) => {
+
+        let selectedFilters = { ...apppliedFilters }
         if (filters.checked) {
-            if (selectedFilters[filters.type]) {
-                selectedFilters[filters.type] = [...selectedFilters[filters.type], Capitalize(filters.value)]
-            } else {
-                selectedFilters[filters.type] = [Capitalize(filters.value)]
-            }
+            selectedFilters[filters.type] = selectedFilters[filters.type] ? [...selectedFilters[filters.type], filters.value] : [filters.value]
         } else {
             let modifiedFilters = selectedFilters[filters.type].filter(f => f !== filters.value)
             selectedFilters[filters.type] = modifiedFilters
         }
 
-        axios.post(`${process.env.NEXT_PUBLIC_API_URI}/dyanamicsearchproducts/get/data`, {
-            query: router.query.slug,
-            animal: selectedFilters.animal,
-            category: selectedFilters.category,
-            subcategory: selectedFilters.subcategory,
-            brand: selectedFilters.brand,
-            rating: selectedFilters.rating,
-            sort: sort
-        })
-            .then(res => {
-                setIsLoading(false)
-                setSrpData(res.data.productBySearch)
-                setPage(1)
-            })
-            .catch(err => console.log(err))
+        let query = generateQueryString({ ...selectedFilters })
 
-        setAppliedFilters(JSON.parse(JSON.stringify(selectedFilters)))
+        let productsRes = await getProducts(query)
+        setIsLoading(false)
+        setSrpData(productsRes.data)
+
+        setAppliedFilters({ ...selectedFilters })
     }
 
-    const clearAll = () => {
-        console.log("clear called");
+    const clearAll = async () => {
         setIsLoading(true)
-        axios.post(`${process.env.NEXT_PUBLIC_API_URI}/dyanamicsearchproducts/get/data`, {
-            query: router.query.slug,
+        let productsData = await getProducts()
+        setIsLoading(false)
+        setSrpData(productsData.data)
+        setAppliedFilters({
             animal: [],
             category: [],
             subcategory: [],
             brand: [],
             rating: [],
-            sort: sort
         })
-            .then(res => {
-                setIsLoading(false)
-                setSrpData(res.data.productBySearch)
-                setAppliedFilters({
-                    animal: [],
-                    category: [],
-                    subcategory: [],
-                    brand: [],
-                    rating: [],
-                })
-            })
-            .catch(err => console.log(err))
+
     }
 
+    const generateQueryString = (appliedFilters) => {
+        let currentIndex = 4;
+        let qs = []
+        appliedFilters.animal && appliedFilters.animal.map((ani, index) => {
+            qs.push(`&filters[$and][${currentIndex}][animal][slug][$eq]=${ani}`)
+            currentIndex++
+        })
+        appliedFilters.category && appliedFilters.category.map((cat, index) => {
+            qs.push(`&filters[$and][${currentIndex}][category][slug][$eq]=${cat}`)
+            currentIndex++
+        })
+        appliedFilters.subcategory && appliedFilters.subcategory.map((subcat, index) => {
+            qs.push(`&filters[$and][${currentIndex}][subcategory][slug][$eq]=${subcat}`)
+            currentIndex++
+        })
+        appliedFilters.brand && appliedFilters.brand.map((brand, index) => {
+            qs.push(`&filters[$and][${currentIndex}][brand][slug][$eq]=${brand}`)
+            currentIndex++
+        })
+
+        return qs.join()
+    }
 
     return (
         <div className='shop-page lg:my-10 my-16'>
@@ -173,15 +158,15 @@ const Shop = () => {
                             <h2 className="text-lg font-semibold text-slate-400">Top results for   <span className="capitalize text-slate-700">{router.query.animal}</span> , <span className="capitalize text-slate-700">{router.query.subcategory}</span></h2>
                     }
                     <div className="sorting hidden md:flex justify-between items-center relative mt-4">
-                        <p className='text-sm font-medium'>showing {srpData && srpData.to} out of {srpData && srpData.total} products</p>
+                        <p className='text-sm font-medium'>showing {srpData && srpData.meta.pagination.pageCount} out of {srpData && srpData.meta.pagination.total} products</p>
                         <div>
                             <span className='absolute -top-2 right-28 text-gray-500 text-xs'>sort by</span>
 
                             <select value={sort} name="sorting" id="sorting" onChange={(e) => sortResults(e)} className='text-sm text-left rounded-lg px-2 py-3 bg-slate-100 text-gray-600 mx-2 flex justify-between items-center shadow'>
-                                <option value="relevent">Popularity</option>
-                                <option value="hightolow">price : high to low</option>
-                                <option value="lowtohigh">price : low to high</option>
-                                <option value="ratinghigh">rating : high to low</option>
+                                <option value="rating%3Aasc">Popularity</option>
+                                <option value="selling_price%3Adesc">price : high to low</option>
+                                <option value="selling_price%3Aasc">price : low to high</option>
+                                <option value="rating%3Adesc">rating : high to low</option>
                             </select>
                         </div>
                     </div>
@@ -222,3 +207,13 @@ const Shop = () => {
 }
 
 export default Shop
+
+export async function getServerSideProps(context) {
+
+    return {
+        props: {
+            query: context.query.slug
+        }
+    }
+
+}

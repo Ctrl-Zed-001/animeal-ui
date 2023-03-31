@@ -13,24 +13,25 @@ import 'swiper/css/autoplay';
 
 const index = (props) => {
 
-    const [allProducts, setAllProducts] = useState([])
-    const [categories, setCategories] = useState([])
-    const [brands, setBrands] = useState([])
+    const [allProducts, setAllProducts] = useState()
+    console.log("🚀 ~ file: index.js:17 ~ index ~ allProducts:", allProducts)
+    const [categories, setCategories] = useState()
+    const [brands, setBrands] = useState()
 
     useEffect(() => {
-        getProductsByCategory()
+        getProductsByAnimal()
         getBrandsfOrAnimals()
     }, [])
 
-    const getProductsByCategory = async () => {
-        let allFetchedProducts = await axios.get(`${process.env.NEXT_PUBLIC_API_URI}/products?filters[animal][slug]=${props.slug}&populate[0]=category&populate[1]=animal`)
-        let allCategories = [...new Set(allFetchedProducts.data.data.map(item => item.attributes.category.data.attributes.name))];
+    const getProductsByAnimal = async () => {
+        let allFetchedProducts = await axios.get(`${process.env.NEXT_PUBLIC_API_URI}/products?filters[animal][slug]=${props.animal}&populate[0]=category.icon&populate[1]=animal&populate[2]=animal.banner`)
+        let allCategories = [...new Set(allFetchedProducts.data.data.map(item => item.attributes.category.data.attributes))];
         setCategories([...allCategories])
         setAllProducts(allFetchedProducts.data.data)
     }
 
     const getBrandsfOrAnimals = () => {
-        axios.get(`${process.env.NEXT_PUBLIC_API_URI}/brands?filter[animal][slug]=${props.slug}&populate[0]=icon`)
+        axios.get(`${process.env.NEXT_PUBLIC_API_URI}/brands?filter[animal][slug]=${props.animal}&populate[0]=icon`)
             .then(res => setBrands(res.data.data))
             .catch(err => console.log(err))
     }
@@ -47,7 +48,10 @@ const index = (props) => {
             }
 
             {/* Banner */}
-            <AnimalBanner hasImage={props.banner !== null ? true : false} image={`/category-banner/${props.banner}`} title={`The ${props.slug} Shop`} />
+            {
+                allProducts &&
+                <AnimalBanner hasImage={allProducts[0].attributes.animal.data.attributes.banner.data ? true : false} image={allProducts[0].attributes.animal.data.attributes.banner.data?.attributes?.url} title={`The ${props.animal} Shop`} />
+            }
 
             <div className="container my-10">
                 <Swiper
@@ -69,8 +73,8 @@ const index = (props) => {
                     autoplay={{ delay: 2000 }}
                 >
                     {
-                        props.categorylevels && props.categorylevels.map((category, index) => {
-                            return <SwiperSlide key={index}><CategoryBox placeholder='/img/category-placeholder.webp' animal={props.slug} category={category} /></SwiperSlide>
+                        categories && categories.map((category, index) => {
+                            return <SwiperSlide key={index}><CategoryBox placeholder='/img/category-placeholder.webp' animal={props.animal} category={category} /></SwiperSlide>
                         })
 
                     }
@@ -78,19 +82,18 @@ const index = (props) => {
 
             </div>
 
-            {/* CATEGORY */}
+            {/* CATEGORY WISE ROWS*/}
             {
-                categories && categories.map((category, index) => {
-                    return <ProductRow showLink={true} animal={props.slug} key={index} title={category} products={allProducts.filter(prod => prod.attributes.category.data.attributes.name === category)} />
+                categories && allProducts && categories.map((category, index) => {
+                    return <ProductRow showLink={true} animal={props.animal} key={index} title={category.name} products={allProducts.filter(prod => prod.attributes.category.data?.attributes.name === category.name)} />
                 })
-
             }
 
             {/* BRANDS */}
 
             {
                 brands && brands.length > 0 ?
-                    <Brands title={`Popular Brands for ${props.slug}`} brands={brands} /> :
+                    <Brands title={`Popular Brands for ${props.animal}`} brands={brands} /> :
                     <></>
             }
 
@@ -105,7 +108,7 @@ export async function getServerSideProps({ query }) {
         props: {
             title: metaData.data.data[0].attributes.title,
             description: metaData.data.data[0].attributes.description,
-            slug: query.animal
+            animal: query.animal
         }
     }
 }

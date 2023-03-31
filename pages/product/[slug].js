@@ -26,11 +26,14 @@ import "swiper/css/thumbs";
 
 
 const Product = (props) => {
+
     const [inWishlist, setInWishlist] = useState(false)
     const [inCart, setInCart] = useState(false)
-    const [productImages, setProductImages] = useState([...props.product.productimages])
+    const [productImages, setProductImages] = useState([])
     const [checkPinCode, setCheckPinCode] = useState('')
     const [isDeliverable, setIsDeliverable] = useState()
+    const [similarproducts, setSimilarProducts] = useState()
+    const [variants, setVariants] = useState()
 
     const { setShowAuthModal, isLoggedIn, token } = useContext(AuthContext)
     const { addToCart, setRefreshCart, refreshCart } = useContext(CartContext)
@@ -39,11 +42,12 @@ const Product = (props) => {
 
 
     useEffect(() => {
+
         if (token) {
             axios.post(
                 `${process.env.NEXT_PUBLIC_API_URI}/user/addtocartvalidation/post/data`,
                 {
-                    product_id: props.product.products.product_id
+                    product_id: props.product.attributes.product_id
                 },
                 {
                     headers: {
@@ -57,7 +61,7 @@ const Product = (props) => {
             // check kar local cart mei hai kya
             if (JSON.parse(localStorage.getItem('unauthcart'))) {
                 let localCart = JSON.parse(localStorage.getItem('unauthcart'))
-                let findItem = localCart.filter(item => item[0].product_id == props.product.products.product_id)
+                let findItem = localCart.filter(item => item[0].product_id == props.product.attributes.product_id)
                 if (findItem && findItem.length > 0) {
                     setInCart(true)
                 } else {
@@ -66,27 +70,41 @@ const Product = (props) => {
             }
 
         }
+        // set product images in one state
+        if (props.product.attributes.display_image.data && props.product.attributes.gallery.data) {
+            setProductImages([props.product.attributes.display_image.data, ...props.product.attributes.gallery.data])
+        } else if (props.product.attributes.display_image.data) {
+            setProductImages([props.product.attributes.display_image.data])
+        } else {
+            setProductImages([])
+        }
+
+        // get similar products
+        getSimilarProducts()
+
+        // get variants
+        getVariants()
 
     }, [token, props])
 
-    useEffect(() => {
-        let imagesArray = [...props.product.productimages]
-        let mainImage = imagesArray.filter(img => img.main_id === 1)
-        let mainImageIndex = imagesArray.indexOf(mainImage[0])
-        if (mainImageIndex === (imagesArray.length - 1)) {
-            let newArray = [...imagesArray].reverse()
-            setProductImages([...newArray])
-        }
 
+    const getSimilarProducts = async () => {
+        let productData = await axios.get(`${process.env.NEXT_PUBLIC_API_URI}/products?filters[animal][slug][$eq]=${props.product.attributes.animal.data.attributes.slug}&filters[category][slug][$eq]=${props.product.attributes.category.data.attributes.slug}&filters[subcategory][slug][$eq]=${props.product.attributes.subcategory.data.attributes.slug}&filters[slug][$ne]=${props.product.attributes.slug}&populate[0]=animal&populate[1]=category`)
+        setSimilarProducts([...productData.data.data])
+    }
 
-    }, [])
+    const getVariants = async () => {
+        let productData = await axios.get(`${process.env.NEXT_PUBLIC_API_URI}/products?filters[variant][id][$eq]=${props.product.attributes.variant.data.id}&filters[slug][$ne]=${props.product.attributes.slug}&populate[0]=animal&populate[1]=category`)
+        console.log("productData", productData)
+        setVariants([...productData.data.data])
+    }
 
     const cartClicked = () => {
         if (isLoggedIn) {
             axios.post(`${process.env.NEXT_PUBLIC_API_URI}/user/addtocart/post/data`,
                 {
-                    product_id: props.product.products.product_id,
-                    quantity: props.product.products.minimum_quantity
+                    product_id: props.product.attributes.product_id,
+                    quantity: props.product.attributes.minimum_quantity
                 },
                 {
                     headers: {
@@ -99,9 +117,9 @@ const Product = (props) => {
                     setInCart(true)
                     addToCart([{
                         ...res.data.success,
-                        available_stock: parseInt(props.product.availableStock) - props.product.products.minimum_quantity,
-                        category: props.product.products.category,
-                        minimum_quantity: props.product.products.minimum_quantity
+                        available_stock: parseInt(props.product.availableStock) - props.product.attributes.minimum_quantity,
+                        category: props.product.attributes.category,
+                        minimum_quantity: props.product.attributes.minimum_quantity
                     }])
                 })
                 .catch(err => console.log(err))
@@ -110,23 +128,23 @@ const Product = (props) => {
             toast.success('Item added to cart');
             setInCart(true)
             let itemForCart = {
-                product_main_id: props.product.products.id,
-                product_id: props.product.products.product_id,
-                product_name: props.product.products.website_pro_name,
+                product_main_id: props.product.attributes.id,
+                product_id: props.product.attributes.product_id,
+                product_name: props.product.attributes.website_pro_name,
                 product_image: props.product.productimages[0] ? props.product.productimages[0].product_image : '',
-                product_description: props.product.products.shortdescription,
-                quantity: props.product.products.minimum_quantity,
+                product_description: props.product.attributes.shortdescription,
+                quantity: props.product.attributes.minimum_quantity,
                 product_price: props.product.productPriceApi,
                 product_discount: parseInt(props.product.productMrp) - parseInt(props.product.productPriceApi),
-                product_offer: props.product.products.offer,
+                product_offer: props.product.attributes.offer,
                 product_total: props.product.productPriceApi,
                 product_discount_total: parseInt(props.product.productMrp) - parseInt(props.product.productPriceApi),
-                product_weight: props.product.products.size,
-                updated_at: props.product.products.updated_at,
-                created_at: props.product.products.created_at,
-                category: props.product.products.category,
-                available_stock: parseInt(props.product.products.stock),
-                minimum_quantity: parseInt(props.product.products.minimum_quantity)
+                product_weight: props.product.attributes.size,
+                updated_at: props.product.attributes.updated_at,
+                created_at: props.product.attributes.created_at,
+                category: props.product.attributes.category,
+                available_stock: parseInt(props.product.attributes.stock),
+                minimum_quantity: parseInt(props.product.attributes.minimum_quantity)
             }
             let localCartList = JSON.parse(localStorage.getItem('unauthcart'))
             if (localCartList) {
@@ -144,7 +162,7 @@ const Product = (props) => {
         if (isLoggedIn) {
             axios.post(`${process.env.NEXT_PUBLIC_API_URI}/user/${type}/post/data`,
                 {
-                    product_id: props.product.products.product_id,
+                    product_id: props.product.attributes.product_id,
                 },
                 {
                     headers: {
@@ -164,23 +182,12 @@ const Product = (props) => {
         }
     }
 
-    const checkAvailability = (e) => {
+    const checkAvailability = async (e) => {
         e.preventDefault()
-        axios.post(
-            `${process.env.NEXT_PUBLIC_API_URI}/valid/pincode/post/data`,
-            {
-                pincode: checkPinCode
-            }
-        )
-            .then(res => {
-                if (res.data.pincode == 'Pincode Found') {
-                    setIsDeliverable(true)
-                } else {
-                    setIsDeliverable(false)
-                }
-
-            })
-            .catch(err => setIsDeliverable(false))
+        let isAvailable = await axios.get(`${process.env.NEXT_PUBLIC_API_URI}/pincodes?filters[pincode][$eq]=${checkPinCode}`)
+        if (isAvailable.data.data.length > 0) {
+            setIsDeliverable(true)
+        }
     }
 
     return (
@@ -216,7 +223,7 @@ const Product = (props) => {
                                     productImages.map((image, index) => {
                                         return (<SwiperSlide key={index} className=''>
                                             <div id='img-container'>
-                                                <img src={`${process.env.NEXT_PUBLIC_IMAGE_URI}/${image.product_id}/${image.product_image}`} alt="" id="single-product-image" className='rounded-lg mx-auto bg-white' />
+                                                <img src={`${image.attributes.url}`} alt="" id="single-product-image" className='rounded-lg mx-auto bg-white' />
                                             </div>
                                         </SwiperSlide>)
                                     })
@@ -238,7 +245,7 @@ const Product = (props) => {
                         {
                             productImages.map((image, index) => {
                                 return (<SwiperSlide key={index} className=''>
-                                    <img src={`${process.env.NEXT_PUBLIC_IMAGE_URI}/${image.product_id}/${image.product_image}`} alt="" className='rounded-lg mx-auto h-12 lg:h-20 border border-gray-200' />
+                                    <img src={`${image.attributes.url}`} alt="" className='rounded-lg mx-auto h-12 lg:h-20 border border-gray-200' />
                                 </SwiperSlide>)
                             })
                         }
@@ -250,14 +257,14 @@ const Product = (props) => {
                 {/* DATA */}
                 <div className="product-data flex-1 mt-6 lg:mt-0">
                     {/* <Breadcrumb className="hidden lg:block" /> */}
-                    <Link href={`/shop/?slug=${props.product.products.subcategory}`}><h3 className="text-xs lg:text-sm text-theme font-semibold cursor-pointer">{props.product.products.subcategory}</h3></Link>
+                    <Link href={`/shop/?slug=${props.product.attributes.subcategory.data?.attributes.slug}`}><h3 className="text-xs lg:text-sm text-theme font-semibold cursor-pointer">{props.product.attributes.subcategory.data?.attributes.name}</h3></Link>
                     <h1 className="text-base lg:text-3xl font-semibold text-slate-900">
-                        {props.product.products.website_pro_name}
+                        {props.product.attributes.name}
                     </h1>
 
-                    <Link href={`/shop/?slug=${props.product.products.brand}`}><p className='text text-slate-600 font-medium my-2 cursor-pointer'>by : {props.product.products.brand}</p></Link>
+                    <Link href={`/shop/?slug=${props.product.attributes.brand.data?.attributes.slug}`}><p className='text text-slate-600 font-medium my-2 cursor-pointer'>by : {props.product.attributes.brand.data?.attributes.name}</p></Link>
                     {
-                        props.product.products.category.toLowerCase() == 'medicine' ?
+                        props.product.attributes.category.data.attributes.slug == 'medicine' ?
                             <div className="flex items-center gap-2 my-2">
                                 <img src="/img/icons/rx.webp" className='h-8' alt="" />
                                 <p className='text-sm font-semibold text-theme'>Prescription required</p>
@@ -266,26 +273,27 @@ const Product = (props) => {
                     }
                     <div className="flex items-center">
                         <Rating value={0} />
-                        <p className='text-xs lg:text-base text-slate-600 ml-3 font-medium'>{props.product.ratinglist.length} customer reviews</p>
+                        {/* TODO GET NUMBER OF REVIEWS FROM REVIEWS TABLES */}
+                        {/* <p className='text-xs lg:text-base text-slate-600 ml-3 font-medium'> customer reviews</p> */}
                     </div>
 
                     <div className="flex mt-4 items-center">
                         {
-                            props.product.productPriceApi == props.product.productMrp ?
+                            props.product.attributes.selling_price == props.product.attributes.mrp ?
                                 <></> :
-                                <h3 className="text-sm lg:text-base font-medium text-gray-500 flex items-center mr-2 line-through"><BiRupee />{props.product.productMrp}</h3>
+                                <h3 className="text-sm lg:text-base font-medium text-gray-500 flex items-center mr-2 line-through"><BiRupee />{props.product.attributes.mrp}</h3>
                         }
-                        <h2 className="text-2xl flex items-center font-semibold"><BiRupee />{props.product.productPriceApi}</h2>
+                        <h2 className="text-2xl flex items-center font-semibold"><BiRupee />{props.product.attributes.selling_price}</h2>
                     </div>
-                    <p className="text-sm lg:text-base flex items-center mt-2 text-green-700 font-semibold">you save <BiRupee /> {parseInt(props.product.productMrp) - parseInt(props.product.productPriceApi)} </p>
+                    <p className="text-sm lg:text-base flex items-center mt-2 text-green-700 font-semibold">you save <BiRupee /> {parseInt(props.product.attributes.mrp) - parseInt(props.product.attributes.selling_price)} </p>
                     {/* <p className='text-sm text-slate-600 mt-3 font-medium'>Free 1-3 day shipping on this item.</p> */}
 
                     <div className="bg-white rounded-lg p-3 mt-3">
                         {
-                            props.product.availableStock == 0 ?
+                            props.product.attributes.stock == 0 ?
                                 <p className='text-red-500 text-sm lg:text-base font-semibold mb-4'>Out Of Stock</p> :
-                                props.product.availableStock <= 10 ?
-                                    <p className='text-red-500 text-sm lg:text-base font-semibold mb-4'>Only {props.product.availableStock} left in stock</p> :
+                                props.product.attributes.stock <= 10 ?
+                                    <p className='text-red-500 text-sm lg:text-base font-semibold mb-4'>Only {props.product.attributes.stock} left in stock</p> :
                                     <p className='text-green-700 text-sm lg:text-base font-semibold mb-4'>In stock</p>
                         }
 
@@ -322,20 +330,20 @@ const Product = (props) => {
                             </div> */}
 
                             {
-                                props.product.similarproduct ?
+                                variants ?
                                     <div className="variations">
                                         <p className="mb-3 text-sm lg:text-base font-medium">Variations</p>
                                         <div className="grid grid-cols-3 lg:grid-cols-5 gap-4">
                                             {
-                                                props.product.similarproduct.map((prod, index) => {
-                                                    return (<Link key={index} href={`/product/${prod.website_slug_name}`}>
+                                                variants.map((prod, index) => {
+                                                    return (<Link key={index} href={`/product/${prod.attributes.slug}`}>
                                                         <div className="size cursor-pointer bg-slate-100 p-2 text-sm lg:text-base text-center font-medium shadow rounded">
-                                                            {prod.product_weight}
+                                                            {prod.attributes.size}
                                                             <br />
                                                             {
-                                                                props.product.products.category.toLowerCase() == 'food' ?
+                                                                prod.attributes.category.data.attributes.slug == 'food' ?
                                                                     <div className="flex items-center text-sm text-slate-600 mt-2">
-                                                                        <BiRupee /> {Math.round(prod.product_price / getWeight(prod.product_weight))} / Kg
+                                                                        <BiRupee /> {Math.round(prod.attributes.selling_price / getWeight(prod.attributes.size))} / Kg
                                                                     </div> :
                                                                     <></>
                                                             }
@@ -357,7 +365,7 @@ const Product = (props) => {
 
                         <div className="flex gap-4">
                             {
-                                props.product.availableStock == 0 || props.product.productPriceApi == 0 ?
+                                props.product.attributes.stock == 0 || props.product.attributes.selling_price == 0 ?
                                     <></> :
                                     inCart ?
                                         <Link href='/cart'>
@@ -393,15 +401,15 @@ const Product = (props) => {
 
                     {/* <div className="content-box">
                         <p className={`text-justify text-sm leading-5 text-slate-600 mb-0 font-medium max-h-16 hover:max-h-fit overflow-hidden transition-all ease-in-out duration-500`}>
-                            {props.product.products.shortdescription}
+                            {props.product.attributes.shortdescription}
                         </p>
                         <p className="text-sm text-theme">read more..</p>
                     </div> */}
                     {
-                        props.product.products.shortdescription ?
-                            <Collapse title={props.product.products.shortdescription.substr(0, 90)} >
+                        props.product.attributes.shortdescription ?
+                            <Collapse title={props.product.attributes.shortdescription.substr(0, 90)} >
                                 <p className='text-justify'>
-                                    {props.product.products.shortdescription}
+                                    {props.product.attributes.shortdescription}
                                 </p>
                             </Collapse> :
                             <></>
@@ -413,7 +421,7 @@ const Product = (props) => {
             </div>
 
             {/* RELATED ITEMS */}
-            <ProductRow title="Your fur baby might also like this" products={props.relatedProducts} />
+            <ProductRow title="Your fur baby might also like this" products={similarproducts} />
 
             <div className="container">
                 <hr className='border-1 border-gray-300 my-10' />
@@ -430,23 +438,11 @@ export async function getServerSideProps({ query }) {
 
     let slug = query.slug;
 
-    let res = await axios.get(`${process.env.NEXT_PUBLIC_API_URI}/singleproduct/${slug}`)
-    let relatedRes = await axios.get(`${process.env.NEXT_PUBLIC_API_URI}/similarproducts/${slug}`)
-    let product = await res.data
-    let relatedProducts = await relatedRes.data
-
-    let metaData = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URI}/metaurl/post/data`,
-        {
-            slug: "https://animeal.in/" + 'product/' + query.slug
-        }
-    )
+    let productData = await axios.get(`${process.env.NEXT_PUBLIC_API_URI}/products?filters[slug][$eq]=${slug}&populate=*`)
 
     return {
         props: {
-            product: product,
-            relatedProducts: relatedProducts.similarProducts,
-            metaData: metaData.data.success
+            product: productData.data.data[0]
         }
     }
 }
