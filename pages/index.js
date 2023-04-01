@@ -48,7 +48,7 @@ export default function Home(props) {
       </Head>
 
       {/* BANNER SECTION */}
-      <BannerSection />
+      <BannerSection banners={props.banners} />
 
       {/* SHOP BY PET */}
       <ShopByPet animals={animals} />
@@ -75,13 +75,19 @@ export default function Home(props) {
 
 export async function getServerSideProps(context) {
 
-  let metaData = await axios.get(
-    `${process.env.NEXT_PUBLIC_API_URI}/meta-datas?filters[slug][$eq]=home`,
-  )
+  let [metaData, banners] = await Promise.all([
+    axios.get(
+      `${process.env.NEXT_PUBLIC_API_URI}/meta-datas?filters[slug][$eq]=home`,
+    ),
+    axios.get(
+      `${process.env.NEXT_PUBLIC_API_URI}/banners?populate=*`,
+    )
+  ])
   return {
     props: {
       title: metaData.data.data[0].attributes.title,
-      description: metaData.data.data[0].attributes.description
+      description: metaData.data.data[0].attributes.description,
+      banners: banners.data
     }
   }
 
