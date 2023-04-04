@@ -88,8 +88,8 @@ export async function getServerSideProps({ query }) {
     let metaData = await axios.get(`${process.env.NEXT_PUBLIC_API_URI}/meta-datas?filters[slug][$eq]=home`)
     return {
         props: {
-            title: metaData.data.data[0].attributes.title,
-            description: metaData.data.data[0].attributes.description,
+            title: metaData.data.data[0]?.attributes.title || '',
+            description: metaData.data.data[0]?.attributes.description || '',
             animal: query.animal,
             category: query.category
         }

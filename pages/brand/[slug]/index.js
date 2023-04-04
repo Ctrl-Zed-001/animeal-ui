@@ -71,8 +71,8 @@ export async function getServerSideProps(context) {
     return {
         props: {
             animals: animals.data.data,
-            title: metaData.data.data[0].attributes.title,
-            description: metaData.data.data[0].attributes.description,
+            title: metaData.data.data[0]?.attributes.title || '',
+            description: metaData.data.data[0]?.attributes.description || '',
             brandDetails: brandDetails.data.data[0]
         }
     }

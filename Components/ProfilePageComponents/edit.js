@@ -9,6 +9,7 @@ import toast, { Toaster } from 'react-hot-toast'
 
 const EditProfile = () => {
   const { isLoggedIn, userDetails, token } = useContext(AuthContext)
+  console.log("🚀 ~ file: edit.js:12 ~ EditProfile ~ userDetails:", userDetails)
 
   const router = useRouter()
 
@@ -58,7 +59,7 @@ const EditProfile = () => {
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="grid grid-cols-2 gap-10">
               <Input placeholder={userDetails?.email} disabled label='Email' />
-              <Input color={errors && errors.name ? "error" : "default"} initialValue={userDetails?.name} {...register("name", { required: true })} label='Name' />
+              <Input color={errors && errors.name ? "error" : "default"} initialValue={userDetails?.username} {...register("name", { required: true })} label='Name' />
               <Input color={errors && errors.name ? "error" : "default"} initialValue={userDetails?.number} {...register("number", { required: true })} label='Number' />
               <Input initialValue={userDetails?.altnumber} {...register("altnumber")} label='Alt Number' />
             </div>

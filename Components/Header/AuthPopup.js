@@ -17,21 +17,21 @@ import axios from 'axios';
 
 const AuthPopup = (props) => {
 
-    const { setIsLoggedIn, getUserDetails, showAuthModal, setShowAuthModal, setToken, setUserDetails, loginSocial } = useContext(AuthContext)
+    const { setIsLoggedIn, showAuthModal, setShowAuthModal, setToken, setUserDetails, loginSocial } = useContext(AuthContext)
 
 
     const signup = (name, email, password) => {
-        axios.post(`${process.env.NEXT_PUBLIC_API_URI}/user/registration/post/data`,
+        axios.post(`${process.env.NEXT_PUBLIC_API_URI}/auth/local/register`,
             {
-                name,
-                email,
-                password
+                username: name,
+                email: email,
+                password: password
             }
         )
             .then(res => {
-                localStorage.setItem('token', `Bearer ${res.data.token}`)
+                localStorage.setItem('token', `Bearer ${res.data.jwt}`)
                 setIsLoggedIn(true)
-                setToken(`Bearer ${res.data.token}`)
+                setToken(`Bearer ${res.data.jwt}`)
                 setUserDetails(res.data.user)
                 setShowAuthModal(false)
             })
@@ -41,17 +41,16 @@ const AuthPopup = (props) => {
     }
 
     const login = (email, password) => {
-        axios.post(`${process.env.NEXT_PUBLIC_API_URI}/user/login/post/data`,
-            {
-                email,
-                password
-            }
-        )
+        axios
+            .post(`${process.env.NEXT_PUBLIC_API_URI}/auth/local`, {
+                identifier: email,
+                password: password,
+            })
             .then(res => {
-                localStorage.setItem('token', `Bearer ${res.data.access_token}`)
+                localStorage.setItem('token', `Bearer ${res.data.jwt}`)
                 setIsLoggedIn(true)
-                setToken(`Bearer ${res.data.access_token}`)
-                getUserDetails(`Bearer ${res.data.access_token}`)
+                setToken(`Bearer ${res.data.jwt}`)
+                setUserDetails(res.data.user)
                 setShowAuthModal(false)
             })
             .catch(error => {

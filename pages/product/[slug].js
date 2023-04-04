@@ -35,7 +35,7 @@ const Product = (props) => {
     const [similarproducts, setSimilarProducts] = useState()
     const [variants, setVariants] = useState()
 
-    const { setShowAuthModal, isLoggedIn, token } = useContext(AuthContext)
+    const { setShowAuthModal, isLoggedIn, token, userDetails } = useContext(AuthContext)
     const { addToCart, setRefreshCart, refreshCart } = useContext(CartContext)
 
     const [thumbsSwiper, setThumbsSwiper] = useState(null);
@@ -44,19 +44,8 @@ const Product = (props) => {
     useEffect(() => {
 
         if (token) {
-            axios.post(
-                `${process.env.NEXT_PUBLIC_API_URI}/user/addtocartvalidation/post/data`,
-                {
-                    product_id: props.product.attributes.product_id
-                },
-                {
-                    headers: {
-                        Authorization: token
-                    }
-                }
-            )
-                .then(res => setInCart(res.data.validateAddToCart))
-                .catch(err => console.log(err))
+            checkInCart()
+            checkInWishlist()
         } else {
             // check kar local cart mei hai kya
             if (JSON.parse(localStorage.getItem('unauthcart'))) {
@@ -99,9 +88,37 @@ const Product = (props) => {
         setVariants([...productData.data.data])
     }
 
+    const checkInCart = () => {
+        axios.get(`${process.env.NEXT_PUBLIC_API_URI}/carts?filters[user][id]=${userDetails.id}`,
+            {
+                headers: {
+                    Authorization: token
+                }
+            }
+        )
+            .then(res => {
+                console.log(res.data, "zed")
+            })
+            .catch(err => alert(err))
+    }
+
+    const checkInWishlist = () => {
+        axios.get(`${process.env.NEXT_PUBLIC_API_URI}/wishlists?filters[user][id]=${userDetails.id}&populate=*`,
+            {
+                headers: {
+                    Authorization: token
+                }
+            }
+        )
+            .then(res => {
+                console.log(res.data, "zed")
+            })
+            .catch(err => alert(err))
+    }
+
     const cartClicked = () => {
         if (isLoggedIn) {
-            axios.post(`${process.env.NEXT_PUBLIC_API_URI}/user/addtocart/post/data`,
+            axios.post(`${process.env.NEXT_PUBLIC_API_URI}/carts/`,
                 {
                     product_id: props.product.attributes.product_id,
                     quantity: props.product.attributes.minimum_quantity
@@ -160,23 +177,36 @@ const Product = (props) => {
 
     const wishlistClicked = (type) => {
         if (isLoggedIn) {
-            axios.post(`${process.env.NEXT_PUBLIC_API_URI}/user/${type}/post/data`,
-                {
-                    product_id: props.product.attributes.product_id,
-                },
-                {
-                    headers: {
-                        Authorization: token
-                    }
-                })
-                .then(res => {
-                    if (type === 'addtowishlist') {
+            if (type == "add") {
+                axios.post(`${process.env.NEXT_PUBLIC_API_URI}/wishlists`,
+                    {
+                        data: {
+                            products: [1, 2],
+                            user: 1
+                        }
+                    },
+                    {
+                        headers: {
+                            Authorization: token
+                        }
+                    })
+                    .then(res => {
                         setInWishlist(true)
-                    } else {
+                    })
+                    .catch(err => console.log(err))
+            } else {
+                axios.delete(`${process.env.NEXT_PUBLIC_API_URI}/wishlists/`,
+                    {
+                        headers: {
+                            Authorization: token
+                        }
+                    })
+                    .then(res => {
                         setInWishlist(false)
-                    }
-                })
-                .catch(err => console.log(err))
+                    })
+                    .catch(err => console.log(err))
+            }
+
         } else {
             setShowAuthModal(true)
         }
@@ -187,6 +217,8 @@ const Product = (props) => {
         let isAvailable = await axios.get(`${process.env.NEXT_PUBLIC_API_URI}/pincodes?filters[pincode][$eq]=${checkPinCode}`)
         if (isAvailable.data.data.length > 0) {
             setIsDeliverable(true)
+        } else {
+            setIsDeliverable(false)
         }
     }
 
@@ -297,7 +329,7 @@ const Product = (props) => {
                                     <p className='text-green-700 text-sm lg:text-base font-semibold mb-4'>In stock</p>
                         }
 
-                        <div className="xl:flex items-center xl:w-full 2xl:w-5/6 gap-6">
+                        <div className="xl:flex items-center xl:w-full  gap-6">
                             <div className='flex items-center gap-3'>
                                 <p className="text-xs lg:text-base font-semibold">Deliver to : </p>
                                 <form onSubmit={checkAvailability}>
@@ -306,7 +338,7 @@ const Product = (props) => {
                             </div>
                             {
                                 isDeliverable !== undefined ?
-                                    <p className={`text-xs lg:text-base font-semibold ${isDeliverable ? 'text-green-600' : 'text-red-400'} mt-3 ml-2 lg:ml-0`}>
+                                    <p className={`text-xs lg:text-base font-semibold ${isDeliverable ? 'text-green-600' : 'text-red-400'}  ml-2 lg:ml-0`}>
                                         {
                                             isDeliverable ?
                                                 "will reach you in 24hrs" :
@@ -383,11 +415,11 @@ const Product = (props) => {
 
                             {
                                 inWishlist ?
-                                    <button onClick={() => wishlistClicked('destroywishlistproduct')} className='bg-slate-100 flex items-center mt-6 py-2 px-2 lg:px-4 rounded shadow text-slate-600 text-sm lg:text-base flex-1 lg:flex-none'>
+                                    <button onClick={() => wishlistClicked('remove')} className='bg-slate-100 flex items-center mt-6 py-2 px-2 lg:px-4 rounded shadow text-slate-600 text-sm lg:text-base flex-1 lg:flex-none'>
                                         <RiHeart3Fill className='text-sm mr-2 text-red-400' />
                                         Wishlisted
                                     </button> :
-                                    <button onClick={() => wishlistClicked('addtowishlist')} className='bg-slate-100 flex items-center mt-6 py-2 px-2 lg:px-4 rounded shadow text-slate-600 text-sm lg:text-base flex-1 lg:flex-none'>
+                                    <button onClick={() => wishlistClicked('add')} className='bg-slate-100 flex items-center mt-6 py-2 px-2 lg:px-4 rounded shadow text-slate-600 text-sm lg:text-base flex-1 lg:flex-none'>
                                         <RiHeart3Line className='text-sm mr-2' />
                                         Add To Wishlist
                                     </button>

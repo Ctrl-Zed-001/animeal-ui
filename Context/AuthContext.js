@@ -62,9 +62,8 @@ const AuthContextProvider = (props) => {
 
 
     const getUserDetails = (token) => {
-        axios.post(
-            `${process.env.NEXT_PUBLIC_API_URI}/user/getauthenticateuser/post/data`,
-            {},
+        axios.get(
+            `${process.env.NEXT_PUBLIC_API_URI}/users/me`,
             {
                 headers: {
                     "Authorization": token
@@ -72,7 +71,7 @@ const AuthContextProvider = (props) => {
             }
         )
             .then(res => {
-                setUserDetails(res.data.user)
+                setUserDetails(res.data)
                 setIsLoggedIn(true)
             })
             .catch(err => {
@@ -82,6 +81,7 @@ const AuthContextProvider = (props) => {
                 setToken('')
             })
     }
+
 
     const logout = () => {
         localStorage.removeItem('token');

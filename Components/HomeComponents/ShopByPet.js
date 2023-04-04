@@ -16,7 +16,7 @@ const ShopByPet = (props) => {
                             <Link href={`/${animal.attributes.slug}`} key={id}>
                                 <div className="petbox drop-shadow hover:drop-shadow-none relative bg-white p-4 rounded-lg transition duration-150 ease-in cursor-pointer flex flex-col-reverse sm:flex-row items-center">
                                     <h2 className='w-2/6 mt-2 text-center z-10'>{animal.attributes.name}</h2>
-                                    <img src={animal.attributes.icon.data.attributes.url} alt="" className='h-24 lg:h-28 xl:h-28' />
+                                    <img src={animal.attributes.icon.data?.attributes.url} alt="" className='h-24 lg:h-28 xl:h-28' />
                                 </div>
                             </Link>
                         )

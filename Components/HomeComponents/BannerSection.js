@@ -13,7 +13,6 @@ import 'swiper/css/pagination';
 import BannerBox from './BannerBox'
 
 const BannerSection = (props) => {
-    console.log("🚀 ~ file: BannerSection.js:16 ~ BannerSection ~ props:", props)
     const { isMobile } = useContext(AuthContext)
     const [isUploadModalOpen, setIsUploadModalOpen] = useState(false)
     const [isStatusModalOpen, setIsStatusModalOpen] = useState(false)

@@ -77,7 +77,7 @@ export async function getServerSideProps(context) {
 
   let [metaData, banners] = await Promise.all([
     axios.get(
-      `${process.env.NEXT_PUBLIC_API_URI}/meta-datas?filters[slug][$eq]=home`,
+      `${process.env.NEXT_PUBLIC_API_URI}/meta-datas?filters[slug][$eq]=hssome`,
     ),
     axios.get(
       `${process.env.NEXT_PUBLIC_API_URI}/banners?populate=*`,
@@ -85,8 +85,8 @@ export async function getServerSideProps(context) {
   ])
   return {
     props: {
-      title: metaData.data.data[0].attributes.title,
-      description: metaData.data.data[0].attributes.description,
+      title: metaData.data.data[0]?.attributes.title || '',
+      description: metaData.data.data[0]?.attributes.description || '',
       banners: banners.data
     }
   }
