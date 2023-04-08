@@ -34,7 +34,7 @@ const Shop = (props) => {
 
     const getProducts = async (extraFilters) => {
 
-        return await axios.get(`${process.env.NEXT_PUBLIC_API_URI}/products?filters[$or][0][name][$containsi]=${props.query}&filters[$or][1][short_description][$containsi]=${props.query}&filters[$or][2][long_description][$containsi]=${props.query}&filters[$or][3][meta_keywords][$containsi]=${props.query}${extraFilters ? extraFilters : ''}&populate[0]=animal`)
+        return await axios.get(`${process.env.NEXT_PUBLIC_API_URI}/products?filters[$or][0][name][$containsi]=${props.query}&filters[$or][1][short_description][$containsi]=${props.query}&filters[$or][2][long_description][$containsi]=${props.query}&filters[$or][3][meta_keywords][$containsi]=${props.query}${extraFilters ? extraFilters : ''}&populate[0]=animals`)
     }
 
     const getFilters = async () => {
@@ -120,16 +120,16 @@ const Shop = (props) => {
     const generateQueryString = (appliedFilters) => {
         let currentIndex = 4;
         let qs = []
-        appliedFilters.animal && appliedFilters.animal.map((ani, index) => {
-            qs.push(`&filters[$and][${currentIndex}][animal][slug][$eq]=${ani}`)
+        appliedFilters.animals && appliedFilters.animals.map((ani, index) => {
+            qs.push(`&filters[$and][${currentIndex}][animals][slug][$in]=${ani}`)
             currentIndex++
         })
-        appliedFilters.category && appliedFilters.category.map((cat, index) => {
-            qs.push(`&filters[$and][${currentIndex}][category][slug][$eq]=${cat}`)
+        appliedFilters.categories && appliedFilters.categories.map((cat, index) => {
+            qs.push(`&filters[$and][${currentIndex}][categories][slug][$in]=${cat}`)
             currentIndex++
         })
-        appliedFilters.subcategory && appliedFilters.subcategory.map((subcat, index) => {
-            qs.push(`&filters[$and][${currentIndex}][subcategory][slug][$eq]=${subcat}`)
+        appliedFilters.subcategories && appliedFilters.subcategories.map((subcat, index) => {
+            qs.push(`&filters[$and][${currentIndex}][subcategories][slug][$in]=${subcat}`)
             currentIndex++
         })
         appliedFilters.brand && appliedFilters.brand.map((brand, index) => {

@@ -20,7 +20,7 @@ const Shop = (props) => {
     useEffect(() => {
 
         setIsLoading(true)
-        getProducts()
+        getProducts(`filters[$and][0][animals][slug][$in]=${props.animal}&filters[$and][1][categories][slug][$in]=${props.category}&filters[$and][2][subcategories][slug][$in]=${props.subcategory}`)
             .then(res => {
                 setIsLoading(false)
                 setSrpData(res.data)
@@ -31,9 +31,8 @@ const Shop = (props) => {
     }, [])
 
 
-    const getProducts = async (extraFilters) => {
-
-        return await axios.get(`${process.env.NEXT_PUBLIC_API_URI}/products?filters[$and][0][animal][slug][$eq]=${props.animal}&filters[$and][1][category][slug][$eq]=${props.category}&filters[$and][2][subcategory][slug][$eq]=${props.subcategory}${extraFilters ? extraFilters : ''}&populate[0]=animal`)
+    const getProducts = async (filters) => {
+        return await axios.get(`${process.env.NEXT_PUBLIC_API_URI}/products?${filters ? filters : ''}&populate[0]=animals`)
     }
 
     const getFilters = async () => {
@@ -52,9 +51,9 @@ const Shop = (props) => {
         })
 
         setAppliedFilters({
-            animal: props.animal ? [props.animal] : [],
-            category: props.category ? [props.category] : [],
-            subcategory: props.subcategory ? [props.subcategory] : [],
+            animals: props.animal ? [props.animal] : [],
+            categories: props.category ? [props.category] : [],
+            subcategories: props.subcategory ? [props.subcategory] : [],
             brand: [],
             rating: [],
         })
@@ -125,26 +124,27 @@ const Shop = (props) => {
     }
 
     const generateQueryString = (appliedFilters) => {
-        let currentIndex = 4;
+        let currentIndex = 0;
         let qs = []
-        appliedFilters.animal && appliedFilters.animal.map((ani, index) => {
-            qs.push(`&filters[$and][${currentIndex}][animal][slug][$eq]=${ani}`)
+
+        appliedFilters.animals && appliedFilters.animals.map((ani, index) => {
+            qs.push(`&filters[$and][${currentIndex}][animals][slug][$in]=${ani}`)
             currentIndex++
         })
-        appliedFilters.category && appliedFilters.category.map((cat, index) => {
-            qs.push(`&filters[$and][${currentIndex}][category][slug][$eq]=${cat}`)
+        appliedFilters.categories && appliedFilters.categories.map((cat, index) => {
+            qs.push(`&filters[$and][${currentIndex}][categories][slug][$in]=${cat}`)
             currentIndex++
         })
-        appliedFilters.subcategory && appliedFilters.subcategory.map((subcat, index) => {
-            qs.push(`&filters[$and][${currentIndex}][subcategory][slug][$eq]=${subcat}`)
+        appliedFilters.subcategories && appliedFilters.subcategories.map((subcat, index) => {
+            qs.push(`&filters[$and][${currentIndex}][subcategories][slug][$in]=${subcat}`)
             currentIndex++
         })
         appliedFilters.brand && appliedFilters.brand.map((brand, index) => {
-            qs.push(`&filters[$and][${currentIndex}][brand][slug][$eq]=${brand}`)
+            qs.push(`&filters[$and][${currentIndex}][brand][slug][$in]=${brand}`)
             currentIndex++
         })
 
-        return qs.join()
+        return qs.join("")
     }
 
     return (

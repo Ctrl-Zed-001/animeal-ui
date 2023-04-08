@@ -1,6 +1,7 @@
 import React from 'react'
 import { BiRupee } from 'react-icons/bi'
 import Rating from './Rating'
+import extract from '../../Helpers/ExtractAnimals'
 
 
 const ProductBox = (props) => {
@@ -15,7 +16,7 @@ const ProductBox = (props) => {
                         {(((props.product.attributes.mrp - props.product.attributes.selling_price) * 100) / 55).toFixed(1)}% off
                     </div>
 
-                    <h2 className="animal text-slate-700 text-xs product-box-name">{props.product.attributes.animal.data?.attributes?.name}</h2>
+                    <h2 className="animal text-slate-700 text-xs product-box-name">{extract(props.product.attributes.animals.data)}</h2>
                     <h1 className='text-sm font-medium product-box-name'>{props.product.attributes.name}</h1>
                     <h2 className="text-xs text-slate-700">{props.product.attributes.product_size}</h2>
                     {/* <Rating value={props.product.attributes.rating_average} /> */}

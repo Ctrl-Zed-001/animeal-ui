@@ -21,9 +21,9 @@ export default function Home(props) {
 
     let endpoints = [
       `${process.env.NEXT_PUBLIC_API_URI}/animals?populate=*`,
-      `${process.env.NEXT_PUBLIC_API_URI}/products?pagination[page]=1&populate[0]=display_image&populate[1]=animal`,
-      `${process.env.NEXT_PUBLIC_API_URI}/products?pagination[page]=2&populate[0]=display_image&populate[1]=animal`,
-      `${process.env.NEXT_PUBLIC_API_URI}/products?pagination[page]=3&populate[0]=display_image&populate[1]=animal`,
+      `${process.env.NEXT_PUBLIC_API_URI}/products?pagination[page]=1&populate[0]=display_image&populate[1]=animals`,
+      `${process.env.NEXT_PUBLIC_API_URI}/products?pagination[page]=2&populate[0]=display_image&populate[1]=animals`,
+      `${process.env.NEXT_PUBLIC_API_URI}/products?pagination[page]=3&populate[0]=display_image&populate[1]=animals`,
       `${process.env.NEXT_PUBLIC_API_URI}/brands?populate[0]=icon`
     ];
 
@@ -77,7 +77,7 @@ export async function getServerSideProps(context) {
 
   let [metaData, banners] = await Promise.all([
     axios.get(
-      `${process.env.NEXT_PUBLIC_API_URI}/meta-datas?filters[slug][$eq]=hssome`,
+      `${process.env.NEXT_PUBLIC_API_URI}/meta-datas?filters[slug][$eq]=home`,
     ),
     axios.get(
       `${process.env.NEXT_PUBLIC_API_URI}/banners?populate=*`,

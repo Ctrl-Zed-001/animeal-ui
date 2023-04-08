@@ -22,11 +22,21 @@ const Brand = (props) => {
     }, [])
 
     const getProductsByBrand = async () => {
-        let fetchedProducts = await axios.get(`${process.env.NEXT_PUBLIC_API_URI}/products?filters[brand][slug][$eq]=${props.brandDetails.attributes.slug}&populate[0]=animal&populate[1]=category`)
+        let fetchedProducts = await axios.get(`${process.env.NEXT_PUBLIC_API_URI}/products?filters[brand][slug][$eq]=${props.brandDetails.attributes.slug}&populate[0]=animals&populate[1]=categories`)
 
-        let allCategories = [...new Set(fetchedProducts.data.data.map(item => item.attributes.category.data.attributes.name))];
+        let allCategories = []
 
-        setCategories([...allCategories])
+        fetchedProducts.data.data.map(item => {
+            item.attributes.categories.data.map(cat => {
+                allCategories.push(cat)
+            })
+        })
+
+
+        const uniqueCategories = [...new Map(allCategories.map(item =>
+            [item.attributes['slug'], item])).values()];
+
+        setCategories([...uniqueCategories])
         setAllProducts([...fetchedProducts.data.data])
     }
 
@@ -45,7 +55,7 @@ const Brand = (props) => {
             <ShopByPet animals={props.animals} />
             {
                 categories && categories.map((category, index) => {
-                    return <ProductRow title={`Top ${props.brandDetails.attributes.name} ${category}`} products={allProducts.filter(prod => prod.attributes.category.data.attributes.name == category)} />
+                    return <ProductRow title={`Top ${props.brandDetails.attributes.name} ${category.attributes.name}`} products={allProducts.filter(prod => prod.attributes.categories.data.includes(category))} />
                 })
             }
 
@@ -60,19 +70,16 @@ const Brand = (props) => {
 
 export async function getServerSideProps(context) {
 
-    let [animals, metaData, brandDetails] = await Promise.all([
+    let [animals, brandDetails] = await Promise.all([
         axios.get(`${process.env.NEXT_PUBLIC_API_URI}/animals?populate[0]=icon`),
-        axios.get(
-            `${process.env.NEXT_PUBLIC_API_URI}/meta-datas?filters[slug][$eq]=home`
-        ),
         axios.get(`${process.env.NEXT_PUBLIC_API_URI}/brands?filter[slug][$eq]=${context.query.slug}&populate[0]=banner`)
     ])
 
     return {
         props: {
             animals: animals.data.data,
-            title: metaData.data.data[0]?.attributes.title || '',
-            description: metaData.data.data[0]?.attributes.description || '',
+            title: brandDetails.data.data[0]?.attributes.meta_title || '',
+            description: brandDetails.data.data[0]?.attributes.meta_description || '',
             brandDetails: brandDetails.data.data[0]
         }
     }

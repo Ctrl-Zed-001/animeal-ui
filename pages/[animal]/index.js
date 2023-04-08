@@ -14,43 +14,47 @@ import 'swiper/css/autoplay';
 const index = (props) => {
 
     const [allProducts, setAllProducts] = useState()
-    console.log("🚀 ~ file: index.js:17 ~ index ~ allProducts:", allProducts)
     const [categories, setCategories] = useState()
-    const [brands, setBrands] = useState()
 
     useEffect(() => {
         getProductsByAnimal()
-        getBrandsfOrAnimals()
     }, [])
 
     const getProductsByAnimal = async () => {
-        let allFetchedProducts = await axios.get(`${process.env.NEXT_PUBLIC_API_URI}/products?filters[animal][slug]=${props.animal}&populate[0]=category.icon&populate[1]=animal&populate[2]=animal.banner`)
-        let allCategories = [...new Set(allFetchedProducts.data.data.map(item => item.attributes.category.data.attributes))];
-        setCategories([...allCategories])
+        let allFetchedProducts = await axios.get(`${process.env.NEXT_PUBLIC_API_URI}/products?filters[animals][slug][$in]=${props.animalData.slug}&populate[0]=categories.icon&populate[1]=animals&populate[2]=animals.banner`)
+
+        let allCategories = []
+
+        allFetchedProducts.data.data.map(item => {
+            item.attributes.categories.data.map(cat => {
+                allCategories.push(cat)
+            })
+        })
+
+
+        const uniqueCategories = [...new Map(allCategories.map(item =>
+            [item.attributes['slug'], item])).values()];
+
+        setCategories([...uniqueCategories])
         setAllProducts(allFetchedProducts.data.data)
     }
 
-    const getBrandsfOrAnimals = () => {
-        axios.get(`${process.env.NEXT_PUBLIC_API_URI}/brands?filter[animal][slug]=${props.animal}&populate[0]=icon`)
-            .then(res => setBrands(res.data.data))
-            .catch(err => console.log(err))
-    }
+
 
     return (
         <div className='main-animal-page mt-16 lg:mt-0'>
-            {
-                props.metaData ?
-                    <Head>
-                        <title>{props.metaData.meta_title}</title>
-                        <meta name="description" content={props.metaData.meta_description} />
-                    </Head> :
-                    <></>
-            }
+
+            <Head>
+                <title>{props.title}</title>
+                <meta name="description" content={props.description} />
+                <meta name="keywords" content={props.keywords} />
+            </Head>
+
 
             {/* Banner */}
             {
                 allProducts &&
-                <AnimalBanner hasImage={allProducts[0].attributes.animal.data.attributes.banner.data ? true : false} image={allProducts[0].attributes.animal.data.attributes.banner.data?.attributes?.url} title={`The ${props.animal} Shop`} />
+                <AnimalBanner hasImage={props.animalData.banner ? true : false} image={props.animalData.banner.data?.attributes?.url} title={`The ${props.animalData.name} Shop`} />
             }
 
             <div className="container my-10">
@@ -74,7 +78,7 @@ const index = (props) => {
                 >
                     {
                         categories && categories.map((category, index) => {
-                            return <SwiperSlide key={index}><CategoryBox placeholder='/img/category-placeholder.webp' animal={props.animal} category={category} /></SwiperSlide>
+                            return <SwiperSlide key={index}><CategoryBox placeholder='/img/category-placeholder.webp' animal={props.animalData.slug} category={category} /></SwiperSlide>
                         })
 
                     }
@@ -85,15 +89,16 @@ const index = (props) => {
             {/* CATEGORY WISE ROWS*/}
             {
                 categories && allProducts && categories.map((category, index) => {
-                    return <ProductRow showLink={true} animal={props.animal} key={index} title={category.name} products={allProducts.filter(prod => prod.attributes.category.data?.attributes.name === category.name)} />
+                    console.log("🚀 ~ file: index.js:92 ~ categories&&allProducts&&categories.map ~ category:", category)
+                    return <ProductRow showLink={true} animal={props.animal} key={index} title={category.attributes.name} products={allProducts.filter(prod => prod.attributes.categories.data.includes(category))} />
                 })
             }
 
             {/* BRANDS */}
 
             {
-                brands && brands.length > 0 ?
-                    <Brands title={`Popular Brands for ${props.animal}`} brands={brands} /> :
+                props.animalData.brands && props.animalData.brands.data.length > 0 ?
+                    <Brands title={`Popular Brands for ${props.animalData.name}`} brands={props.animalData.brands.data} /> :
                     <></>
             }
 
@@ -103,12 +108,14 @@ const index = (props) => {
 
 export async function getServerSideProps({ query }) {
 
-    let metaData = await axios.get(`${process.env.NEXT_PUBLIC_API_URI}/meta-datas?filters[slug][$eq]=home`)
+    let animalData = await axios.get(`${process.env.NEXT_PUBLIC_API_URI}/animals?filters[slug][$eq]=${query.animal}&populate[0]=banner&populate[1]=brands&populate[2]=brands.icon`)
     return {
+
         props: {
-            title: metaData.data.data[0]?.attributes.title || '',
-            description: metaData.data.data[0]?.attributes.description || '',
-            animal: query.animal
+            title: animalData.data.data[0].attributes.meta_title || '',
+            description: animalData.data.data[0].attributes.meta_description || '',
+            keywords: animalData.data.data[0].attributes.meta_keywords || '',
+            animalData: animalData.data.data[0].attributes
         }
     }
 }

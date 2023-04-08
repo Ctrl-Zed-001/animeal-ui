@@ -43,7 +43,7 @@ const Product = (props) => {
 
     useEffect(() => {
 
-        if (token) {
+        if (userDetails) {
             checkInCart()
             checkInWishlist()
         } else {

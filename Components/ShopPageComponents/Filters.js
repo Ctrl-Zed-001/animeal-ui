@@ -67,7 +67,7 @@ const Filters = ({ filterData, applyFilters, sort, sortResults, hideFilter, clea
                     {
                         filterData.animals?.map((animal, index) => {
                             return (
-                                <Checkbox checked={apppliedFilters.animal?.includes(animal.attributes.slug)} onChange={(e) => applyFilters({ type: 'animal', value: animal.attributes.slug, checked: e.target.checked })} key={index} value={animal.attributes.slug} size='sm' color='warning' css={{ 'z-index': '0' }}>
+                                <Checkbox checked={apppliedFilters.animal?.includes(animal.attributes.slug)} onChange={(e) => applyFilters({ type: 'animals', value: animal.attributes.slug, checked: e.target.checked })} key={index} value={animal.attributes.slug} size='sm' color='warning' css={{ 'z-index': '0' }}>
                                     {animal.attributes.name}
                                 </Checkbox>
                             )
@@ -84,7 +84,7 @@ const Filters = ({ filterData, applyFilters, sort, sortResults, hideFilter, clea
                 <div className="flex flex-col gap-3 mt-4">
                     {
                         filterData.categories?.map((category, index) => {
-                            return (<Checkbox checked={apppliedFilters.category?.includes(category.attributes.slug)} onChange={(e) => applyFilters({ type: 'category', value: category.attributes.slug, checked: e.target.checked })} key={index} value={category.attributes.slug} size='sm' color='warning' css={{ 'z-index': '0' }}>
+                            return (<Checkbox checked={apppliedFilters.category?.includes(category.attributes.slug)} onChange={(e) => applyFilters({ type: 'categories', value: category.attributes.slug, checked: e.target.checked })} key={index} value={category.attributes.slug} size='sm' color='warning' css={{ 'z-index': '0' }}>
                                 {category.attributes.name}
                             </Checkbox>)
                         })
@@ -101,7 +101,7 @@ const Filters = ({ filterData, applyFilters, sort, sortResults, hideFilter, clea
                     <input onChange={(e) => searchInFilter("subcategory", e.target.value)} type="text" className='rounded shadow w-11/12 p-2 px-2 text-sm' placeholder='search...' />
                     {
                         subcategory?.map((subcategory, index) => {
-                            return (<Checkbox checked={apppliedFilters.subcategory?.includes(subcategory.attributes.slug)} onChange={(e) => applyFilters({ type: 'subcategory', value: subcategory.attributes.slug, checked: e.target.checked })} key={index} value={subcategory.attributes.slug} size='sm' color='warning' css={{ 'z-index': '0' }}>
+                            return (<Checkbox checked={apppliedFilters.subcategory?.includes(subcategory.attributes.slug)} onChange={(e) => applyFilters({ type: 'subcategories', value: subcategory.attributes.slug, checked: e.target.checked })} key={index} value={subcategory.attributes.slug} size='sm' color='warning' css={{ 'z-index': '0' }}>
                                 {subcategory.attributes.name}
                             </Checkbox>)
                         })
