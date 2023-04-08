@@ -12,6 +12,7 @@ import 'swiper/css';
 import 'swiper/css/autoplay';
 
 const index = (props) => {
+    console.log("🚀 ~ file: index.js:15 ~ index ~ props:", props)
 
     const [allProducts, setAllProducts] = useState()
     const [categories, setCategories] = useState()

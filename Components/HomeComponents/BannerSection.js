@@ -103,7 +103,7 @@ const BannerSection = (props) => {
                     </SwiperSlide> */}
                     {
                         props.banners.data.map((banner, index) => {
-                            return <SwiperSlide>
+                            return <SwiperSlide key={index}>
                                 <BannerBox link={banner.attributes.url} image={banner.attributes.image.data.attributes.url} heading={banner.attributes.title} button={banner.attributes.buttontext} />
                             </SwiperSlide>
                         })

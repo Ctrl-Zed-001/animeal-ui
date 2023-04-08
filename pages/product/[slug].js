@@ -17,6 +17,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import getWeight from '../../Helpers/GetWeight'
 import Head from 'next/head'
 import axios from 'axios';
+import qs from 'qs'
 
 
 import "swiper/css";
@@ -26,6 +27,7 @@ import "swiper/css/thumbs";
 
 
 const Product = (props) => {
+    console.log("🚀 ~ file: [slug].js:29 ~ Product ~ props:", props.product)
 
     const [inWishlist, setInWishlist] = useState(false)
     const [inCart, setInCart] = useState(false)
@@ -72,18 +74,67 @@ const Product = (props) => {
         getSimilarProducts()
 
         // get variants
-        getVariants()
+        if (props.product.attributes.variant.data) {
+            getVariants()
+        }
 
     }, [token, props])
 
 
     const getSimilarProducts = async () => {
-        let productData = await axios.get(`${process.env.NEXT_PUBLIC_API_URI}/products?filters[animal][slug][$eq]=${props.product.attributes.animal.data.attributes.slug}&filters[category][slug][$eq]=${props.product.attributes.category.data.attributes.slug}&filters[subcategory][slug][$eq]=${props.product.attributes.subcategory.data.attributes.slug}&filters[slug][$ne]=${props.product.attributes.slug}&populate[0]=animal&populate[1]=category`)
+
+        let animals = props.product.attributes.animals.data.map(animal => animal.attributes.slug)
+        let categories = props.product.attributes.categories.data.map(category => category.attributes.slug)
+        let subcategories = props.product.attributes.subcategories.data.map(subcategory => subcategory.attributes.slug)
+
+        let query = qs.stringify({
+            filters: {
+                animals: {
+                    slug: {
+                        $in: animals
+                    }
+                },
+                categories: {
+                    slug: {
+                        $in: categories
+                    }
+                },
+                subcategories: {
+                    slug: {
+                        $in: subcategories
+                    }
+                },
+                slug: {
+                    $ne: props.product.attributes.slug
+                }
+            },
+            populate: ['animals', 'categories']
+        }, {
+            encodeValuesOnly: true, // prettify URL
+        })
+
+        let productData = await axios.get(`${process.env.NEXT_PUBLIC_API_URI}/products?${query}`)
         setSimilarProducts([...productData.data.data])
     }
 
     const getVariants = async () => {
-        let productData = await axios.get(`${process.env.NEXT_PUBLIC_API_URI}/products?filters[variant][id][$eq]=${props.product.attributes.variant.data.id}&filters[slug][$ne]=${props.product.attributes.slug}&populate[0]=animal&populate[1]=category`)
+        let query = qs.stringify({
+            filters: {
+                variant: {
+                    id: {
+                        $eq: props.product.attributes.variant.data.id
+                    }
+                },
+                slug: {
+                    $ne: props.product.attributes.slug
+                }
+            },
+            populate: ['animals', 'categories']
+        }, {
+            encodeValuesOnly: true, // prettify URL
+        })
+
+        let productData = await axios.get(`${process.env.NEXT_PUBLIC_API_URI}/products?${query}`)
         console.log("productData", productData)
         setVariants([...productData.data.data])
     }
@@ -289,14 +340,14 @@ const Product = (props) => {
                 {/* DATA */}
                 <div className="product-data flex-1 mt-6 lg:mt-0">
                     {/* <Breadcrumb className="hidden lg:block" /> */}
-                    <Link href={`/shop/?slug=${props.product.attributes.subcategory.data?.attributes.slug}`}><h3 className="text-xs lg:text-sm text-theme font-semibold cursor-pointer">{props.product.attributes.subcategory.data?.attributes.name}</h3></Link>
+                    <Link href={`/shop/?slug=${props.product.attributes.subcategories?.data?.attributes?.slug}`}><h3 className="text-xs lg:text-sm text-theme font-semibold cursor-pointer">{props.product.attributes.subcategories?.data?.attributes?.name}</h3></Link>
                     <h1 className="text-base lg:text-3xl font-semibold text-slate-900">
                         {props.product.attributes.name}
                     </h1>
 
                     <Link href={`/shop/?slug=${props.product.attributes.brand.data?.attributes.slug}`}><p className='text text-slate-600 font-medium my-2 cursor-pointer'>by : {props.product.attributes.brand.data?.attributes.name}</p></Link>
                     {
-                        props.product.attributes.category.data.attributes.slug == 'medicine' ?
+                        props.product.attributes.categories?.data?.attributes?.slug == 'medicine' ?
                             <div className="flex items-center gap-2 my-2">
                                 <img src="/img/icons/rx.webp" className='h-8' alt="" />
                                 <p className='text-sm font-semibold text-theme'>Prescription required</p>
